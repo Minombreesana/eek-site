@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estación Espacial Kennedy · EEK</title>
+  <meta name="description" content="Estación Espacial Kennedy (EEK) — Instituto de investigación ficticio ubicado en el barrio Kennedy, Bogotá, Colombia. Est. 2020.">
+  <meta property="og:title" content="Estación Espacial Kennedy · EEK">
+  <meta property="og:description" content="Un acto de apropiación espacial y tecnológica a través de herramientas ficcionales.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="css/eek.css">
+  <style>
+    /* ── Estilos específicos de la landing ── */
+
+    /* Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 288px;
+      border-bottom: 1px solid var(--beige-pale);
+    }
+    .hero-main {
+      padding: 36px 24px;
+      border-right: 1px solid var(--beige-pale);
+      background: var(--beige-mid);
+    }
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--azul);
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-eyebrow-rule { flex: 1; height: 1px; background: var(--beige-dark); }
+    .hero-title {
+      font-family: var(--cond);
+      font-size: 58px;
+      font-weight: 900;
+      line-height: 0.88;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    .hero-title-en {
+      font-size: 13px;
+      color: var(--gris-light);
+      font-style: italic;
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+    }
+    .hero-rule { height: 1px; background: var(--beige-dark); margin-bottom: 20px; }
+    .hero-body { font-size: 15px; color: #555; line-height: 1.9; margin-bottom: 12px; }
+    .hero-body-en {
+      font-size: 13px;
+      color: var(--gris-pale);
+      line-height: 1.8;
+      font-style: italic;
+      border-top: 0.5px solid var(--beige-dark);
+      padding-top: 12px;
+    }
+    .hero-sidebar {
+      padding: 20px 16px;
+      background: var(--beige);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Transmisión */
+    .tx-panel { background: var(--beige-mid); border: 1px solid var(--beige-pale); }
+    .tx-head {
+      background: var(--beige);
+      border-bottom: 1px solid var(--beige-dark);
+      padding: 6px 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .tx-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gris-light);
+    }
+    .tx-date { font-family: var(--mono); font-size: 9px; color: var(--gris-pale); }
+    .tx-screen {
+      width: 100%;
+      height: 90px;
+      background: #0a0a12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--beige-dark);
+    }
+    .tx-eclipse {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #888780;
+      opacity: 0.35;
+      border: 1px solid #444;
+    }
+    .tx-cap {
+      padding: 6px 10px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--gris-pale);
+      letter-spacing: 0.06em;
+    }
+
+    /* Obras */
+    .obras-section { padding: 0 0 0; background: var(--blanco); border-top: 1px solid var(--beige-pale); }
+    .obras-head {
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 2px solid var(--azul);
+      background: var(--blanco);
+    }
+    .obras-head-title {
+      font-family: var(--cond);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--azul);
+    }
+    .obras-head-count {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--gris-light);
+      letter-spacing: 0.12em;
+    }
+    .obras-grid-wrap { padding: 0 24px 0; }
+
+    /* Bottom: manifiesto + bot */
+    .bottom-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid var(--beige-pale);
+    }
+    .manifiesto-col {
+      padding: 24px;
+      border-right: 1px solid var(--beige-pale);
+      background: var(--beige-mid);
+    }
+    .mani-pull {
+      font-size: 18px;
+      color: var(--negro);
+      line-height: 1.55;
+      margin-bottom: 14px;
+      border-left: 2px solid var(--azul);
+      padding-left: 14px;
+    }
+    .mani-body { font-size: 14px; color: #555; line-height: 1.9; margin-bottom: 10px; }
+    .mani-body-en {
+      font-size: 13px;
+      color: var(--gris-pale);
+      line-height: 1.8;
+      border-top: 0.5px solid var(--beige-dark);
+      padding-top: 10px;
+      font-style: italic;
+    }
+    .mani-more {
+      display: inline-block;
+      margin-top: 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--azul);
+      text-decoration: none;
+      border-bottom: 1px solid var(--azul);
+      padding-bottom: 1px;
+    }
+    .bot-col {
+      padding: 24px;
+      background: var(--beige-mid);
+    }
+
+    /* Ubicación */
+    .ubicacion-section {
+      border-top: 1px solid var(--beige-pale);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--blanco);
+    }
+    .ubic-map {
+      background: var(--beige);
+      border-right: 1px solid var(--beige-pale);
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .ubic-map iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 180px;
+      border: 1px solid var(--beige-dark);
+      filter: grayscale(30%);
+    }
+    .ubic-info { padding: 24px; }
+    .ubic-name {
+      font-family: var(--cond);
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--negro);
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .ubic-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--beige);
+      border: 1px solid var(--beige-dark);
+      padding: 4px 10px;
+      margin-top: 12px;
+    }
+    .ubic-badge-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gris-light);
+    }
+    .ubic-badge-val {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--azul);
+      font-weight: 700;
+    }
+
+    @media (max-width: 700px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-sidebar { border-top: 1px solid var(--beige-pale); }
+      .bottom-section { grid-template-columns: 1fr; }
+      .manifiesto-col { border-right: none; border-bottom: 1px solid var(--beige-pale); }
+      .ubicacion-section { grid-template-columns: 1fr; }
+      .ubic-map { border-right: none; border-bottom: 1px solid var(--beige-pale); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Topbar ──────────────────────────────────────────────── -->
+<div class="topbar">
+  <span class="topbar-l">EEK · Sistema de Información Institucional · Bogotá, Colombia</span>
+  <span class="topbar-r">
+    <span class="topbar-dot"></span>
+    Transmisión activa · <span id="clock-kennedy">—</span>
+  </span>
+</div>
+
+<!-- ── Nav ────────────────────────────────────────────────── -->
+<nav class="nav">
+  <a class="nav-logo" href="index.html">
+    <span class="nav-logo-eek">EEK</span>
+    <div class="nav-logo-sep"></div>
+    <div class="nav-logo-name">
+      <div>Estación Espacial Kennedy</div>
+      <em>Kennedy Space Station</em>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="obras/index.html">Obras</a>
+    <a href="manifiesto.html">Manifiesto</a>
+    <a href="prensa.html">Prensa</a>
+    <a href="contacto.html">Contacto</a>
+    <span class="nav-lang">ES · EN</span>
+  </div>
+</nav>
+
+<!-- ── Hero ───────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-main">
+    <div class="hero-eyebrow">
+      Kennedy · Bogotá · Colombia · Est. 2020
+      <span class="hero-eyebrow-rule"></span>
+    </div>
+    <h1 class="hero-title">Estación<br>Espacial<br>Kennedy</h1>
+    <div class="hero-title-en">Kennedy Space Station</div>
+    <div class="hero-rule"></div>
+    <p class="hero-body">La Estación Espacial Kennedy (EEK) es un proyecto de investigación-creación ubicado en la localidad de Kennedy, Bogotá, Colombia. Se concibe como una declaración artística que desafía las nociones tradicionales de espacio y tecnología, situándose en el sur global, en una de las áreas marginadas de la ciudad. Esta localidad lleva el nombre del presidente estadounidense John F. Kennedy, quien no solo fue clave en la creación del Centro Espacial Kennedy en Estados Unidos, sino también en la fundación de la localidad de Kennedy en Bogotá, a través de programas de cooperación internacional. Utilizando la ficción y la simulación, este proyecto busca resignificar las nociones de espacio (sideral) y territorio mediante una apropiación simbólica.</p>
+    <p class="hero-body-en">The Kennedy Space Station (EEK) is a research-creation project located in the Kennedy district of Bogotá, Colombia. It is conceived as an artistic declaration that challenges traditional notions of space and technology, positioning itself in the global south, in one of the city's marginalized areas. Using fiction and simulation, this project seeks to redefine the notions of space (outer) and territory through symbolic appropriation.</p>
+  </div>
+  <div class="hero-sidebar">
+    <!-- Panel de telemetría -->
+    <div class="data-panel">
+      <div class="data-panel-head">
+        <span class="dp-title">Datos de misión · Mission data</span>
+        <span class="dp-id">EEK-SIS-01</span>
+      </div>
+      <div class="dp-row"><span class="dp-key">Estado</span><span class="dp-val dp-val-blue">ACTIVA</span></div>
+      <div class="dp-row"><span class="dp-key">Coordenadas</span><span class="dp-val">4°37'N 74°8'W</span></div>
+      <div class="dp-row"><span class="dp-key">ISS · dist. Kennedy</span><span class="dp-val" id="iss-dist">—</span></div>
+      <div class="dp-row"><span class="dp-key">ISS · visibilidad</span><span class="dp-val" id="iss-vis">—</span></div>
+      <div class="dp-row"><span class="dp-key">Cielo sobre Kennedy</span><span class="dp-val dp-val-blue" id="sky-now">—</span></div>
+      <div class="dp-row"><span class="dp-key">Misión activa</span><span class="dp-val dp-val-blue">EEK-007</span></div>
+    </div>
+
+    <!-- Astronautas -->
+    <div class="astro-block">
+      <div class="astro-num" id="astro-count">—</div>
+      <div class="astro-label">personas fuera del planeta<br>en este momento</div>
+      <div class="astro-kennedy"><strong>0</strong> de ellas son del barrio Kennedy, Bogotá</div>
+      <div class="astro-names" id="astro-names">cargando...</div>
+    </div>
+
+    <!-- Última transmisión -->
+    <div class="tx-panel">
+      <div class="tx-head">
+        <span class="tx-label">Última transmisión</span>
+        <span class="tx-date">06.2020 · 00:13 UTC</span>
+      </div>
+      <div class="tx-screen"><div class="tx-eclipse"></div></div>
+      <div class="tx-cap">Eclipse lunar penumbral · Simulación en tiempo real</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Obras ───────────────────────────────────────────────── -->
+<section class="obras-section">
+  <div class="obras-head">
+    <span class="obras-head-title">Archivo de obras · Works archive</span>
+    <span class="obras-head-count">008 registros · 2020–2025</span>
+  </div>
+  <div class="obras-grid-wrap">
+    <div class="obra-grid">
+      <a class="obra-card" href="obras/eek-008.html">
+        <div class="obra-card-num">EEK-008 · 2025</div>
+        <div class="obra-card-img">
+          <img src="img/obras/eek-008.jpg" alt="Un problema de escala" loading="lazy">
+        </div>
+        <div class="obra-card-name">Un problema de escala</div>
+        <div class="obra-card-meta"></div>
+      </a>
+      <a class="obra-card" href="obras/eek-007.html">
+        <div class="obra-card-num">EEK-007 · 2024 · Medellín</div>
+        <div class="obra-card-img">
+          <img src="img/obras/eek-007.jpg" alt="En la tierra, silencio" loading="lazy">
+        </div>
+        <div class="obra-card-name">En la tierra, silencio</div>
+        <div class="obra-card-meta">Instalación · Señales · IA · Parque Explora</div>
+      </a>
+      <a class="obra-card" href="obras/eek-006.html">
+        <div class="obra-card-num">EEK-006 · 2024 · Bogotá</div>
+        <div class="obra-card-img">
+          <img src="img/obras/eek-006.jpg" alt="Los años que no vimos las estrellas" loading="lazy">
+        </div>
+        <div class="obra-card-name">Los años que no vimos las estrellas</div>
+        <div class="obra-card-meta">Visualización de datos · Polaris · Cefeida</div>
+      </a>
+      <a class="obra-card" href="obras/eek-005.html">
+        <div class="obra-card-num">EEK-005 · 2022 · Bogotá</div>
+        <div class="obra-card-img">
+          <img src="img/obras/eek-005.jpg" alt="Eclipse lunar + Diego Serrano" loading="lazy">
+        </div>
+        <div class="obra-card-name">Eclipse lunar + Diego Serrano</div>
+        <div class="obra-card-meta">Video monocanal · Exploración sonora</div>
+      </a>
+      <a class="obra-card" href="obras/eek-004.html">
+        <div class="obra-card-num">EEK-004 · 2022 · Toronto</div>
+        <div class="obra-card-img">
+          <img src="img/obras/eek-004.jpg" alt="Simulación Rocas Lunares" loading="lazy">
+        </div>
+        <div class="obra-card-name">Simulación Rocas Lunares</div>
+        <div class="obra-card-meta">IA · Fotogrametría · 3D · DGP Lab</div>
+      </a>
+      <a class="obra-card" href="obras/eek-003.html">
+        <div class="obra-card-num">EEK-003 · 2020 · Bogotá</div>
+        <div class="obra-card-img">
+          <img src="img/obras/eek-003.jpg" alt="Fanzine" loading="lazy">
+        </div>
+        <div class="obra-card-name">Fanzine</div>
+        <div class="obra-card-meta">Publicación · Textos del confinamiento</div>
+      </a>
+      <a class="obra-card" href="obras/eek-002.html">
+        <div class="obra-card-num">EEK-002 · 2020 · Bogotá</div>
+        <div class="obra-card-img">
+          <img src="img/obras/eek-002.jpg" alt="Cinco veces la misma piedra" loading="lazy">
+        </div>
+        <div class="obra-card-name">Cinco veces la misma piedra</div>
+        <div class="obra-card-meta">Fotografía digital · Archivo NASA</div>
+      </a>
+      <a class="obra-card" href="obras/eek-001.html">
+        <div class="obra-card-num">EEK-001 · 2020 · Bogotá</div>
+        <div class="obra-card-img">
+          <img src="img/obras/eek-001.jpg" alt="Eclipse penumbral lunar" loading="lazy">
+        </div>
+        <div class="obra-card-name">Eclipse penumbral lunar</div>
+        <div class="obra-card-meta">Video · YouTube Live · Diseño sonoro EEK</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Manifiesto + Bot ────────────────────────────────────── -->
+<section class="bottom-section">
+  <div class="manifiesto-col">
+    <div class="sec-label">Origen · Origin</div>
+    <p class="mani-body">La Estación Espacial Kennedy (EEK) es un proyecto que comenzó durante la cuarentena de 2020. Está ubicado en Kennedy, Bogotá, Colombia. Esta zona hace parte de la periferia de la ciudad y ha sido marginada debido a su alta densidad poblacional y problemas de violencia. En 2020, Kennedy fue frecuentemente aislado a causa del coronavirus. Fue encerrado como si un domo rodeara la zona: era imposible salir porque el perímetro estaba custodiado por soldados del ejército y policías. Durante esos días, ocurrió un eclipse, pero debido a la ubicación geográfica de Colombia fue imposible verlo. Por esa razón, la Estación Espacial Kennedy (que lleva el mismo nombre que el Centro Espacial en Estados Unidos) fue creada y utilizada para transmitir una simulación del eclipse por YouTube a las personas encerradas en la zona. Fue una declaración política y artística de apropiación espacial y tecnológica a través de herramientas ficcionales.</p>
+    <p class="mani-body-en">Kennedy Space Station (EEK for its acronym in Spanish) is a project that began during the quarantine in 2020. It is located in Kennedy, Bogotá, Colombia. This area is part of the outskirts of the city and it has been marginalized due to its high population and violence issues. In 2020, Kennedy was often locked up because of the coronavirus. It was isolated as if there was a dome surrounding the area: it was impossible to leave because the perimeter was guarded by army soldiers and police officers. During those days, an eclipse happened but due to Colombia's location it was impossible to see it. For that reason the Kennedy Space Station (which bears the same name as the Space Center in the US) was created and used to stream a simulation of the Eclipse on YouTube to the people who were locked up in the area. It was a political and artistic statement of spatial and technological appropriation through fictional tools.</p>
+    <a class="mani-more" href="manifiesto.html">Leer más →</a>
+  </div>
+  <div class="bot-col">
+    <div class="sec-label">@BotMedidas · Transmisiones</div>
+    <div class="bot-tweet">
+      <div class="bot-handle">@BotMedidas · Bot de Medidas · Estación Espacial Kennedy</div>
+      <div class="bot-text" id="bot-out">—</div>
+    </div>
+    <div class="bot-controls">
+      <button class="btn btn-primary" id="btn-gen">↗ Nueva medida</button>
+      <button class="btn" id="btn-auto">Auto: OFF</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── Ubicación ───────────────────────────────────────────── -->
+<section class="ubicacion-section">
+  <div class="ubic-map">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.8!2d-74.1493764!3d4.6284876!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f998f366d970f%3A0xe6f28ed2c80f5688!2sESTACI%C3%93N%20ESPACIAL%20KENNEDY%20(EEK)!5e0!3m2!1ses!2sco!4v1"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Ubicación Estación Espacial Kennedy">
+    </iframe>
+  </div>
+  <div class="ubic-info">
+    <div class="sec-label">Ubicación · Location</div>
+    <div class="ubic-name">ESTACIÓN ESPACIAL<br>KENNEDY (EEK)</div>
+    <div class="dp-row" style="padding:6px 0;border-bottom:0.5px solid var(--beige)">
+      <span class="dp-key">Dirección</span>
+      <span class="dp-val">Ac. 3 #78f-24, Bogotá</span>
+    </div>
+    <div class="dp-row" style="padding:6px 0;border-bottom:0.5px solid var(--beige)">
+      <span class="dp-key">Barrio</span>
+      <span class="dp-val">Kennedy · Bogotá · Colombia</span>
+    </div>
+    <div class="dp-row" style="padding:6px 0;border-bottom:0.5px solid var(--beige)">
+      <span class="dp-key">Coordenadas</span>
+      <span class="dp-val">4°37'42"N 74°8'48"W</span>
+    </div>
+    <div class="dp-row" style="padding:6px 0;border-bottom:0.5px solid var(--beige)">
+      <span class="dp-key">Horario</span>
+      <span class="dp-val dp-val-blue">Abierta 24 horas · 7 días</span>
+    </div>
+    <div class="dp-row" style="padding:6px 0">
+      <span class="dp-key">Reseñas Google</span>
+      <span class="dp-val">⭐ 5.0 · 2 reseñas</span>
+    </div>
+    <div class="ubic-badge">
+      <span class="ubic-badge-label">Clasificada por Google como</span>
+      <span class="ubic-badge-val">research_institute</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ──────────────────────────────────────────────── -->
+<footer class="footer">
+  <span class="footer-l">EEK · Estación Espacial Kennedy · Bogotá, Colombia · 2020–</span>
+  <span class="footer-r">4°37'44"N · 74°8'49"W · Kennedy, Bogotá, Colombia</span>
+</footer>
+
+<script src="js/eek.js"></script>
+<script>
+  EEK.initAPIs();
+  EEK.initBot('bot-out', 'btn-gen', 'btn-auto');
+  // Cuando tengas los tweets reales:
+  // EEK.cargarTweetsReales('js/tweets.json');
+</script>
+</body>
+</html>
