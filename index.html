@@ -61,6 +61,49 @@
       font-style: italic;
       border-top: 0.5px solid var(--beige-dark);
       padding-top: 12px;
+      margin-bottom: 20px;
+    }
+
+    /* Archivo histórico */
+    .archivo-label {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gris-pale);
+      margin-bottom: 10px;
+      padding-top: 16px;
+      border-top: 1px solid var(--beige-dark);
+    }
+    .archivo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+    .archivo-item {
+      border: 1px solid var(--beige-dark);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+    .archivo-item img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      filter: grayscale(40%);
+      transition: filter 0.2s;
+      display: block;
+    }
+    .archivo-item:hover img { filter: grayscale(0%); }
+    .archivo-cap {
+      font-family: var(--mono);
+      font-size: 7px;
+      color: var(--gris-light);
+      letter-spacing: 0.08em;
+      padding: 4px 6px;
+      background: var(--beige-mid);
+      border-top: 1px solid var(--beige-dark);
+      line-height: 1.4;
     }
     .hero-sidebar {
       padding: 20px 16px;
@@ -96,13 +139,22 @@
       justify-content: center;
       border-bottom: 1px solid var(--beige-dark);
     }
-    .tx-eclipse {
-      width: 44px;
-      height: 44px;
+    .tx-screen-link {
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .tx-screen-link:hover { opacity: 0.85; }
+    .tx-play {
+      width: 36px; height: 36px;
       border-radius: 50%;
-      background: #888780;
-      opacity: 0.35;
-      border: 1px solid #444;
+      background: var(--rojo);
+      color: var(--blanco);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      padding-left: 2px;
     }
     .tx-cap {
       padding: 6px 10px;
@@ -111,6 +163,24 @@
       color: var(--gris-pale);
       letter-spacing: 0.06em;
     }
+    .tx-socials {
+      display: flex;
+      gap: 4px;
+      padding: 0 10px 6px;
+    }
+    .tx-social-link {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--azul);
+      text-decoration: none;
+      padding: 3px 8px;
+      border: 1px solid var(--beige-dark);
+      background: var(--beige);
+      transition: background 0.12s;
+    }
+    .tx-social-link:hover { background: var(--blanco); }
 
     /* Obras */
     .obras-section { padding: 0 0 0; background: var(--blanco); border-top: 1px solid var(--beige-pale); }
@@ -183,6 +253,70 @@
       background: var(--beige-mid);
     }
 
+    /* ── Creadora + Contacto ── */
+    .creator-section {
+      border-top: 1px solid var(--beige-pale);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--blanco);
+    }
+    .creator-col {
+      padding: 24px;
+      border-right: 1px solid var(--beige-pale);
+      background: var(--beige-mid);
+    }
+    .creator-profile {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+    .creator-photo {
+      width: 80px;
+      height: 100px;
+      object-fit: cover;
+      border: 1px solid var(--beige-dark);
+      filter: grayscale(20%);
+    }
+    .creator-name {
+      font-family: var(--cond);
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--negro);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .creator-role {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--azul);
+      letter-spacing: 0.12em;
+    }
+    .creator-bio {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.85;
+      margin-bottom: 14px;
+    }
+    .creator-email {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 6px 0;
+      border-top: 0.5px solid var(--beige-dark);
+    }
+    .creator-email a {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--azul);
+      text-decoration: none;
+    }
+    .creator-email a:hover { text-decoration: underline; }
+    .social-col {
+      padding: 24px;
+      background: var(--beige-mid);
+    }
+
     /* Ubicación */
     .ubicacion-section {
       border-top: 1px solid var(--beige-pale);
@@ -238,13 +372,45 @@
       font-weight: 700;
     }
 
+    /* Footer mejorado */
+    .footer {
+      background: var(--azul);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-socials {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .footer-socials a {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--azul-light);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: color 0.12s;
+    }
+    .footer-socials a:hover { color: var(--blanco); }
+    .footer-email {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--azul-pale);
+      letter-spacing: 0.08em;
+    }
+
     @media (max-width: 700px) {
       .hero { grid-template-columns: 1fr; }
       .hero-sidebar { border-top: 1px solid var(--beige-pale); }
       .bottom-section { grid-template-columns: 1fr; }
       .manifiesto-col { border-right: none; border-bottom: 1px solid var(--beige-pale); }
+      .creator-section { grid-template-columns: 1fr; }
+      .creator-col { border-right: none; border-bottom: 1px solid var(--beige-pale); }
       .ubicacion-section { grid-template-columns: 1fr; }
       .ubic-map { border-right: none; border-bottom: 1px solid var(--beige-pale); }
+      .footer { flex-direction: column; gap: 8px; text-align: center; }
     }
   </style>
 </head>
@@ -290,6 +456,27 @@
     <div class="hero-rule"></div>
     <p class="hero-body">La Estación Espacial Kennedy (EEK) es un proyecto de investigación-creación ubicado en la localidad de Kennedy, Bogotá, Colombia. Se concibe como una declaración artística que desafía las nociones tradicionales de espacio y tecnología, situándose en el sur global, en una de las áreas marginadas de la ciudad. Esta localidad lleva el nombre del presidente estadounidense John F. Kennedy, quien no solo fue clave en la creación del Centro Espacial Kennedy en Estados Unidos, sino también en la fundación de la localidad de Kennedy en Bogotá, a través de programas de cooperación internacional. Utilizando la ficción y la simulación, este proyecto busca resignificar las nociones de espacio (sideral) y territorio mediante una apropiación simbólica.</p>
     <p class="hero-body-en">The Kennedy Space Station (EEK) is a research-creation project located in the Kennedy district of Bogotá, Colombia. It is conceived as an artistic declaration that challenges traditional notions of space and technology, positioning itself in the global south, in one of the city's marginalized areas. Using fiction and simulation, this project seeks to redefine the notions of space (outer) and territory through symbolic appropriation.</p>
+
+    <!-- Archivo histórico -->
+    <div class="archivo-label">Archivo histórico · Historical archive</div>
+    <div class="archivo-grid">
+      <div class="archivo-item" title="Vista aérea del Aeropuerto de Techo, actual localidad de Kennedy · Bogotá, década de 1960">
+        <img src="img/kennedy/kennedy-aerodromo-1961.jpg" alt="Aeropuerto de Techo · Kennedy · Bogotá · 1961" loading="lazy">
+        <div class="archivo-cap">Aeropuerto de Techo · Kennedy, Bogotá · c. 1961</div>
+      </div>
+      <div class="archivo-item" title="John F. Kennedy y Jackie Kennedy durante la visita presidencial a Bogotá · 1961">
+        <img src="img/kennedy/jfk-visita-colombia-1961.jpg" alt="JFK visita Colombia · Bogotá · 1961" loading="lazy">
+        <div class="archivo-cap">JFK visita Colombia · Bogotá · 1961</div>
+      </div>
+      <div class="archivo-item" title="Placa fundacional de la Alianza para el Progreso en el barrio Kennedy · Bogotá · 1961">
+        <img src="img/kennedy/jfk-fundacion-barrio-1961.jpg" alt="Placa fundacional Alianza para el Progreso · Kennedy · 1961" loading="lazy">
+        <div class="archivo-cap">Fundación del barrio Kennedy · Alianza para el Progreso · 1961</div>
+      </div>
+      <div class="archivo-item" title="John F. Kennedy en el Kennedy Space Center · Cabo Cañaveral, Florida · 1962">
+        <img src="img/kennedy/jfk-centro-espacial-1962.jpg" alt="JFK en el Centro Espacial Kennedy · Florida · 1962" loading="lazy">
+        <div class="archivo-cap">JFK en el Centro Espacial Kennedy · Florida · 1962</div>
+      </div>
+    </div>
   </div>
   <div class="hero-sidebar">
     <!-- Panel de telemetría -->
@@ -303,7 +490,7 @@
       <div class="dp-row"><span class="dp-key">ISS · dist. Kennedy</span><span class="dp-val" id="iss-dist">—</span></div>
       <div class="dp-row"><span class="dp-key">ISS · visibilidad</span><span class="dp-val" id="iss-vis">—</span></div>
       <div class="dp-row"><span class="dp-key">Cielo sobre Kennedy</span><span class="dp-val dp-val-blue" id="sky-now">—</span></div>
-      <div class="dp-row"><span class="dp-key">Misión activa</span><span class="dp-val dp-val-blue">EEK-007</span></div>
+      <div class="dp-row"><span class="dp-key">Misión activa</span><span class="dp-val dp-val-blue">EEK-008</span></div>
     </div>
 
     <!-- Astronautas -->
@@ -314,14 +501,20 @@
       <div class="astro-names" id="astro-names">cargando...</div>
     </div>
 
-    <!-- Última transmisión -->
+    <!-- Última transmisión ── ahora con link a YouTube -->
     <div class="tx-panel">
       <div class="tx-head">
-        <span class="tx-label">Última transmisión</span>
-        <span class="tx-date">06.2020 · 00:13 UTC</span>
+        <span class="tx-label">Transmisiones</span>
+        <span class="tx-date">YouTube Live</span>
       </div>
-      <div class="tx-screen"><div class="tx-eclipse"></div></div>
-      <div class="tx-cap">Eclipse lunar penumbral · Simulación en tiempo real</div>
+      <a class="tx-screen tx-screen-link" href="https://www.youtube.com/@estacionespacialkennedy/streams" target="_blank" rel="noopener" title="Ver transmisiones en vivo">
+        <div class="tx-play">▶</div>
+      </a>
+      <div class="tx-cap">En vivo · @estacionespacialkennedy</div>
+      <div class="tx-socials">
+        <a class="tx-social-link" href="https://www.youtube.com/@estacionespacialkennedy" target="_blank" rel="noopener">YouTube</a>
+        <a class="tx-social-link" href="https://www.instagram.com/estacion_kennedy/" target="_blank" rel="noopener">Instagram</a>
+      </div>
     </div>
   </div>
 </section>
@@ -423,6 +616,50 @@
   </div>
 </section>
 
+<!-- ── Creadora + Contacto ─────────────────────────────────── -->
+<section class="creator-section">
+  <div class="creator-col">
+    <div class="sec-label">Creadora · Creator</div>
+    <div class="creator-profile">
+      <img class="creator-photo" src="img/ana-guzman.jpg" alt="Ana Guzmán">
+      <div class="creator-info">
+        <div class="creator-name">Ana Guzmán</div>
+        <div class="creator-role">Directora · Estación Espacial Kennedy</div>
+      </div>
+    </div>
+    <p class="creator-bio">Diseñadora de Imagen y Sonido por la Universidad de Buenos Aires (UBA) y especialista en Inteligencia Artificial por la Facultad de Ingeniería de la misma universidad. Lidera el MediaLab de la Cinemateca de Bogotá y es la creadora de la Estación Espacial Kennedy.</p>
+    <div class="creator-email">
+      <span class="dp-key">Contacto</span>
+      <a href="mailto:estacionespacialkennedy@gmail.com">estacionespacialkennedy@gmail.com</a>
+    </div>
+  </div>
+  <div class="social-col">
+    <div class="sec-label">Redes · Links</div>
+    <div class="links-block">
+      <a class="link-item" href="https://www.youtube.com/@estacionespacialkennedy" target="_blank" rel="noopener">
+        <span class="link-item-type">YOUTUBE</span>
+        <span class="link-item-label">@estacionespacialkennedy</span>
+        <span class="link-item-arrow">↗</span>
+      </a>
+      <a class="link-item" href="https://www.instagram.com/estacion_kennedy/" target="_blank" rel="noopener">
+        <span class="link-item-type">INSTAGRAM</span>
+        <span class="link-item-label">@estacion_kennedy</span>
+        <span class="link-item-arrow">↗</span>
+      </a>
+      <a class="link-item" href="https://www.maquinasestadosinfinitos.net/" target="_blank" rel="noopener">
+        <span class="link-item-type">OTROS PROYECTOS</span>
+        <span class="link-item-label">Máquinas Estados Infinitos</span>
+        <span class="link-item-arrow">↗</span>
+      </a>
+      <a class="link-item" href="mailto:estacionespacialkennedy@gmail.com">
+        <span class="link-item-type">EMAIL</span>
+        <span class="link-item-label">estacionespacialkennedy@gmail.com</span>
+        <span class="link-item-arrow">✉</span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- ── Ubicación ───────────────────────────────────────────── -->
 <section class="ubicacion-section">
   <div class="ubic-map">
@@ -467,7 +704,12 @@
 <!-- ── Footer ──────────────────────────────────────────────── -->
 <footer class="footer">
   <span class="footer-l">EEK · Estación Espacial Kennedy · Bogotá, Colombia · 2020–</span>
-  <span class="footer-r">4°37'44"N · 74°8'49"W · Kennedy, Bogotá, Colombia</span>
+  <div class="footer-socials">
+    <a href="https://www.youtube.com/@estacionespacialkennedy" target="_blank" rel="noopener">YOUTUBE</a>
+    <a href="https://www.instagram.com/estacion_kennedy/" target="_blank" rel="noopener">INSTAGRAM</a>
+    <a href="https://www.maquinasestadosinfinitos.net/" target="_blank" rel="noopener">MÁQUINAS ESTADOS INFINITOS</a>
+    <span class="footer-email">estacionespacialkennedy@gmail.com</span>
+  </div>
 </footer>
 
 <script src="js/eek.js"></script>

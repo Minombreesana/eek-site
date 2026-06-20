@@ -39,6 +39,7 @@ const EEK = {
   async loadISS() {
     try {
       const r = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
       const d = await r.json();
       this.set('iss-lat',  parseFloat(d.latitude).toFixed(4) + '°');
       this.set('iss-lon',  parseFloat(d.longitude).toFixed(4) + '°');
@@ -48,7 +49,10 @@ const EEK = {
       const dist = this.distKm(this.lat, this.lon, d.latitude, d.longitude);
       this.set('iss-dist', dist.toLocaleString() + ' km');
     } catch (e) {
+      console.error('[EEK] ISS fetch error:', e);
       this.set('iss-lat', 'Sin señal');
+      this.set('iss-dist', '—');
+      this.set('iss-vis', '—');
     }
   },
 
@@ -58,6 +62,7 @@ const EEK = {
       const r = await fetch(
         `https://api.sunrise-sunset.org/json?lat=${this.lat}&lng=${this.lon}&formatted=0`
       );
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
       const d = await r.json();
       if (d.status === 'OK') {
         this.set('sky-rise',    this.fmtBog(d.results.sunrise));
@@ -72,26 +77,48 @@ const EEK = {
         this.set('sky-now', estado);
       }
     } catch (e) {
+      console.error('[EEK] Sky fetch error:', e);
       this.set('sky-now', '—');
     }
   },
 
   /* ── Astronautas en órbita ── */
   async loadAstros() {
-    const urls = [
-      'https://api.open-notify.org/astros.json',
-      'https://corsproxy.io/?https://api.open-notify.org/astros.json',
+    // Encolar múltiples estrategias: directa primero, proxies como fallback
+    const strategies = [
+      // 1. Intentar directa (puede funcionar en HTTP o en entornos sin mixed-content)
+      { url: 'http://api.open-notify.org/astros.json', label: 'direct' },
+      // 2. Fallback via allorigins.win (proxy CORS confiable)
+      { url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent('http://api.open-notify.org/astros.json'), label: 'allorigins' },
+      // 3. Fallback alternativo via thingproxy.freeboard.io
+      { url: 'https://thingproxy.freeboard.io/fetch/http://api.open-notify.org/astros.json', label: 'thingproxy' },
     ];
-    for (const url of urls) {
+
+    for (const strat of strategies) {
       try {
-        const r = await fetch(url);
+        const r = await fetch(strat.url);
+        if (!r.ok) {
+          console.warn(`[EEK] Astro ${strat.label}: HTTP ${r.status}`);
+          continue;
+        }
         const d = await r.json();
+        if (typeof d.number !== 'number' || !Array.isArray(d.people)) {
+          console.warn(`[EEK] Astro ${strat.label}: formato inesperado`, d);
+          continue;
+        }
         this.set('astro-count', d.number);
-        const nombres = d.people.map(p => p.name).join(' · ');
+        const nombres = d.people.map(p => `${p.name} (${p.craft})`).join(' · ');
         this.set('astro-names', nombres);
+        console.log(`[EEK] Astronautas OK via ${strat.label}: ${d.number} personas`);
         return;
-      } catch (e) { continue; }
+      } catch (e) {
+        console.warn(`[EEK] Astro ${strat.label} falló:`, e.message);
+        continue;
+      }
     }
+
+    // Ninguna estrategia funcionó
+    console.error('[EEK] Todas las fuentes de astronautas fallaron');
     this.set('astro-count', '?');
     this.set('astro-names', 'sin conexión');
   },
@@ -207,10 +234,12 @@ const EEK = {
   async cargarTweetsReales(url) {
     try {
       const r = await fetch(url);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
       const d = await r.json();
       this.botData.reales = d;
+      console.log(`[EEK] ${d.length} tweets reales cargados`);
     } catch (e) {
-      console.log('Tweets reales no cargados, usando generador.');
+      console.log('[EEK] Tweets reales no cargados, usando generador:', e.message);
     }
   },
 };
