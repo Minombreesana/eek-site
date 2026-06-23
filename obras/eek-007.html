@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EEK-007 · En la tierra, silencio · Estación Espacial Kennedy</title>
+  <meta name="description" content="En la tierra, silencio — Enviar cosas al cielo esperando respuesta · Medellín 2024 · Parque de los Deseos · EEK">
+  <link rel="stylesheet" href="../css/eek.css">
+  <style>
+    .obra-layout { display: grid; grid-template-columns: 1fr 264px; }
+    .obra-main { border-right: 1px solid var(--beige-pale); }
+    .obra-aside {
+      padding: 16px;
+      background: var(--beige);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .obra-header {
+      background: var(--beige-mid);
+      border-bottom: 1px solid var(--beige-pale);
+      padding: 24px 24px 0;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 20px;
+    }
+    .obra-id-vert {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--beige-pale);
+      padding-top: 4px;
+    }
+    .obra-num {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      color: var(--azul);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .obra-title {
+      font-family: var(--cond);
+      font-size: 46px;
+      font-weight: 900;
+      line-height: 0.9;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .obra-title-en {
+      font-size: 10px;
+      color: var(--gris-light);
+      font-style: italic;
+      letter-spacing: 0.06em;
+    }
+    .img-main-wrap {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #0a0a12;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .img-main-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .img-thumbs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+    .img-thumb {
+      aspect-ratio: 4/3;
+      background: var(--beige);
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid var(--beige-dark);
+    }
+    .img-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: opacity 0.15s;
+    }
+    .img-thumb:hover img { opacity: 0.85; }
+    .img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--gris-pale);
+      text-align: center;
+      padding: 12px;
+    }
+
+    /* Bloque conceptual */
+    .conceptual-block {
+      background: var(--blanco);
+      border: 2px solid var(--negro);
+      padding: 28px 24px;
+      margin: 16px 0;
+      position: relative;
+    }
+    .conceptual-label {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rojo);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .conceptual-title {
+      font-family: var(--cond);
+      font-size: 28px;
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      color: var(--negro);
+    }
+    .conceptual-body {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.95;
+      margin-bottom: 12px;
+    }
+    .conceptual-quote {
+      font-size: 16px;
+      color: var(--negro);
+      font-style: italic;
+      border-left: 3px solid var(--azul);
+      padding-left: 16px;
+      margin: 18px 0;
+      line-height: 1.6;
+    }
+    .conceptual-allsky {
+      width: 100%;
+      max-width: 320px;
+      margin: 14px auto;
+      display: block;
+    }
+
+    .code-block {
+      background: #0a0a12;
+      border: 1px solid #222;
+      padding: 14px;
+      margin: 10px 0;
+      overflow-x: auto;
+    }
+    .code-label {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--rojo);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .code-content {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: #ccc;
+      line-height: 1.7;
+      white-space: pre;
+    }
+    .code-comment { color: #666; }
+    .code-keyword { color: var(--azul-light); }
+    .code-string { color: #e8e4d9; }
+    .code-func { color: var(--azul-pale); }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--beige);
+      border: 1px solid var(--beige-dark);
+      padding: 4px 10px;
+      margin-top: 8px;
+    }
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--rojo);
+      animation: blink 1.5s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+    .status-text {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--gris);
+      letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 700px) {
+      .obra-layout { grid-template-columns: 1fr; }
+      .obra-aside { border-top: 1px solid var(--beige-pale); }
+      .obra-header { grid-template-columns: 1fr; }
+      .obra-id-vert { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-l">EEK · Archivo de obras · Registro EEK-007</span>
+  <span class="topbar-r">
+    <span class="topbar-dot"></span>
+    Estación Espacial Kennedy · Bogotá
+  </span>
+</div>
+
+<nav class="nav">
+  <a class="nav-logo" href="../index.html">
+    <span class="nav-logo-eek">EEK</span>
+    <div class="nav-logo-sep"></div>
+    <div class="nav-logo-name">
+      <div>Estación Espacial Kennedy</div>
+      <em>Kennedy Space Station</em>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="active">Obras</a>
+    <a href="../manifiesto.html">Manifiesto</a>
+    <a href="../prensa.html">Prensa</a>
+    <a href="../contacto.html">Contacto</a>
+    <span class="nav-lang">ES · EN</span>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="../index.html">Inicio</a>
+  <span class="breadcrumb-sep">·</span>
+  <a href="index.html">Archivo de obras</a>
+  <span class="breadcrumb-sep">·</span>
+  EEK-007 · En la tierra, silencio
+</div>
+
+<!-- ── Header de la obra ────────────────────────────────── -->
+<div class="obra-header">
+  <div class="obra-id-vert">Registro de obra · EEK</div>
+  <div>
+    <div class="obra-num">EEK-007 · Instalación · Señales · IA · Medellín · 2024</div>
+    <h1 class="obra-title">En la tierra,<br>silencio</h1>
+    <div class="obra-title-en">On Earth, Silence</div>
+    <div class="ficha-strip">
+      <div class="ficha-cell"><div class="ficha-key">Año</div><div class="ficha-val ficha-val-blue">2024</div></div>
+      <div class="ficha-cell"><div class="ficha-key">Lugar</div><div class="ficha-val">Medellín · Colombia</div></div>
+      <div class="ficha-cell"><div class="ficha-key">Primera activación</div><div class="ficha-val dp-val-blue">Parque de los Deseos · Mensajes a distancia</div></div>
+      <div class="ficha-cell"><div class="ficha-key">Estado actual</div><div class="ficha-val">Estructura de piedra · Pulsos activos</div></div>
+      <div class="ficha-cell"><div class="ficha-key">Tipo</div><div class="ficha-val">Instalación</div></div>
+      <div class="ficha-cell"><div class="ficha-key">Técnica</div><div class="ficha-val">IA · Señales · Arduino · Láser</div></div>
+      <div class="ficha-cell"><div class="ficha-key">Entrada</div><div class="ficha-val">64 deseos generados por IA</div></div>
+      <div class="ficha-cell"><div class="ficha-key">Proceso</div><div class="ficha-val">SHA-256 → Binario → Luz + Sonido</div></div>
+      <div class="ficha-cell"><div class="ficha-key">Hardware</div><div class="ficha-val">3× Arduino · OLED · Láser · Zumbador · LDR · RPi</div></div>
+      <div class="ficha-cell"><div class="ficha-key">Registro</div><div class="ficha-val">EEK-007</div></div>
+      <div class="ficha-cell"><div class="ficha-key">Serie</div><div class="ficha-val">2020–2025</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Cuerpo ───────────────────────────────────────────── -->
+<div class="obra-layout">
+  <div class="obra-main">
+
+    <!-- Imagen principal -->
+    <div class="sec sec-white">
+      <div class="sec-label">Documentación visual · Visual documentation</div>
+      <div class="img-main-wrap">
+        <img src="../img/obras/eek-007-main.jpg" alt="En la tierra, silencio — instalación · Medellín 2024">
+      </div>
+      <p style="font-family:var(--mono);font-size:8px;color:var(--gris-pale);letter-spacing:.06em;margin-bottom:14px">
+        Fig. 01 · Instalación · Parque de los Deseos · Medellín · 2024
+      </p>
+      <div class="img-thumbs">
+        <div class="img-thumb"><img src="../img/obras/eek-007-b.jpg" alt="Circuito electrónico"></div>
+        <div class="img-thumb"><img src="../img/obras/eek-007-c.jpg" alt="Pantalla OLED con patrones"></div>
+        <div class="img-thumb"><img src="../img/obras/eek-007-d.jpg" alt="Módulo láser"></div>
+      </div>
+      <p style="font-family:var(--mono);font-size:7px;color:var(--gris-pale);letter-spacing:.05em">
+        Fig. 02–04 · Circuito · Pantalla OLED · Láser · EEK-007 · 2024
+      </p>
+    </div>
+
+    <!-- Bloque conceptual: Enviar cosas al cielo -->
+    <div class="sec sec-cream">
+      <div class="conceptual-block">
+        <div class="conceptual-label">Concepto · Concept</div>
+        <div class="conceptual-title">Enviar cosas al cielo esperando respuesta</div>
+
+        <p class="conceptual-body">Alguna vez leí o escuché que muchas veces confundíamos el brillo de los satélites con estrellas fugaces. Pensé en todos los deseos pedidos que se estrellaron contra el silencio, incluso los míos: <em>"Le estuve pidiendo deseos a los satélites, con razón no volviste"</em>.</p>
+
+        <p class="conceptual-body">Nuestra relación con el vacío infinito siempre ha sido la de enviar cosas: discos, satélites, sondas, rovers, telescopios, señales de radio, humanos, deseos… Y la respuesta a muchas de esas cosas que hemos lanzado en busca de respuestas ha sido el <strong>SILENCIO</strong> del espacio sideral.</p>
+
+        <div class="conceptual-quote">Quizás son nuestros intentos de poder ser y existir afuera de este mundo.</div>
+
+        <img class="conceptual-allsky" src="../img/obras/eek-007-allsky.jpg" alt="Mirando hacia arriba buscamos algo que resuleva nuestro deseo">
+        <p style="font-family:var(--mono);font-size:7px;color:var(--gris-pale);letter-spacing:.05em;text-align:center">
+          Mirando hacia arriba buscamos algo que resuleva nuestro deseo
+        </p>
+      </div>
+
+      <!-- Descripción completa de la obra -->
+      <div class="sec-label">Sobre la obra · About the work</div>
+
+      <p style="font-size:15px;color:#444;line-height:1.95;margin-bottom:14px">
+        <strong>En la tierra, silencio</strong> surge de una reflexión sobre nuestra relación con el vacío cósmico: enviar cosas al cielo esperando respuesta. Durante siglos hemos lanzado discos, sondas, satélites, señales de radio y deseos, que en su mayoría se pierden en el silencio del espacio sideral. La obra se inscribe en esa tradición de intentos por existir más allá de este mundo, transformando <strong>64 deseos generados por una inteligencia artificial</strong> en un hash binario que se transmite mediante el parpadeo de un láser y el sonido intermitente de un zumbador.
+      </p>
+
+      <p style="font-size:14px;color:#555;line-height:1.9;margin-bottom:14px">
+        El sistema compacto de microcontroladores y pantallas OLED convierte los deseos en un lenguaje mínimo de luz y sonido, como destellos frágiles y efímeros. Su primera activación tuvo lugar en <strong>Medellín, sobre la escultura "Mensajes a distancia" en el Parque de los Deseos</strong>. Actualmente, el dispositivo se encuentra sobre una estructura de piedra, enviando pulsos de deseo al vacío y recordándonos la fragilidad de nuestra voz cuando intenta atravesar el silencio del universo.
+      </p>
+
+      <p style="font-size:13px;color:#666;line-height:1.8;margin-bottom:14px;font-style:italic">
+        Esta obra es resultado de una residencia artística en el <strong>Exploratorio del Parque Explora</strong> realizada en noviembre de 2024.
+      </p>
+
+      <p style="font-size:10px;color:var(--gris-pale);line-height:1.8;font-style:italic;border-top:.5px solid var(--beige-dark);padding-top:14px">
+        ON EARTH, SILENCE is a research-creation-speculation project that, through the appropriation not only of the scientific discourse surrounding space knowledge but also of our own naivety, proposes a system for sending wishes transformed into signals. 64 wishes generated by artificial intelligence are transformed into a binary hash transmitted through the flickering of a laser and the intermittent sound of a buzzer. Its first activation took place in Medellín, on the sculpture "Mensajes a distancia" at the Parque de los Deseos.
+      </p>
+
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        <span class="status-text">DISPOSITIVO ACTIVO — Enviando pulsos al vacío</span>
+      </div>
+    </div>
+
+    <!-- Proceso técnico -->
+    <div class="sec sec-white">
+      <div class="sec-label">
+        Documentación técnica
+        <span class="sec-label-sub">código fuente · hardware · sistema</span>
+      </div>
+
+      <!-- Sistema -->
+      <div class="proceso-item">
+        <div class="proceso-title">
+          Sistema de señales
+          <span class="pi-tag tag-tecnica">64 deseos → SHA-256 → Binario → Luz + Sonido</span>
+        </div>
+        <p class="proceso-body">El sistema toma 64 deseos generados por inteligencia artificial. Cada deseo se procesa mediante la función hash SHA-256, produciendo una cadena hexadecimal única de 64 caracteres. Esta cadena se convierte en un patrón binario de 128 píxeles que se renderiza en tres pantallas OLED de 128×64, cada una con un comportamiento diferenciado.</p>
+      </div>
+
+      <!-- Python -->
+      <div class="proceso-item">
+        <div class="proceso-title">
+          Generador de bitmap · Python
+          <span class="pi-tag tag-herramienta">Python</span>
+          <span class="pi-tag tag-herramienta">SHA-256</span>
+          <span class="pi-tag tag-herramienta">PIL</span>
+        </div>
+        <p class="proceso-body">Script Python que genera el archivo <code>bitmap_output.h</code> compatible con Arduino. Contiene una matriz de 64×128 valores binarios (0s y 1s). También genera una representación en consola con los deseos, sus hashes y patrones visuales.</p>
+        <a class="proceso-link" href="https://github.com/Minombreesana/eek-007-tecnico" target="_blank" rel="noopener">
+          ↗ Repositorio técnico completo
+        </a>
+      </div>
+
+      <!-- Arduino 1 -->
+      <div class="proceso-item">
+        <div class="proceso-title">
+          Arduino 1 · Pantalla OLED + Zumbador
+          <span class="pi-tag tag-tecnica">U8G2</span>
+          <span class="pi-tag tag-herramienta">Buzzer pin 3</span>
+        </div>
+        <p class="proceso-body">Dibuja el bitmap punto por punto. Cada pixel encendido (1) activa el zumbador. Delay de 700ms entre píxeles — ritmo lento y meditativo.</p>
+        <div class="code-block">
+          <div class="code-label">zumbador.ino</div>
+          <div class="code-content"><span class="code-keyword">for</span> (<span class="code-keyword">int</span> y = 0; y < 64; y++) {
+  <span class="code-keyword">for</span> (<span class="code-keyword">int</span> x = 0; x < 128; x++) {
+    <span class="code-keyword">if</span> (myBitmap[y][x]) {
+      display.drawPixel(x, y);
+      digitalWrite(BUZZER_PIN, HIGH);
+    } <span class="code-keyword">else</span> {
+      digitalWrite(BUZZER_PIN, LOW);
+    }
+    display.sendBuffer();
+    delay(700);
+  }
+}</div>
+        </div>
+      </div>
+
+      <!-- Arduino 2 -->
+      <div class="proceso-item">
+        <div class="proceso-title">
+          Arduino 2 · Pantalla central (todo completo)
+          <span class="pi-tag tag-tecnica">U8G2</span>
+        </div>
+        <p class="proceso-body">Muestra el bitmap completo de una vez — 64 deseos codificados simultáneamente como un campo visual denso de patrones abstractos.</p>
+        <div class="code-block">
+          <div class="code-label">sketch_nov11e.ino</div>
+          <div class="code-content"><span class="code-keyword">for</span> (<span class="code-keyword">int</span> y = 0; y < 64; y++) {
+  <span class="code-keyword">for</span> (<span class="code-keyword">int</span> x = 0; x < 128; x++) {
+    <span class="code-keyword">if</span> (myBitmap[y][x]) {
+      display.drawPixel(x, y);
+    }
+  }
+}
+display.sendBuffer();
+delay(2000);</div>
+        </div>
+      </div>
+
+      <!-- Arduino 3 -->
+      <div class="proceso-item">
+        <div class="proceso-title">
+          Arduino 3 · Pantalla OLED + Láser
+          <span class="pi-tag tag-tecnica">U8G2</span>
+          <span class="pi-tag tag-herramienta">Láser pin 3 · LDR A0</span>
+        </div>
+        <p class="proceso-body">Dibuja punto por punto. Cada pixel encendido activa el módulo láser. El sensor LDR lee la luz ambiental y modula el comportamiento del sistema.</p>
+        <div class="code-block">
+          <div class="code-label">sketch_nov21b.ino</div>
+          <div class="code-content"><span class="code-keyword">for</span> (<span class="code-keyword">int</span> y = 0; y < 64; y++) {
+  <span class="code-keyword">for</span> (<span class="code-keyword">int</span> x = 0; x < 128; x++) {
+    <span class="code-keyword">if</span> (myBitmap[y][x]) {
+      display.drawPixel(x, y);
+      digitalWrite(LASER_PIN, HIGH);  <span class="code-comment">// Láser ON</span>
+    } <span class="code-keyword">else</span> {
+      digitalWrite(LASER_PIN, LOW);   <span class="code-comment">// Láser OFF</span>
+    }
+    display.sendBuffer();
+    delay(700);
+  }
+}</div>
+        </div>
+      </div>
+
+      <!-- Raspberry Pi -->
+      <div class="proceso-item">
+        <div class="proceso-title">
+          Raspberry Pi · Terminal de deseos
+          <span class="pi-tag tag-herramienta">Python</span>
+        </div>
+        <p class="proceso-body">Muestra los 64 deseos, sus hashes SHA-256 y la representación visual de cada patrón. El desplazamiento automático permite leer cada deseo junto a su codificación.</p>
+        <div class="code-block">
+          <div class="code-label">deseos_terminal.py</div>
+          <div class="code-content"><span class="code-keyword">for</span> offset <span class="code-keyword">in</span> range(num_fragments):
+  fragment = fragments[offset]
+  hash_line = hashes[offset]
+  print(f<span class="code-string">"Deseo {offset+1}: {fragment}"</span>)
+  print(f<span class="code-string">"Hash: {hash_line}"</span>)
+  pattern = <span class="code-string">""</span>.join(<span class="code-string">"#"</span> <span class="code-keyword">if</span> v <span class="code-keyword">else</span> <span class="code-string">" "</span> <span class="code-keyword">for</span> v <span class="code-keyword">in</span> pixels)
+  print(pattern)
+  time.sleep(2)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Galería del proceso -->
+    <div class="sec sec-cream">
+      <div class="sec-label">
+        Galería del proceso · Process gallery
+        <span class="sec-label-sub">6 fotografías</span>
+      </div>
+      <p style="font-family:var(--mono);font-size:8px;color:var(--gris-pale);letter-spacing:.06em;margin-bottom:14px">
+        Reemplazar con imágenes reales en: img/obras/eek-007-proceso-01.jpg a 06.jpg
+      </p>
+      <div class="img-thumbs">
+        <div class="img-thumb"><img src="../img/obras/eek-007-proceso-01.jpg" alt="Proceso 01 · Reemplazar" loading="lazy"></div>
+        <div class="img-thumb"><img src="../img/obras/eek-007-proceso-02.jpg" alt="Proceso 02 · Reemplazar" loading="lazy"></div>
+        <div class="img-thumb"><img src="../img/obras/eek-007-proceso-03.jpg" alt="Proceso 03 · Reemplazar" loading="lazy"></div>
+      </div>
+      <div class="img-thumbs" style="margin-top:4px">
+        <div class="img-thumb"><img src="../img/obras/eek-007-proceso-04.jpg" alt="Proceso 04 · Reemplazar" loading="lazy"></div>
+        <div class="img-thumb"><img src="../img/obras/eek-007-proceso-05.jpg" alt="Proceso 05 · Reemplazar" loading="lazy"></div>
+        <div class="img-thumb"><img src="../img/obras/eek-007-proceso-06.jpg" alt="Proceso 06 · Reemplazar" loading="lazy"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Aside ──────────────────────────────────────────── -->
+  <div class="obra-aside">
+    <div class="data-panel">
+      <div class="data-panel-head"><span class="dp-title">Ficha técnica</span></div>
+      <div class="dp-row"><span class="dp-key">Tipo</span><span class="dp-val">Instalación</span></div>
+      <div class="dp-row"><span class="dp-key">Año</span><span class="dp-val">2024</span></div>
+      <div class="dp-row"><span class="dp-key">Lugar</span><span class="dp-val">Medellín · Colombia</span></div>
+      <div class="dp-row"><span class="dp-key">Primera activación</span><span class="dp-val dp-val-blue">Parque de los Deseos</span></div>
+      <div class="dp-row"><span class="dp-key">Estado</span><span class="dp-val dp-val-blue">Activo</span></div>
+      <div class="dp-row"><span class="dp-key">Pantallas</span><span class="dp-val">3× OLED 128×64</span></div>
+      <div class="dp-row"><span class="dp-key">Sonido</span><span class="dp-val">Zumbador intermitente</span></div>
+      <div class="dp-row"><span class="dp-key">Luz</span><span class="dp-val">Láser + LDR</span></div>
+      <div class="dp-row"><span class="dp-key">Entrada</span><span class="dp-val">64 deseos (IA)</span></div>
+      <div class="dp-row"><span class="dp-key">Codificación</span><span class="dp-val">SHA-256 → Binario</span></div>
+    </div>
+
+    <div class="data-panel">
+      <div class="data-panel-head"><span class="dp-title">Sistema · 3 pantallas</span></div>
+      <div class="dp-row"><span class="dp-key">Pantalla 1</span><span class="dp-val">Pixel×pixel + zumbador</span></div>
+      <div class="dp-row"><span class="dp-key">Pantalla 2</span><span class="dp-val dp-val-blue">Todo completo</span></div>
+      <div class="dp-row"><span class="dp-key">Pantalla 3</span><span class="dp-val">Pixel×pixel + láser</span></div>
+      <div class="dp-row"><span class="dp-key">Terminal</span><span class="dp-val">Deseo + hash + patrón</span></div>
+    </div>
+
+    <div class="links-block">
+      <div class="data-panel-head"><span class="dp-title">Vínculos · Links</span></div>
+      <a class="link-item" href="https://github.com/Minombreesana/eek-007-tecnico" target="_blank" rel="noopener">
+        <span class="link-item-type">GITHUB</span>
+        <span class="link-item-label">Repositorio técnico completo</span>
+        <span class="link-item-arrow">↗</span>
+      </a>
+      <a class="link-item" href="https://www.parquedelosdeseos.com" target="_blank" rel="noopener">
+        <span class="link-item-type">LUGAR</span>
+        <span class="link-item-label">Parque de los Deseos · Medellín</span>
+        <span class="link-item-arrow">↗</span>
+      </a>
+    </div>
+
+    <div class="data-panel">
+      <div class="data-panel-head"><span class="dp-title">En esta serie · EEK 2020–2025</span></div>
+      <div class="dp-row"><span class="dp-key">EEK-008</span><span class="dp-val"><a href="eek-008.html" style="color:var(--azul);text-decoration:none">Un problema de escala</a></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-007</span><span class="dp-val dp-val-blue">En la tierra, silencio ←</span></div>
+      <div class="dp-row"><span class="dp-key">EEK-006</span><span class="dp-val"><a href="eek-006.html" style="color:var(--azul);text-decoration:none">Los años que no vimos...</a></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Nav prev/next ────────────────────────────────────── -->
+<div class="nav-obras">
+  <div class="nav-obras-prev">← <a href="eek-006.html">EEK-006 · Los años que no vimos las estrellas</a></div>
+  <div class="nav-obras-center">007 / 008</div>
+  <div class="nav-obras-next"><a href="eek-008.html">EEK-008 · Un problema de escala</a> →</div>
+</div>
+
+<footer class="footer">
+  <span class="footer-l">EEK · Estación Espacial Kennedy · 2020–</span>
+  <span class="footer-r">4°37'44"N · 74°8'49"W · Kennedy, Bogotá, Colombia</span>
+</footer>
+
+<script src="../js/eek.js"></script>
+<script>
+  EEK.initAPIs();
+  EEK.initBot('bot-out', 'btn-gen', 'btn-auto');
+</script>
+</body>
+</html>
