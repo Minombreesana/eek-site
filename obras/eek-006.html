@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EEK-006 · Los años que no vimos las estrellas · Estación Espacial Kennedy</title>
+  <meta name="description" content="Los años que no vimos las estrellas — Visualización de datos · Polaris · Cefeida · Bogotá 2024 · EEK">
+  <link rel="stylesheet" href="../css/eek.css">
+  <style>
+    .obra-layout { display: grid; grid-template-columns: 1fr 264px; }
+    .obra-main { border-right: 1px solid var(--beige-pale); }
+    .obra-aside {
+      padding: 16px;
+      background: var(--beige);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .obra-header {
+      background: var(--beige-mid);
+      border-bottom: 1px solid var(--beige-pale);
+      padding: 24px 24px 0;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 20px;
+    }
+    .obra-id-vert {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gris);
+      padding-top: 4px;
+    }
+    .obra-num {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      color: var(--azul);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .obra-title {
+      font-family: var(--cond);
+      font-size: 46px;
+      font-weight: 900;
+      line-height: 0.9;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      color: var(--negro);
+      white-space: nowrap;
+    }
+    .obra-title-en {
+      font-size: 13px;
+      color: #888;
+      font-style: italic;
+      letter-spacing: 0.06em;
+    }
+    .img-main-wrap {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--blanco);
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .img-main-wrap img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+    }
+    .img-thumbs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+    .img-thumb {
+      aspect-ratio: 4/3;
+      background: var(--beige);
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid var(--beige-dark);
+    }
+    .img-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: opacity 0.15s;
+    }
+    .img-thumb:hover img { opacity: 0.85; }
+
+    /* ES-EN Toggle */
+    .nav-lang {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--azul);
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+    .nav-lang .lang-sep { color: var(--gris-light); font-weight: 400; margin: 0 2px; }
+    .nav-lang .lang-active { border-bottom: 1px solid var(--azul); }
+    body.lang-es .lang-en,
+    body.lang-es .lang-en-block { display: none !important; }
+    body.lang-en .lang-es-inline,
+    body.lang-en .lang-es-block { display: none !important; }
+
+    /* Breadcrumb */
+    .breadcrumb { color: var(--gris) !important; }
+    .breadcrumb a { color: var(--azul) !important; }
+
+    /* Topbar blanco */
+    .topbar-l, .topbar-r { color: var(--blanco) !important; }
+    .topbar-dot { background: var(--blanco) !important; }
+
+    /* Footer blanco */
+    .footer { background: var(--azul); }
+    .footer-l { color: var(--blanco); }
+    .footer-r { color: var(--blanco); }
+
+    /* Textos en inglés: solo color, sin forzar tamaño de tipografía */
+    .lang-en { color: #888 !important; }
+
+    /* Ficha strip */
+    .ficha-key { font-size: 8px !important; color: var(--gris) !important; }
+    .ficha-val { font-size: 11px !important; }
+
+    /* Captions de fotos */
+    .img-main-wrap + p,
+    .img-thumbs + p { font-size: 10px !important; color: var(--gris) !important; }
+
+    /* Documentación técnica */
+    .proceso-body { font-size: 13px !important; }
+    .proceso-title { font-size: 14px !important; }
+    .pi-tag { font-size: 9px !important; }
+    .code-label { font-size: 10px !important; }
+    .code-content { font-size: 10px !important; }
+
+    /* Bloque conceptual */
+    .conceptual-block {
+      background: var(--blanco);
+      border: 2px solid var(--negro);
+      padding: 28px 24px;
+      margin: 16px 0;
+      position: relative;
+    }
+    .conceptual-label {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rojo);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .conceptual-title {
+      font-family: var(--cond);
+      font-size: 28px;
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      color: var(--negro);
+    }
+    .conceptual-body {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.95;
+      margin-bottom: 12px;
+    }
+    .conceptual-quote {
+      font-size: 16px;
+      color: var(--negro);
+      font-style: italic;
+      border-left: 3px solid var(--azul);
+      padding-left: 16px;
+      margin: 18px 0;
+      line-height: 1.6;
+    }
+
+    .code-block {
+      background: #0a0a12;
+      border: 1px solid #222;
+      padding: 14px;
+      margin: 10px 0;
+      overflow-x: auto;
+    }
+    .code-label {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--rojo);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .code-content {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: #ccc;
+      line-height: 1.7;
+      white-space: pre;
+    }
+
+    @media (max-width: 700px) {
+      .obra-layout { grid-template-columns: 1fr; }
+      .obra-aside { border-top: 1px solid var(--beige-pale); }
+      .obra-header { grid-template-columns: 1fr; }
+      .obra-id-vert { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-l">EEK · <span class="lang-es-inline">Archivo de obras · Registro EEK-006</span><span class="lang-en">Works archive · Record EEK-006</span></span>
+  <span class="topbar-r">
+    <span class="topbar-dot"></span>
+    <span class="lang-es-inline">Estación Espacial Kennedy · Bogotá</span><span class="lang-en">Kennedy Space Station · Bogotá</span>
+  </span>
+</div>
+
+<nav class="nav">
+  <a class="nav-logo" href="../index.html">
+    <img class="nav-logo-img" src="../img/logo-eek.png" alt="EEK · Estación Espacial Kennedy" style="height:44px;width:auto;display:block;">
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="active"><span class="lang-es-inline">Obras</span><span class="lang-en">Works</span></a>
+    <a href="../manifiesto.html"><span class="lang-es-inline">Manifiesto</span><span class="lang-en">Manifesto</span></a>
+    <a href="../prensa.html"><span class="lang-es-inline">Prensa</span><span class="lang-en">Press</span></a>
+    <a href="../contacto.html"><span class="lang-es-inline">Contacto</span><span class="lang-en">Contact</span></a>
+    <span class="nav-lang" id="lang-toggle" onclick="toggleLang()">
+      <span class="lang-es-label lang-active">ES</span>
+      <span class="lang-sep">·</span>
+      <span class="lang-en-label">EN</span>
+    </span>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="../index.html"><span class="lang-es-inline">Inicio</span><span class="lang-en">Home</span></a>
+  <span class="breadcrumb-sep">·</span>
+  <a href="index.html"><span class="lang-es-inline">Archivo de obras</span><span class="lang-en">Works archive</span></a>
+  <span class="breadcrumb-sep">·</span>
+  EEK-006 · Los años que no vimos las estrellas
+</div>
+
+<!-- ── Header de la obra ────────────────────────────────── -->
+<div class="obra-header">
+  <div class="obra-id-vert"><span class="lang-es-inline">Registro de obra · EEK</span><span class="lang-en">Work record · EEK</span></div>
+  <div>
+    <div class="obra-num">EEK-006 · <span class="lang-es-inline">Visualización de datos · Polaris · Bogotá · 2024</span><span class="lang-en">Data visualization · Polaris · Bogotá · 2024</span></div>
+    <h1 class="obra-title">Los años que no vimos las estrellas</h1>
+    <div class="obra-title-en lang-en">The Years We Didn't See the Stars</div>
+    <div class="ficha-strip">
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Año</span><span class="lang-en">Year</span></div><div class="ficha-val ficha-val-blue">2024</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Lugar</span><span class="lang-en">Place</span></div><div class="ficha-val">Bogotá · Colombia</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Exhibición</span><span class="lang-en">Exhibition</span></div><div class="ficha-val dp-val-blue">Artitis · <span class="lang-es-inline">Espacio de Arte en Kennedy</span><span class="lang-en">Art Space in Kennedy</span></div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Diálogo con</span><span class="lang-en">Dialogue with</span></div><div class="ficha-val">"Polaris" · Beatriz Eugenia Díaz · <span class="lang-es-inline">Premio Luis Caballero</span><span class="lang-en">Luis Caballero Award</span></div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Tipo</span><span class="lang-en">Type</span></div><div class="ficha-val"><span class="lang-es-inline">Visualización de datos</span><span class="lang-en">Data visualization</span></div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Técnica</span><span class="lang-en">Technique</span></div><div class="ficha-val"><span class="lang-es-inline">Datos AAVSO · Croquis manual · Impresión · Corte manual</span><span class="lang-en">AAVSO data · Manual sketches · Printing · Manual cutting</span></div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Fuente de datos</span><span class="lang-en">Data source</span></div><div class="ficha-val">AAVSO · American Association of Variable Star Observers</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Período</span><span class="lang-en">Period</span></div><div class="ficha-val">2007 – 2023</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Estrella</span><span class="lang-en">Star</span></div><div class="ficha-val">Polaris (ALF UMI · Alpha Ursae Minoris)</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Discos</span><span class="lang-en">Discs</span></div><div class="ficha-val">10 <span class="lang-es-inline">discos de papel · corte manual</span><span class="lang-en">paper discs · manual cutting</span></div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Dimensiones</span><span class="lang-en">Dimensions</span></div><div class="ficha-val">230,44 × 150,54 cm (<span class="lang-es-inline">conjunto</span><span class="lang-en">set</span>)</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Registro</span><span class="lang-en">Record</span></div><div class="ficha-val">EEK-006</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Cuerpo ───────────────────────────────────────────── -->
+<div class="obra-layout">
+  <div class="obra-main">
+
+    <!-- Imagen principal -->
+    <div class="sec sec-white">
+      <div class="sec-label"><span class="lang-es-inline">Documentación visual</span><span class="lang-en">Visual documentation</span></div>
+      <div class="img-main-wrap">
+        <img src="../img/obras/eek-006-main.jpg" alt="Los 10 discos · The 10 discs · Visualización de datos de Polaris · Polaris data visualization · 2007–2023">
+      </div>
+      <p style="font-family:var(--mono);font-size:8px;color:var(--gris-pale);letter-spacing:.06em;margin-bottom:14px">
+        <span class="lang-es-inline">Fig. 01 · Los 10 discos · Datos de Polaris (AAVSO) · 2007–2023 · EEK-006 · 2024</span>
+        <span class="lang-en">Fig. 01 · The 10 discs · Polaris data (AAVSO) · 2007–2023 · EEK-006 · 2024</span>
+      </p>
+    </div>
+
+    <!-- Bloque conceptual + Descripción -->
+    <div class="sec sec-cream">
+
+      <!-- Bloque ES -->
+      <div class="lang-es-block">
+        <div class="conceptual-block">
+          <div class="conceptual-label">Concepto · Concept</div>
+          <div class="conceptual-title">Mientras Polaris permanecía guardada, otros la estaban mirando</div>
+
+          <p class="conceptual-body">Esta visualización de datos intenta mostrar cómo la estrella <strong>Polaris</strong> se comportó durante los años en los que Beatriz no expuso su obra. Mientras Polaris permanecía guardada, personas alrededor del mundo estuvieron mirándola para registrar su brillo: durante los años que no vimos Polaris, muchos otros y otras sí lo hicieron.</p>
+
+          <p class="conceptual-body"><strong>Polaris no es una estrella fija</strong>: es una <strong>Cefeida</strong> cuyo brillo se comporta como una función seno. Esta obra toma los datos reales de su brillo — registrados por astrónomos ciudadanos de la <strong>AAVSO</strong> entre 2007 y 2023 — y los transforma en un sistema visual. Cada año es un círculo. Los anillos concéntricos son los meses, de enero en el centro hasta diciembre en el borde. Cada pulso de Polaris es un rectángulo negro sobre el papel.</p>
+
+          <div class="conceptual-quote">En todo momento y en todo lugar, sin importar las circunstancias, siempre hay alguien mirando al cielo.</div>
+        </div>
+
+        <div class="sec-label">Sobre la obra · About the work</div>
+
+        <p style="font-size:15px;color:#444;line-height:1.95;margin-bottom:14px">
+          <strong>Los años que no vimos las estrellas</strong> es una visualización de datos de la estrella Polaris desde 2007 hasta 2023. Es una obra que dialoga con <em>"Polaris"</em> de <strong>Beatriz Eugenia Díaz</strong>, obra nominada al Premio Luis Caballero, con quien compartió exhibición en <strong>Artitis (Espacio de Arte en Kennedy)</strong>.
+        </p>
+
+        <p style="font-size:14px;color:#555;line-height:1.9;margin-bottom:14px">
+          El proyecto toma los datos de brillo de Polaris recopilados por la <strong>American Association of Variable Star Observers (AAVSO)</strong> y los reinterpreta como una serie de 10 discos. Cada círculo representa un año completo: los <strong>anillos concéntricos</strong> representan los <strong>meses del año</strong>, de enero (centro) a diciembre (borde exterior), la posición alrededor del círculo indica la <strong>magnitud estelar (mag)</strong> — la medida del brillo — y los <strong>rectángulos negros</strong> marcan las observaciones en su mes y brillo correspondientes. El resultado es un sistema visual denso y preciso que contrasta con la aparente inmutabilidad de la estrella.
+        </p>
+
+        <p style="font-size:14px;color:#555;line-height:1.9;margin-bottom:14px">
+          Las piezas fueron impresas en papel y cortadas a mano con bisturí, un proceso lento y meticuloso que responde a la misma paciencia con la que los astrónomos ciudadanos registraron los datos originales. Los 10 discos se exhibieron en la vitrina de Artitis, un espacio de exhibición de arte en pequeño formato ubicado en Kennedy, Bogotá.
+        </p>
+      </div>
+
+      <!-- Bloque EN -->
+      <div class="lang-en-block">
+        <div class="conceptual-block">
+          <div class="conceptual-label">Concept · Concepto</div>
+          <div class="conceptual-title">While Polaris remained hidden, others were watching</div>
+
+          <p class="conceptual-body">This data visualization attempts to show how the star <strong>Polaris</strong> behaved during the years when Beatriz did not exhibit her work. While Polaris remained hidden, people around the world were watching it to record its brightness: during the years we did not see Polaris, many others did.</p>
+
+          <p class="conceptual-body"><strong>Polaris is not a fixed star</strong>: it is a <strong>Cepheid</strong> whose brightness behaves like a sine function. This work takes the real data of its brightness — recorded by citizen astronomers of the <strong>AAVSO</strong> between 2007 and 2023 — and transforms it into a visual system. Each year is a circle. The concentric rings are the months, from January in the center to December at the edge. Each pulse of Polaris is a black rectangle on paper.</p>
+
+          <div class="conceptual-quote">At all times and in all places, regardless of circumstances, there is always someone looking at the sky.</div>
+        </div>
+
+        <div class="sec-label">About the work · Sobre la obra</div>
+
+        <p style="font-size:15px;color:#444;line-height:1.95;margin-bottom:14px">
+          <strong>The Years We Didn't See the Stars</strong> is a data visualization of the star Polaris from 2007 to 2023. It is a work that dialogues with <em>"Polaris"</em> by <strong>Beatriz Eugenia Díaz</strong>, nominated for the Luis Caballero Award, with whom it shared exhibition at <strong>Artitis (Art Space in Kennedy)</strong>.
+        </p>
+
+        <p style="font-size:14px;color:#555;line-height:1.9;margin-bottom:14px">
+          The project takes the brightness data of Polaris collected by the <strong>American Association of Variable Star Observers (AAVSO)</strong> and reinterprets it as a series of 10 discs. Each circle represents a full year: the <strong>concentric rings</strong> represent the <strong>months of the year</strong>, from January (center) to December (outer edge), the position around the circle indicates <strong>stellar magnitude (mag)</strong> — the measure of brightness — and the <strong>black rectangles</strong> mark the observations at their corresponding month and brightness. The result is a dense and precise visual system that contrasts with the apparent immutability of the star.
+        </p>
+
+        <p style="font-size:14px;color:#555;line-height:1.9;margin-bottom:14px">
+          The pieces were printed on paper and cut by hand with a scalpel, a slow and meticulous process that responds to the same patience with which citizen astronomers recorded the original data. The 10 discs were exhibited in the Artitis showcase, a small-format art exhibition space located in Kennedy, Bogotá.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Proceso técnico -->
+    <div class="sec sec-white">
+      <div class="sec-label">
+        <span class="lang-es-inline">Documentación del proceso</span><span class="lang-en">Process documentation</span>
+        <span class="sec-label-sub"><span class="lang-es-inline">recolección · reinterpretación · impresión · corte · exhibición</span><span class="lang-en">collection · reinterpretation · printing · cutting · exhibition</span></span>
+      </div>
+
+      <!-- Pasos ES -->
+      <div class="lang-es-block">
+        <div class="proceso-item">
+          <div class="proceso-title">
+            1_ Recolección de datos del brillo de Polaris
+            <span class="pi-tag tag-tecnica">AAVSO</span>
+            <span class="pi-tag tag-herramienta">Datos abiertos</span>
+          </div>
+          <p class="proceso-body">Los datos fueron tomados de la <strong>American Association of Variable Star Observers (AAVSO)</strong>, una organización de astrónomos ciudadanos que registran observaciones de estrellas variables desde 1911. Se descargaron las mediciones de magnitud visual de Polaris (ALF UMI) desde 2007 hasta 2023. Cada punto de datos representa una observación: fecha, magnitud aparente, y código del observador.</p>
+          <div class="img-main-wrap" style="margin-top:10px">
+            <img src="../img/obras/eek-006-proceso-01.jpg" alt="Datos AAVSO · Magnitud de Polaris 2007" loading="lazy">
+          </div>
+          <p style="font-family:var(--mono);font-size:7px;color:var(--gris-pale);letter-spacing:.05em;margin-top:6px">
+            Fig. 05 · Datos AAVSO · Magnitud visual de Polaris (ALF UMI) · 2007
+          </p>
+        </div>
+
+        <div class="proceso-item">
+          <div class="proceso-title">
+            2_ Reinterpretación de datos
+            <span class="pi-tag tag-tecnica">Croquis manual</span>
+            <span class="pi-tag tag-herramienta">Trazado a mano</span>
+            <span class="pi-tag tag-tecnica">Visualización polar</span>
+          </div>
+          <p class="proceso-body">A partir de los datos lineales de la AAVSO (magnitud vs. tiempo), se realizó un proceso de reinterpretación completamente manual. Con papel y lápiz se dibujaron <strong>croquis de las curvas de luz</strong> de Polaris, explorando diferentes formas de representar la variación del brillo a lo largo del tiempo.</p>
+          <p class="proceso-body">El sistema visual final funciona así: cada año es un <strong>círculo completo</strong>. Los <strong>anillos concéntricos</strong> representan los <strong>meses del año</strong>, de enero (el círculo más pequeño, en el centro) hasta diciembre (el círculo más grande, en el borde exterior). La posición alrededor del círculo indica la <strong>magnitud estelar (mag)</strong> — la medida del brillo: valores más cercanos a ~1.90 mag significan que Polaris brillaba más, y valores más cercanos a ~2.20 mag significan que brillaba menos. Los <strong>rectángulos negros</strong> marcan las observaciones: su anillo dice <em>en qué mes</em>, y su posición angular dice <em>qué tan brillante</em> era.</p>
+          <p class="proceso-body">La clave del remapeo está en la naturaleza de Polaris: al ser una <strong>Cefeida</strong>, su brillo varía de forma periódica siguiendo una <strong>función seno</strong>. Esa regularidad cíclica permitió traducir la curva de luz lineal (brillo vs. tiempo) a un sistema circular donde cada mes ocupa un anillo concéntrico. El seno del brillo se convirtió en el radio del círculo; el tiempo, en el ángulo.</p>
+          <p class="proceso-body">Una vez definido el sistema, se trazaron las guías concéntricas y los ejes radiales en formato digital para imprimir. Los sectores negros se definieron manualmente según la concentración de observaciones. El resultado es un sistema de <strong>10 discos</strong>, uno por cada año del período 2007–2023.</p>
+          <div class="img-main-wrap" style="margin-top:10px">
+            <img src="../img/obras/eek-006-proceso-02.jpg" alt="Croquis manuales y gráfico polar final" loading="lazy">
+          </div>
+          <p style="font-family:var(--mono);font-size:7px;color:var(--gris-pale);letter-spacing:.05em;margin-top:6px">
+            Fig. 06 · Croquis manuales de curvas de luz · Gráfico polar final · 230,44 × 150,54 cm
+          </p>
+        </div>
+
+        <div class="proceso-item">
+          <div class="proceso-title">
+            3_ Impresión y corte
+            <span class="pi-tag tag-tecnica">Papel couché</span>
+            <span class="pi-tag tag-herramienta">Corte manual · Bisturí</span>
+          </div>
+          <p class="proceso-body">Los gráficos se imprimen en papel couché de alta densidad. Cada círculo se corta a mano con <strong>bisturí de precisión</strong> sobre base de corte, siguiendo las líneas concéntricas y los sectores radiales. El corte manual introduce pequeñas imperfecciones que contrastan con la precisión matemática de los datos, creando una tensión entre lo digital y lo analógico. El proceso toma aproximadamente 2 horas por pieza.</p>
+          <div class="img-thumbs" style="margin-top:10px;grid-template-columns:repeat(2,1fr);gap:6px">
+            <div class="img-thumb"><img src="../img/obras/eek-006-proceso-03.jpg" alt="Pieza impresa" loading="lazy"></div>
+            <div class="img-thumb"><img src="../img/obras/eek-006-proceso-04.jpg" alt="Corte con bisturí" loading="lazy"></div>
+            <div class="img-thumb"><img src="../img/obras/eek-006-proceso-06.jpg" alt="Detalle de corte" loading="lazy"></div>
+            <div class="img-thumb"><img src="../img/obras/eek-006-proceso-07.jpg" alt="Pieza terminada" loading="lazy"></div>
+          </div>
+          <p style="font-family:var(--mono);font-size:7px;color:var(--gris-pale);letter-spacing:.05em;margin-top:6px">
+            Fig. 07–10 · Impresión en papel couché · Corte manual con bisturí · Detalle · Pieza terminada
+          </p>
+        </div>
+
+        <div class="proceso-item">
+          <div class="proceso-title">
+            4_ Piezas finales
+            <span class="pi-tag tag-tecnica">10 discos · 2007–2023</span>
+            <span class="pi-tag tag-tecnica">230,44 × 150,54 cm</span>
+          </div>
+          <p class="proceso-body">Los 10 discos se exhiben juntos en la <strong>vitrina de Artitis</strong>, un espacio de exhibición de arte en pequeño formato ubicado en Kennedy, Bogotá. Cada disco representa un año de pulsaciones de Polaris. Juntos, los 10 discos forman un sistema visual que abarca 16 años de observaciones — los años en que, desde la Tierra, registramos el brillo de una estrella que parece no cambiar pero que, en realidad, nunca deja de hacerlo.</p>
+          <div class="img-main-wrap" style="margin-top:10px">
+            <img src="../img/obras/eek-006-proceso-05.jpg" alt="Disco final y vitrina Artitis" loading="lazy">
+          </div>
+          <p style="font-family:var(--mono);font-size:7px;color:var(--gris-pale);letter-spacing:.05em;margin-top:6px">
+            Fig. 09 · Disco final · Vitrina Artitis · Espacio de Arte en Kennedy · Bogotá
+          </p>
+          <a class="proceso-link" href="https://github.com/Minombreesana/eek-006-tecnico" target="_blank" rel="noopener">
+            ↗ <span class="lang-es-inline">Repositorio técnico completo</span><span class="lang-en">Complete technical repository</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Pasos EN -->
+      <div class="lang-en-block">
+        <div class="proceso-item">
+          <div class="proceso-title">
+            1_ Collection of Polaris brightness data
+            <span class="pi-tag tag-tecnica">AAVSO</span>
+            <span class="pi-tag tag-herramienta">Open data</span>
+          </div>
+          <p class="proceso-body">The data was taken from the <strong>American Association of Variable Star Observers (AAVSO)</strong>, an organization of citizen astronomers that records observations of variable stars since 1911. Visual magnitude measurements of Polaris (ALF UMI) from 2007 to 2023 were downloaded. Each data point represents an observation: date, apparent magnitude, and observer code.</p>
+          <div class="img-main-wrap" style="margin-top:10px">
+            <img src="../img/obras/eek-006-proceso-01.jpg" alt="AAVSO data · Polaris magnitude 2007" loading="lazy">
+          </div>
+          <p style="font-family:var(--mono);font-size:7px;color:var(--gris-pale);letter-spacing:.05em;margin-top:6px">
+            Fig. 05 · AAVSO data · Visual magnitude of Polaris (ALF UMI) · 2007
+          </p>
+        </div>
+
+        <div class="proceso-item">
+          <div class="proceso-title">
+            2_ Data reinterpretation
+            <span class="pi-tag tag-tecnica">Manual sketches</span>
+            <span class="pi-tag tag-herramienta">Hand tracing</span>
+            <span class="pi-tag tag-tecnica">Polar visualization</span>
+          </div>
+          <p class="proceso-body">From the AAVSO linear data (magnitude vs. time), a completely manual reinterpretation process was carried out. With paper and pencil, <strong>light curve sketches</strong> of Polaris were drawn, exploring different ways to represent the variation of brightness over time.</p>
+          <p class="proceso-body">The final visual system works like this: each year is a <strong>complete circle</strong>. The <strong>concentric rings</strong> represent the <strong>months of the year</strong>, from January (the smallest circle, in the center) to December (the largest circle, at the outer edge). The position around the circle indicates <strong>stellar magnitude (mag)</strong> — the measure of brightness: values closer to ~1.90 mag mean Polaris shone brighter, and values closer to ~2.20 mag mean it shone less. The <strong>black rectangles</strong> mark the observations: their ring says <em>in which month</em>, and their angular position says <em>how bright</em> it was.</p>
+          <p class="proceso-body">The key to the remapping lies in the nature of Polaris: being a <strong>Cepheid</strong>, its brightness varies periodically following a <strong>sine function</strong>. That cyclic regularity allowed translating the linear light curve (brightness vs. time) into a circular system where each month occupies a concentric ring. The sine of the brightness became the radius of the circle; time, the angle.</p>
+          <p class="proceso-body">Once the system was defined, concentric guides and radial axes were traced in digital format for printing. The black sectors were defined manually according to the concentration of observations. The result is a system of <strong>10 discs</strong>, one for each year of the period 2007–2023.</p>
+          <div class="img-main-wrap" style="margin-top:10px">
+            <img src="../img/obras/eek-006-proceso-02.jpg" alt="Manual sketches and final polar chart" loading="lazy">
+          </div>
+          <p style="font-family:var(--mono);font-size:7px;color:var(--gris-pale);letter-spacing:.05em;margin-top:6px">
+            Fig. 06 · Manual light curve sketches · Final polar chart · 230,44 × 150,54 cm
+          </p>
+        </div>
+
+        <div class="proceso-item">
+          <div class="proceso-title">
+            3_ Printing and cutting
+            <span class="pi-tag tag-tecnica">Coated paper</span>
+            <span class="pi-tag tag-herramienta">Manual cutting · Scalpel</span>
+          </div>
+          <p class="proceso-body">The graphics are printed on high-density coated paper. Each circle is cut by hand with a <strong>precision scalpel</strong> on a cutting mat, following the concentric lines and radial sectors. The manual cutting introduces small imperfections that contrast with the mathematical precision of the data, creating a tension between the digital and the analog. The process takes approximately 2 hours per piece.</p>
+          <div class="img-thumbs" style="margin-top:10px;grid-template-columns:repeat(2,1fr);gap:6px">
+            <div class="img-thumb"><img src="../img/obras/eek-006-proceso-03.jpg" alt="Printed piece" loading="lazy"></div>
+            <div class="img-thumb"><img src="../img/obras/eek-006-proceso-04.jpg" alt="Cutting with scalpel" loading="lazy"></div>
+            <div class="img-thumb"><img src="../img/obras/eek-006-proceso-06.jpg" alt="Cutting detail" loading="lazy"></div>
+            <div class="img-thumb"><img src="../img/obras/eek-006-proceso-07.jpg" alt="Finished piece" loading="lazy"></div>
+          </div>
+          <p style="font-family:var(--mono);font-size:7px;color:var(--gris-pale);letter-spacing:.05em;margin-top:6px">
+            Fig. 07–10 · Printing on coated paper · Manual cutting with scalpel · Detail · Finished piece
+          </p>
+        </div>
+
+        <div class="proceso-item">
+          <div class="proceso-title">
+            4_ Final pieces
+            <span class="pi-tag tag-tecnica">10 discs · 2007–2023</span>
+            <span class="pi-tag tag-tecnica">230,44 × 150,54 cm</span>
+          </div>
+          <p class="proceso-body">The 10 discs are exhibited together in the <strong>Artitis showcase</strong>, a small-format art exhibition space located in Kennedy, Bogotá. Each disc represents a year of Polaris pulsations. Together, the 10 discs form a visual system spanning 16 years of observations — the years in which, from Earth, we recorded the brightness of a star that seems not to change but that, in reality, never stops doing so.</p>
+          <div class="img-main-wrap" style="margin-top:10px">
+            <img src="../img/obras/eek-006-proceso-05.jpg" alt="Final disc and Artitis showcase" loading="lazy">
+          </div>
+          <p style="font-family:var(--mono);font-size:7px;color:var(--gris-pale);letter-spacing:.05em;margin-top:6px">
+            Fig. 09 · Final disc · Artitis showcase · Art Space in Kennedy · Bogotá
+          </p>
+          <a class="proceso-link" href="https://github.com/Minombreesana/eek-006-tecnico" target="_blank" rel="noopener">
+            ↗ <span class="lang-en">Complete technical repository</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Aside ──────────────────────────────────────────── -->
+  <div class="obra-aside">
+    <div class="data-panel">
+      <div class="data-panel-head"><span class="dp-title"><span class="lang-es-inline">Ficha técnica</span><span class="lang-en">Technical sheet</span></span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Tipo</span><span class="lang-en">Type</span></span><span class="dp-val"><span class="lang-es-inline">Visualización de datos</span><span class="lang-en">Data visualization</span></span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Año</span><span class="lang-en">Year</span></span><span class="dp-val">2024</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Lugar</span><span class="lang-en">Place</span></span><span class="dp-val">Bogotá · Colombia</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Exhibición</span><span class="lang-en">Exhibition</span></span><span class="dp-val dp-val-blue">Artitis · Kennedy</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Diálogo con</span><span class="lang-en">Dialogue with</span></span><span class="dp-val">Beatriz Eugenia Díaz</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Estrella</span><span class="lang-en">Star</span></span><span class="dp-val">Polaris (ALF UMI)</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Período</span><span class="lang-en">Period</span></span><span class="dp-val">2007 – 2023</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Discos</span><span class="lang-en">Discs</span></span><span class="dp-val">10 · <span class="lang-es-inline">papel couché · corte manual</span><span class="lang-en">coated paper · manual cutting</span></span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Material</span><span class="lang-en">Material</span></span><span class="dp-val"><span class="lang-es-inline">Papel couché · corte manual</span><span class="lang-en">Coated paper · manual cutting</span></span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Dimensiones</span><span class="lang-en">Dimensions</span></span><span class="dp-val">230,44 × 150,54 cm</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Proceso</span><span class="lang-en">Process</span></span><span class="dp-val"><span class="lang-es-inline">Manual · Croquis · Impresión · Corte</span><span class="lang-en">Manual · Sketches · Printing · Cutting</span></span></div>
+    </div>
+
+    <div class="data-panel">
+      <div class="data-panel-head"><span class="dp-title"><span class="lang-es-inline">Sistema · 4 pasos</span><span class="lang-en">System · 4 steps</span></span></div>
+      <div class="dp-row"><span class="dp-key">1. <span class="lang-es-inline">Recolección</span><span class="lang-en">Collection</span></span><span class="dp-val">AAVSO <span class="lang-es-inline">datos</span><span class="lang-en">data</span></span></div>
+      <div class="dp-row"><span class="dp-key">2. <span class="lang-es-inline">Reinterpretación</span><span class="lang-en">Reinterpretation</span></span><span class="dp-val dp-val-blue"><span class="lang-es-inline">Croquis · Trazado</span><span class="lang-en">Sketches · Tracing</span></span></div>
+      <div class="dp-row"><span class="dp-key">3. <span class="lang-es-inline">Impresión</span><span class="lang-en">Printing</span></span><span class="dp-val"><span class="lang-es-inline">Papel couché</span><span class="lang-en">Coated paper</span></span></div>
+      <div class="dp-row"><span class="dp-key">4. <span class="lang-es-inline">Corte</span><span class="lang-en">Cutting</span></span><span class="dp-val"><span class="lang-es-inline">Manual · Bisturí</span><span class="lang-en">Manual · Scalpel</span></span></div>
+    </div>
+
+    <div class="links-block">
+      <div class="data-panel-head"><span class="dp-title"><span class="lang-es-inline">Vínculos</span><span class="lang-en">Links</span></span></div>
+      <a class="link-item" href="https://github.com/Minombreesana/eek-006-tecnico" target="_blank" rel="noopener">
+        <span class="link-item-type">GITHUB</span>
+        <span class="link-item-label"><span class="lang-es-inline">Repositorio técnico completo</span><span class="lang-en">Complete technical repository</span></span>
+        <span class="link-item-arrow">↗</span>
+      </a>
+      <a class="link-item" href="https://www.aavso.org" target="_blank" rel="noopener">
+        <span class="link-item-type"><span class="lang-es-inline">DATOS</span><span class="lang-en">DATA</span></span>
+        <span class="link-item-label">AAVSO · Variable Star Observers</span>
+        <span class="link-item-arrow">↗</span>
+      </a>
+      <a class="link-item" href="https://www.instagram.com/artitis.vitrina" target="_blank" rel="noopener">
+        <span class="link-item-type"><span class="lang-es-inline">LUGAR</span><span class="lang-en">PLACE</span></span>
+        <span class="link-item-label">Artitis · <span class="lang-es-inline">Espacio de Arte</span><span class="lang-en">Art Space</span></span>
+        <span class="link-item-arrow">↗</span>
+      </a>
+    </div>
+
+    <div class="data-panel">
+      <div class="data-panel-head"><span class="dp-title"><span class="lang-es-inline">En esta serie · EEK 2020–2025</span><span class="lang-en">In this series · EEK 2020–2025</span></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-007</span><span class="dp-val"><a href="eek-007.html" style="color:var(--azul);text-decoration:none"><span class="lang-es-inline">En la Tierra, silencio</span><span class="lang-en">On Earth, Silence</span></a></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-006</span><span class="dp-val dp-val-blue"><span class="lang-es-inline">Los años que no vimos... ←</span><span class="lang-en">The Years We Didn't See... ←</span></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-005</span><span class="dp-val"><a href="eek-005.html" style="color:var(--azul);text-decoration:none"><span class="lang-es-inline">Eclipse lunar + Diego Serrano</span><span class="lang-en">Lunar Eclipse + Diego Serrano</span></a></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Nav prev/next ────────────────────────────────────── -->
+<div class="nav-obras">
+  <div class="nav-obras-prev">← <a href="eek-005.html">EEK-005 · <span class="lang-es-inline">Eclipse lunar + Diego Serrano</span><span class="lang-en">Lunar Eclipse + Diego Serrano</span></a></div>
+  <div class="nav-obras-center">006 / 008</div>
+  <div class="nav-obras-next"><a href="eek-007.html">EEK-007 · <span class="lang-es-inline">En la Tierra, silencio</span><span class="lang-en">On Earth, Silence</span></a> →</div>
+</div>
+
+<footer class="footer">
+  <span class="footer-l">EEK · <span class="lang-es-inline">Estación Espacial Kennedy · Bogotá, Colombia · 2020–</span><span class="lang-en">Kennedy Space Station · Bogotá, Colombia · 2020–</span></span>
+</footer>
+
+<script src="../js/eek.js"></script>
+<script>
+  EEK.initAPIs();
+  EEK.initBot('bot-out', 'btn-gen', 'btn-auto');
+
+  // ── Toggle ES / EN ──
+  function toggleLang() {
+    const body = document.body;
+    const isEs = body.classList.contains('lang-es');
+    if (isEs) {
+      body.classList.remove('lang-es');
+      body.classList.add('lang-en');
+      localStorage.setItem('eek-lang', 'en');
+    } else {
+      body.classList.remove('lang-en');
+      body.classList.add('lang-es');
+      localStorage.setItem('eek-lang', 'es');
+    }
+    updateLangLabels();
+  }
+  function updateLangLabels() {
+    const isEs = document.body.classList.contains('lang-es');
+    const esLabel = document.querySelector('.lang-es-label');
+    const enLabel = document.querySelector('.lang-en-label');
+    if (esLabel) esLabel.classList.toggle('lang-active', isEs);
+    if (enLabel) enLabel.classList.toggle('lang-active', !isEs);
+  }
+  const savedLang = localStorage.getItem('eek-lang') || 'es';
+  document.body.classList.add('lang-' + savedLang);
+  updateLangLabels();
+</script>
+</body>
+</html>

@@ -3,144 +3,277 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Archivo de obras · Estación Espacial Kennedy · EEK</title>
+  <title>Archivo de obras · Works archive · EEK</title>
+  <meta name="description" content="Archivo de obras de la Estación Espacial Kennedy — 8 registros · 2020–2025.">
   <link rel="stylesheet" href="../css/eek.css">
   <style>
-    .archivo-header {
-      background: var(--beige-mid);
-      padding: 32px 24px 24px;
+    /* Obras */
+    .obras-section { padding: 0 0 0; background: var(--blanco); border-top: 1px solid var(--beige-pale); }
+    .obras-head {
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
       border-bottom: 2px solid var(--azul);
+      background: var(--blanco);
     }
-    .archivo-title {
+    .obras-head-title {
       font-family: var(--cond);
-      font-size: 42px;
-      font-weight: 900;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      line-height: 0.9;
-      margin-bottom: 4px;
+      color: var(--azul);
     }
-    .archivo-sub {
+    .obras-head-count {
       font-family: var(--mono);
       font-size: 10px;
-      color: var(--gris-light);
-      letter-spacing: 0.08em;
-      margin-bottom: 20px;
+      color: #888;
+      letter-spacing: 0.12em;
     }
-    .archivo-desc {
-      font-size: 11px;
-      color: #555;
-      line-height: 1.85;
-      max-width: 600px;
-    }
-    .obras-grid-page { padding: 24px; }
-    .obra-grid-full {
+    .obras-grid-wrap { padding: 0 24px 0; }
+    .obra-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border-left: 1px solid var(--beige-dark);
-      border-top: 1px solid var(--beige-dark);
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 8px;
+      padding: 12px 0 20px;
     }
+    .obra-card {
+      text-decoration: none;
+      color: inherit;
+      padding: 12px;
+      background: var(--beige-mid);
+      border: 1px solid var(--beige);
+      transition: border-color 0.12s;
+    }
+    .obra-card:hover {
+      border-color: var(--azul);
+    }
+    .obra-card-num {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--azul);
+      font-weight: 700;
+      margin-bottom: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .obra-card-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: var(--negro);
+      border: 1px solid var(--negro);
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .obra-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .obra-card-img img[src*="eek-006-main"] {
+      object-fit: contain;
+    }
+    .obra-card-name {
+      font-family: var(--cond);
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--negro);
+      margin-bottom: 4px;
+    }
+    .obra-card-meta {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #888;
+      letter-spacing: 0.05em;
+    }
+
+    /* ES-EN Toggle */
+    .nav-lang {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--azul);
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+    .nav-lang .lang-sep { color: var(--gris-light); font-weight: 400; margin: 0 2px; }
+    .nav-lang .lang-active { border-bottom: 1px solid var(--azul); }
+    body.lang-es .lang-en,
+    body.lang-es .lang-en-block { display: none !important; }
+    body.lang-en .lang-es-inline,
+    body.lang-en .lang-es-block { display: none !important; }
+
+    /* Topbar blanco */
+    .topbar-l, .topbar-r { color: var(--blanco) !important; }
+    .topbar-dot { background: var(--blanco) !important; }
+
+    /* Footer blanco */
+    .footer { background: var(--azul); }
+    .footer-l { color: var(--blanco); }
+
+    /* Logo */
+    .nav-logo-img {
+      height: 44px;
+      width: auto;
+      display: block;
+    }
+
     @media (max-width: 700px) {
-      .obra-grid-full { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 480px) {
-      .obra-grid-full { grid-template-columns: 1fr; }
+      .obra-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 <body>
 
 <div class="topbar">
-  <span class="topbar-l">EEK · Archivo de obras · 008 registros · 2020–2025</span>
-  <span class="topbar-r"><span class="topbar-dot"></span>Estación Espacial Kennedy · Bogotá</span>
+  <span class="topbar-l">EEK · <span class="lang-es-inline">Archivo de obras</span><span class="lang-en">Works archive</span> · 008 <span class="lang-es-inline">registros</span><span class="lang-en">records</span> · 2020–2025</span>
+  <span class="topbar-r">
+    <span class="topbar-dot"></span>
+    <span class="lang-es-inline">Estación Espacial Kennedy · Bogotá</span><span class="lang-en">Kennedy Space Station · Bogotá</span>
+  </span>
 </div>
 
 <nav class="nav">
   <a class="nav-logo" href="../index.html">
-    <span class="nav-logo-eek">EEK</span>
-    <div class="nav-logo-sep"></div>
-    <div class="nav-logo-name">
-      <div>Estación Espacial Kennedy</div>
-      <em>Kennedy Space Station</em>
-    </div>
+    <img class="nav-logo-img" src="../img/logo-eek.png" alt="EEK · Estación Espacial Kennedy">
   </a>
   <div class="nav-links">
-    <a href="index.html" class="active">Obras</a>
-    <a href="../manifiesto.html">Manifiesto</a>
-    <a href="../prensa.html">Prensa</a>
-    <a href="../contacto.html">Contacto</a>
-    <span class="nav-lang">ES · EN</span>
+    <a href="index.html" class="active"><span class="lang-es-inline">Obras</span><span class="lang-en">Works</span></a>
+    <a href="../manifiesto.html"><span class="lang-es-inline">Manifiesto</span><span class="lang-en">Manifesto</span></a>
+    <a href="../prensa.html"><span class="lang-es-inline">Prensa</span><span class="lang-en">Press</span></a>
+    <a href="../contacto.html"><span class="lang-es-inline">Contacto</span><span class="lang-en">Contact</span></a>
+    <span class="nav-lang" id="lang-toggle" onclick="toggleLang()">
+      <span class="lang-es-label lang-active">ES</span>
+      <span class="lang-sep">·</span>
+      <span class="lang-en-label">EN</span>
+    </span>
   </div>
 </nav>
 
 <div class="breadcrumb">
-  <a href="../index.html">Inicio</a>
+  <a href="../index.html"><span class="lang-es-inline">Inicio</span><span class="lang-en">Home</span></a>
   <span class="breadcrumb-sep">·</span>
-  Archivo de obras
+  <span class="lang-es-inline">Archivo de obras</span><span class="lang-en">Works archive</span>
 </div>
 
-<div class="archivo-header">
-  <h1 class="archivo-title">Archivo<br>de obras</h1>
-  <div class="archivo-sub">Works archive · 008 registros · 2020–2025</div>
-  <p class="archivo-desc">Documentación de las misiones de la Estación Espacial Kennedy desde su fundación en junio de 2020. Cada obra es un acto de apropiación: del lenguaje científico, del imaginario espacial, del territorio.</p>
-</div>
-
-<div class="obras-grid-page">
-  <div class="obra-grid-full">
-    <a class="obra-card" href="eek-008.html">
-      <div class="obra-card-num">EEK-008 · 2025</div>
-      <div class="obra-card-img"><img src="../img/obras/eek-008.jpg" alt="Un problema de escala" loading="lazy"></div>
-      <div class="obra-card-name">Un problema de escala</div>
-      <div class="obra-card-meta"></div>
-    </a>
-    <a class="obra-card" href="eek-007.html">
-      <div class="obra-card-num">EEK-007 · 2024 · Medellín, Colombia</div>
-      <div class="obra-card-img"><img src="../img/obras/eek-007-main.jpg" alt="En la tierra, silencio" loading="lazy"></div>
-      <div class="obra-card-name">En la tierra, silencio</div>
-      <div class="obra-card-meta">Instalación · Señales · IA · Parque Explora · Residencia</div>
-    </a>
-    <a class="obra-card" href="eek-006.html">
-      <div class="obra-card-num">EEK-006 · 2024 · Bogotá, Colombia</div>
-      <div class="obra-card-img"><img src="../img/obras/eek-006.jpg" alt="Los años que no vimos las estrellas" loading="lazy"></div>
-      <div class="obra-card-name">Los años que no vimos las estrellas</div>
-      <div class="obra-card-meta">Visualización de datos · Polaris · Estrella cefeida · Artitis Vitrina</div>
-    </a>
-    <a class="obra-card" href="eek-005.html">
-      <div class="obra-card-num">EEK-005 · 2022 · Bogotá, Colombia</div>
-      <div class="obra-card-img"><img src="../img/obras/eek-005.jpg" alt="Eclipse lunar + Diego Serrano" loading="lazy"></div>
-      <div class="obra-card-name">Eclipse lunar + Diego Serrano</div>
-      <div class="obra-card-meta">Video monocanal · Exploración sonora · Estación Terrena</div>
-    </a>
-    <a class="obra-card" href="eek-004.html">
-      <div class="obra-card-num">EEK-004 · 2022 · Toronto, Canadá</div>
-      <div class="obra-card-img"><img src="../img/obras/eek-004.jpg" alt="Simulación Rocas Lunares" loading="lazy"></div>
-      <div class="obra-card-name">Simulación Rocas Lunares</div>
-      <div class="obra-card-meta">IA · Fotogrametría · 3D · DGP Lab · U. de Toronto</div>
-    </a>
-    <a class="obra-card" href="eek-003.html">
-      <div class="obra-card-num">EEK-003 · 2020 · Bogotá, Colombia</div>
-      <div class="obra-card-img"><img src="../img/obras/eek-003.jpg" alt="Fanzine" loading="lazy"></div>
-      <div class="obra-card-name">Fanzine</div>
-      <div class="obra-card-meta">Publicación · Textos del confinamiento · PDF</div>
-    </a>
-    <a class="obra-card" href="eek-002.html">
-      <div class="obra-card-num">EEK-002 · 2020 · Bogotá, Colombia</div>
-      <div class="obra-card-img"><img src="../img/obras/eek-002.jpg" alt="Cinco veces la misma piedra" loading="lazy"></div>
-      <div class="obra-card-name">Cinco veces la misma piedra</div>
-      <div class="obra-card-meta">Fotografía digital · Archivo NASA · Photoshop</div>
-    </a>
-    <a class="obra-card" href="eek-001.html">
-      <div class="obra-card-num">EEK-001 · 2020 · Bogotá, Colombia</div>
-      <div class="obra-card-img"><img src="../img/obras/eek-001.jpg" alt="Eclipse penumbral lunar" loading="lazy"></div>
-      <div class="obra-card-name">Eclipse penumbral lunar</div>
-      <div class="obra-card-meta">Video · YouTube Live · Diseño sonoro EEK</div>
-    </a>
+<!-- ── Obras ───────────────────────────────────────────────── -->
+<section class="obras-section">
+  <div class="obras-head">
+    <span class="obras-head-title"><span class="lang-es-inline">Archivo de obras</span><span class="lang-en">Works archive</span></span>
+    <span class="obras-head-count">008 <span class="lang-es-inline">registros</span><span class="lang-en">records</span> · 2020–2025</span>
   </div>
-</div>
+  <div class="obras-grid-wrap">
+    <div class="obra-grid">
+      <a class="obra-card" href="eek-008.html">
+        <div class="obra-card-num">EEK-008 · 2025</div>
+        <div class="obra-card-img">
+          <img src="../img/obras/eek-008.jpg" alt="Un problema de escala · A Problem of Scale" loading="lazy">
+        </div>
+        <div class="obra-card-name"><span class="lang-es-inline">Un problema de escala</span><span class="lang-en">A Problem of Scale</span></div>
+        <div class="obra-card-meta"></div>
+      </a>
+      <a class="obra-card" href="eek-007.html">
+        <div class="obra-card-num">EEK-007 · 2024 · Medellín</div>
+        <div class="obra-card-img">
+          <img src="../img/obras/eek-007-main.jpg" alt="En la Tierra, silencio · On Earth, Silence" loading="lazy">
+        </div>
+        <div class="obra-card-name"><span class="lang-es-inline">En la Tierra, silencio</span><span class="lang-en">On Earth, Silence</span></div>
+        <div class="obra-card-meta"><span class="lang-es-inline">Instalación · Señales · Inteligencia artificial · Exploratorio MDE · Parque Explora</span><span class="lang-en">Installation · Signals · Artificial Intelligence · Exploratorio MDE · Parque Explora</span></div>
+      </a>
+      <a class="obra-card" href="eek-006.html">
+        <div class="obra-card-num">EEK-006 · 2024 · Bogotá</div>
+        <div class="obra-card-img">
+          <img src="../img/obras/eek-006-main.jpg" alt="Los años que no vimos las estrellas · The Years We Didn't See the Stars" loading="lazy">
+        </div>
+        <div class="obra-card-name"><span class="lang-es-inline">Los años que no vimos las estrellas</span><span class="lang-en">The Years We Didn't See the Stars</span></div>
+        <div class="obra-card-meta"><span class="lang-es-inline">Visualización de datos · Polaris · Cefeida</span><span class="lang-en">Data visualization · Polaris · Cepheid</span></div>
+      </a>
+      <a class="obra-card" href="eek-005.html">
+        <div class="obra-card-num">EEK-005 · 2022 · Bogotá</div>
+        <div class="obra-card-img">
+          <img src="../img/obras/eek-005.jpg" alt="Eclipse lunar + Diego Serrano · Lunar Eclipse + Diego Serrano" loading="lazy">
+        </div>
+        <div class="obra-card-name"><span class="lang-es-inline">Eclipse lunar + Diego Serrano</span><span class="lang-en">Lunar Eclipse + Diego Serrano</span></div>
+        <div class="obra-card-meta"><span class="lang-es-inline">Video monocanal · Exploración sonora</span><span class="lang-en">Single channel video · Sound exploration</span></div>
+      </a>
+      <a class="obra-card" href="eek-004.html">
+        <div class="obra-card-num">EEK-004 · 2022 · Toronto</div>
+        <div class="obra-card-img">
+          <img src="../img/obras/eek-004.jpg" alt="Simulación Rocas Lunares · Lunar Rocks Simulation" loading="lazy">
+        </div>
+        <div class="obra-card-name"><span class="lang-es-inline">Simulación Rocas Lunares</span><span class="lang-en">Lunar Rocks Simulation</span></div>
+        <div class="obra-card-meta"><span class="lang-es-inline">Inteligencia artificial · Fotogrametría · 3D · DGP Lab</span><span class="lang-en">Artificial Intelligence · Photogrammetry · 3D · DGP Lab</span></div>
+      </a>
+      <a class="obra-card" href="eek-003.html">
+        <div class="obra-card-num">EEK-003 · 2020 · Bogotá</div>
+        <div class="obra-card-img">
+          <img src="../img/obras/eek-003.jpg" alt="Fanzine" loading="lazy">
+        </div>
+        <div class="obra-card-name">Fanzine</div>
+        <div class="obra-card-meta"><span class="lang-es-inline">Publicación · Textos del confinamiento</span><span class="lang-en">Publication · Confinement texts</span></div>
+      </a>
+      <a class="obra-card" href="eek-002.html">
+        <div class="obra-card-num">EEK-002 · 2020 · Bogotá</div>
+        <div class="obra-card-img">
+          <img src="../img/obras/eek-002.jpg" alt="Cinco veces la misma piedra · Five Times the Same Stone" loading="lazy">
+        </div>
+        <div class="obra-card-name"><span class="lang-es-inline">Cinco veces la misma piedra</span><span class="lang-en">Five Times the Same Stone</span></div>
+        <div class="obra-card-meta"><span class="lang-es-inline">Fotografía digital · Archivo NASA</span><span class="lang-en">Digital photography · NASA Archive</span></div>
+      </a>
+      <a class="obra-card" href="eek-001.html">
+        <div class="obra-card-num">EEK-001 · 2020 · Bogotá</div>
+        <div class="obra-card-img">
+          <img src="../img/obras/eek-001.jpg" alt="Eclipse penumbral lunar · Penumbral Lunar Eclipse" loading="lazy">
+        </div>
+        <div class="obra-card-name"><span class="lang-es-inline">Eclipse penumbral lunar</span><span class="lang-en">Penumbral Lunar Eclipse</span></div>
+        <div class="obra-card-meta"><span class="lang-es-inline">Video · YouTube Live · Diseño sonoro EEK</span><span class="lang-en">Video · YouTube Live · EEK Sound Design</span></div>
+      </a>
+    </div>
+  </div>
+</section>
 
 <footer class="footer">
-  <span class="footer-l">EEK · Estación Espacial Kennedy · 2020–</span>
-  <span class="footer-r">4°37'44"N · 74°8'49"W · Kennedy, Bogotá, Colombia</span>
+  <span class="footer-l">EEK · <span class="lang-es-inline">Estación Espacial Kennedy · Bogotá, Colombia · 2020–</span><span class="lang-en">Kennedy Space Station · Bogotá, Colombia · 2020–</span></span>
 </footer>
+
+<script src="../js/eek.js"></script>
+<script>
+  EEK.initAPIs();
+  EEK.initBot('bot-out', 'btn-gen', 'btn-auto');
+
+  // ── Toggle ES / EN ──
+  function toggleLang() {
+    const body = document.body;
+    const isEs = body.classList.contains('lang-es');
+    if (isEs) {
+      body.classList.remove('lang-es');
+      body.classList.add('lang-en');
+      localStorage.setItem('eek-lang', 'en');
+    } else {
+      body.classList.remove('lang-en');
+      body.classList.add('lang-es');
+      localStorage.setItem('eek-lang', 'es');
+    }
+    updateLangLabels();
+  }
+  function updateLangLabels() {
+    const isEs = document.body.classList.contains('lang-es');
+    const esLabel = document.querySelector('.lang-es-label');
+    const enLabel = document.querySelector('.lang-en-label');
+    if (esLabel) esLabel.classList.toggle('lang-active', isEs);
+    if (enLabel) enLabel.classList.toggle('lang-active', !isEs);
+  }
+  const savedLang = localStorage.getItem('eek-lang') || 'es';
+  document.body.classList.add('lang-' + savedLang);
+  updateLangLabels();
+</script>
 
 </body>
 </html>
