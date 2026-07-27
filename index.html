@@ -824,7 +824,11 @@
       'En vivo': 'Live',
     }
   };
+  // ── Traducción de valores dinámicos del JS ──
+  // Se declara observer primero para que translateDynamic pueda usarlo
+  let observer;
   function translateDynamic() {
+    if (observer) observer.disconnect(); // evitar bucle infinito
     const lang = document.body.classList.contains('lang-en') ? 'en' : 'es';
     ['iss-vis', 'sky-now', 'astro-names'].forEach(id => {
       const el = document.getElementById(id);
@@ -834,9 +838,15 @@
         if (text.includes(es)) el.textContent = text.replace(es, tr[lang][es] || es);
       }
     });
+    // Reconectar después de modificar
+    if (observer) {
+      ['iss-vis', 'sky-now', 'astro-names'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el, { childList: true, subtree: true, characterData: true });
+      });
+    }
   }
-  // Observar cambios en el DOM para traducir valores dinámicos
-  const observer = new MutationObserver(translateDynamic);
+  observer = new MutationObserver(translateDynamic);
   ['iss-vis', 'sky-now', 'astro-names'].forEach(id => {
     const el = document.getElementById(id);
     if (el) observer.observe(el, { childList: true, subtree: true, characterData: true });
