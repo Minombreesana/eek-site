@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EEK-004 · Simulación Rocas Lunares · Estación Espacial Kennedy</title>
+  <meta name="description" content="Simulación Rocas Lunares — Inteligencia artificial · Fotogrametría · 3D · DGP Lab · Toronto 2022 · EEK">
+  <link rel="stylesheet" href="../css/eek.css">
+  <style>
+    .obra-layout { display: grid; grid-template-columns: 1fr 264px; }
+    .obra-main { border-right: 1px solid var(--beige-pale); }
+    .obra-aside {
+      padding: 16px;
+      background: var(--beige);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .obra-header {
+      background: var(--beige-mid);
+      border-bottom: 1px solid var(--beige-pale);
+      padding: 24px 24px 0;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 20px;
+    }
+    .obra-id-vert {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gris);
+      padding-top: 4px;
+    }
+    .obra-num {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      color: var(--azul);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .obra-title {
+      font-family: var(--cond);
+      font-size: 46px;
+      font-weight: 900;
+      line-height: 0.9;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      color: var(--negro);
+    }
+    .obra-title-en {
+      font-size: 13px;
+      color: #888;
+      font-style: italic;
+      letter-spacing: 0.06em;
+    }
+    .img-main-wrap {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #0a0a12;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .img-main-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .img-thumbs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+    .img-thumb {
+      aspect-ratio: 4/3;
+      background: var(--beige);
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid var(--beige-dark);
+    }
+    .img-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: opacity 0.15s;
+    }
+    .img-thumb:hover img { opacity: 0.85; }
+
+    /* ES-EN Toggle */
+    .nav-lang {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--azul);
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+    .nav-lang .lang-sep { color: var(--gris-light); font-weight: 400; margin: 0 2px; }
+    .nav-lang .lang-active { border-bottom: 1px solid var(--azul); }
+    body.lang-es .lang-en,
+    body.lang-es .lang-en-block { display: none !important; }
+    body.lang-en .lang-es-inline,
+    body.lang-en .lang-es-block { display: none !important; }
+
+    /* Breadcrumb */
+    .breadcrumb { color: var(--gris) !important; }
+    .breadcrumb a { color: var(--azul) !important; }
+
+    /* Topbar blanco */
+    .topbar-l, .topbar-r { color: var(--blanco) !important; }
+    .topbar-dot { background: var(--blanco) !important; }
+
+    /* Footer blanco */
+    .footer { background: var(--azul); }
+    .footer-l { color: var(--blanco); }
+    .footer-r { color: var(--blanco); }
+
+    /* Textos en inglés: solo color, sin forzar tamaño de tipografía */
+    .lang-en { color: #888 !important; }
+
+    /* Ficha strip */
+    .ficha-key { font-size: 8px !important; color: var(--gris) !important; }
+    .ficha-val { font-size: 11px !important; }
+
+    /* Captions de fotos */
+    .img-main-wrap + p,
+    .img-thumbs + p { font-size: 10px !important; color: var(--gris) !important; }
+
+    /* Documentación técnica */
+    .proceso-body { font-size: 13px !important; }
+    .proceso-title { font-size: 14px !important; }
+    .pi-tag { font-size: 9px !important; }
+
+    /* Bloque conceptual */
+    .conceptual-block {
+      background: var(--blanco);
+      border: 2px solid var(--negro);
+      padding: 28px 24px;
+      margin: 16px 0;
+      position: relative;
+    }
+    .conceptual-label {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rojo);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .conceptual-title {
+      font-family: var(--cond);
+      font-size: 28px;
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      color: var(--negro);
+    }
+    .conceptual-body {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.95;
+      margin-bottom: 12px;
+    }
+    .conceptual-quote {
+      font-size: 16px;
+      color: var(--negro);
+      font-style: italic;
+      border-left: 3px solid var(--azul);
+      padding-left: 16px;
+      margin: 18px 0;
+      line-height: 1.6;
+    }
+
+    /* Proceso item */
+    .proceso-item {
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--beige-dark);
+    }
+    .proceso-item:last-child { border-bottom: none; }
+    .pi-tag {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      margin-left: 6px;
+    }
+    .tag-tecnica { background: var(--azul); color: var(--blanco); }
+    .tag-herramienta { background: var(--beige-dark); color: var(--gris); }
+    .proceso-link {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--azul);
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 8px;
+    }
+    .proceso-link:hover { text-decoration: underline; }
+
+    /* ── Photo grids ── */
+    .grid-1x2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 4px;
+      margin: 10px 0;
+    }
+    .grid-2x3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 4px;
+      margin: 10px 0;
+    }
+    .grid-3x3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 4px;
+      margin: 10px 0;
+    }
+    .grid-main {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #0a0a12;
+      overflow: hidden;
+      margin: 10px 0 4px;
+    }
+    .grid-main img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .grid-1main-2x3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      margin: 4px 0 10px;
+    }
+    .grid-cell {
+      aspect-ratio: 3/2;
+      background: var(--beige);
+      overflow: hidden;
+      border: 1px solid var(--beige-dark);
+    }
+    .grid-cell img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: opacity 0.15s;
+    }
+    .grid-cell:hover img { opacity: 0.85; }
+    .grid-cell-placeholder {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--gris-pale);
+      text-align: center;
+      padding: 8px;
+    }
+    .grid-caption {
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--gris-pale);
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+
+    /* ── Gallery ── */
+    .gallery-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 2px solid var(--negro);
+    }
+    .gallery-title {
+      font-family: var(--cond);
+      font-size: 20px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      color: var(--negro);
+    }
+
+    /* Step number */
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px; height: 20px;
+      background: var(--negro);
+      color: var(--blanco);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+
+    /* Sidebar usa estilos del CSS externo eek.css (igual que EEK-007) */
+    .dp-val-blue { color: var(--azul) !important; font-weight: 700; }
+
+    /* ── Enlaces destacados ── */
+    .links-block {
+      background: var(--negro);
+      padding: 20px 24px;
+      margin: 16px 0;
+    }
+    .links-label {
+      font-family: var(--cond);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--blanco);
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--gris);
+    }
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 8px;
+    }
+    .links-grid a {
+      display: block;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--blanco);
+      text-decoration: none;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--gris);
+      transition: all 0.15s;
+      line-height: 1.5;
+    }
+    .links-grid a:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: var(--blanco);
+    }
+    .links-grid a .link-sub {
+      font-size: 8px;
+      color: var(--gris-light);
+      letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 700px) {
+      .obra-layout { grid-template-columns: 1fr; }
+      .obra-aside { border-top: 1px solid var(--beige-pale); }
+      .obra-header { grid-template-columns: 1fr; }
+      .obra-id-vert { display: none; }
+      .links-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-l">EEK · <span class="lang-es-inline">Archivo de obras · Registro EEK-004</span><span class="lang-en">Works archive · Record EEK-004</span></span>
+  <span class="topbar-r">
+    <span class="topbar-dot"></span>
+    <span class="lang-es-inline">Estación Espacial Kennedy · Bogotá</span><span class="lang-en">Kennedy Space Station · Bogotá</span>
+  </span>
+</div>
+
+<nav class="nav">
+  <a class="nav-logo" href="../index.html">
+    <img class="nav-logo-img" src="../img/logo-eek.png" alt="EEK · Estación Espacial Kennedy" style="height:44px;width:auto;display:block;">
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="active"><span class="lang-es-inline">Obras</span><span class="lang-en">Works</span></a>
+    <a href="../manifiesto.html"><span class="lang-es-inline">Manifiesto</span><span class="lang-en">Manifesto</span></a>
+    <a href="../prensa.html"><span class="lang-es-inline">Prensa</span><span class="lang-en">Press</span></a>
+    <a href="../contacto.html"><span class="lang-es-inline">Contacto</span><span class="lang-en">Contact</span></a>
+    <span class="nav-lang" id="lang-toggle" onclick="toggleLang()">
+      <span class="lang-es-label lang-active">ES</span>
+      <span class="lang-sep">·</span>
+      <span class="lang-en-label">EN</span>
+    </span>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="../index.html"><span class="lang-es-inline">Inicio</span><span class="lang-en">Home</span></a>
+  <span class="breadcrumb-sep">·</span>
+  <a href="index.html"><span class="lang-es-inline">Archivo de obras</span><span class="lang-en">Works archive</span></a>
+  <span class="breadcrumb-sep">·</span>
+  EEK-004 · Simulación Rocas Lunares
+</div>
+
+<!-- ── Header de la obra ────────────────────────────────── -->
+<div class="obra-header">
+  <div class="obra-id-vert"><span class="lang-es-inline">Registro de obra · EEK</span><span class="lang-en">Work record · EEK</span></div>
+  <div>
+    <div class="obra-num">EEK-004 · <span class="lang-es-inline">Inteligencia artificial · Fotogrametría · 3D · DGP Lab · Toronto · 2022</span><span class="lang-en">Artificial Intelligence · Photogrammetry · 3D · DGP Lab · Toronto · 2022</span></div>
+    <h1 class="obra-title">Simulación Rocas Lunares</h1>
+    <div class="obra-title-en lang-en">Lunar Rocks Simulation</div>
+    <div class="ficha-strip">
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Año</span><span class="lang-en">Year</span></div><div class="ficha-val ficha-val-blue">2022</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Lugar</span><span class="lang-en">Place</span></div><div class="ficha-val">Toronto · Canadá</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Residencia</span><span class="lang-en">Residency</span></div><div class="ficha-val dp-val-blue">Artist in Residence · DGP Lab · UofT</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Estado</span><span class="lang-en">Status</span></div><div class="ficha-val"><span class="lang-es-inline">6 ejemplares impresos · Estructura final</span><span class="lang-en">6 printed specimens · Final structure</span></div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Tipo</span><span class="lang-en">Type</span></div><div class="ficha-val"><span class="lang-es-inline">Simulación · Objeto 3D</span><span class="lang-en">Simulation · 3D Object</span></div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Técnica</span><span class="lang-en">Technique</span></div><div class="ficha-val"><span class="lang-es-inline">cGAN · Pix2PixHD · Fotogrametría · Impresión 3D</span><span class="lang-en">cGAN · Pix2PixHD · Photogrammetry · 3D Printing</span></div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Entrada</span><span class="lang-en">Input</span></div><div class="ficha-val"><span class="lang-es-inline">Fotografías NASA Apollo + Rocas terrestres</span><span class="lang-en">NASA Apollo photographs + Terrestrial rocks</span></div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Proceso</span><span class="lang-en">Process</span></div><div class="ficha-val">Canny → cGAN → UV Map → Displacement → 3D Print</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Software</span><span class="lang-en">Software</span></div><div class="ficha-val">PyTorch · Metashape · Blender · GrabCAD</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Hardware</span><span class="lang-en">Hardware</span></div><div class="ficha-val">Titan RTX 24GB · Stratasys F170</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Registro</span><span class="lang-en">Record</span></div><div class="ficha-val">EEK-004</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Serie</span><span class="lang-en">Series</span></div><div class="ficha-val">2020–2025</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Cuerpo ───────────────────────────────────────────── -->
+<div class="obra-layout">
+  <div class="obra-main">
+
+    <!-- Imagen principal -->
+    <div class="sec sec-white">
+      <div class="sec-label"><span class="lang-es-inline">Documentación visual</span><span class="lang-en">Visual documentation</span></div>
+      <div class="img-main-wrap">
+        <img src="../img/obras/eek-004.jpg" alt="Simulación Rocas Lunares · Lunar Rocks Simulation · Toronto 2022">
+      </div>
+      <p style="font-family:var(--mono);font-size:8px;color:var(--gris-pale);letter-spacing:.06em;margin-bottom:14px">
+        <span class="lang-es-inline">Fig. 01 · Simulación Rocas Lunares · DGP Lab · Toronto · 2022</span>
+        <span class="lang-en">Fig. 01 · Lunar Rocks Simulation · DGP Lab · Toronto · 2022</span>
+      </p>
+      <!-- Thumbnails adicionales se agregarán cuando estén disponibles -->
+    </div>
+
+    <!-- Bloque conceptual + Descripción -->
+    <div class="sec sec-cream">
+
+      <!-- Bloque ES -->
+      <div class="lang-es-block">
+        <div class="conceptual-block">
+          <div class="conceptual-label">Concepto · Concept</div>
+          <div class="conceptual-title">El 15% de las rocas lunares está en un lugar desconocido</div>
+          <p class="conceptual-body">Durante seis misiones Apollo, la NASA recolectó 382 kilogramos de rocas y muestras de suelo lunar que han sido estudiadas y preservadas en sus instalaciones. Sin embargo, el <strong>15% de las muestras</strong> se almacena en una "instalación remota" que solo unas pocas personas conocen, como respaldo en caso de que algo ocurra en el centro donde se guarda el otro 85%.</p>
+          <p class="conceptual-body"><strong>Lunar Rocks</strong> construye una ficción sobre ese 15% de muestras almacenadas en un "lugar desconocido" que ahora tiene una ubicación exacta en el mapa: el barrio Kennedy, en el sur de Bogotá, en la Estación Espacial Kennedy.</p>
+          <div class="conceptual-quote">Un ejercicio de conversión: tomar una roca terrestre y transformarla en una roca lunar.</div>
+        </div>
+
+        <div class="sec-label">Sobre la obra · About the work</div>
+        <p style="font-size:15px;color:#444;line-height:1.95;margin-bottom:14px">
+          <strong>Simulación Rocas Lunares</strong> es el resultado de una investigación que parte del archivo fotográfico de la NASA para crear réplicas tridimensionales de rocas lunares. Mediante un pipeline que combina <strong>inteligencia artificial generativa (cGAN Pix2PixHD), fotogrametría, modelado 3D e impresión aditiva</strong>, el proyecto toma rocas terrestres reales y las transforma en objetos que simulan ser lunares.
+        </p>
+        <p style="font-size:14px;color:#555;line-height:1.9;margin-bottom:14px">
+          El trabajo se desarrolló en el marco de la residencia artística <strong>"Toronto Geometry - Artist in Residence Program Summer 2022"</strong> en el laboratorio DGP (Dynamic Graphics Project) de la University of Toronto. A partir de imágenes del archivo de las misiones Apollo, se entrenó una red neuronal generativa adversarial condicional para extraer texturas lunares, que luego fueron aplicadas sobre objetos 3D obtenidos por fotogrametría de rocas terrestres. El resultado: seis ejemplares físicos impresos en 3D.
+        </p>
+        <p style="font-size:13px;color:#666;line-height:1.8;margin-bottom:14px;font-style:italic">
+          Una versión digital de la obra forma parte del proyecto <strong>Harddisk Museum</strong>.
+        </p>
+
+        <!-- Enlaces destacados ES -->
+        <div class="links-block">
+          <div class="links-label">Enlaces · Links</div>
+          <div class="links-grid">
+            <a href="https://bit.ly/technical_report_rocks" target="_blank" rel="noopener">
+              ↗ Reporte técnico completo<br><span class="link-sub">ES · Universidad de Buenos Aires</span>
+            </a>
+            <a href="https://www.youtube.com/watch?v=x3tnrYXZFIs" target="_blank" rel="noopener">
+              ↗ Video del proceso<br><span class="link-sub">YouTube · Registro audiovisual</span>
+            </a>
+            <a href="https://harddiskmuseum.com/portfolio/ana-guzma" target="_blank" rel="noopener">
+              ↗ Harddisk Museum<br><span class="link-sub">Versión digital de la obra</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bloque EN -->
+      <div class="lang-en-block">
+        <div class="conceptual-block">
+          <div class="conceptual-label">Concept · Concepto</div>
+          <div class="conceptual-title">15% of lunar rocks are stored in an unknown location</div>
+          <p class="conceptual-body">During six Apollo missions, NASA collected 382 kilograms of lunar rock and soil samples that have been studied and preserved at NASA facilities. However, <strong>15% of the samples</strong> are stored in a "remote facility" that only a few people know about, as a backup in case something happens at the center where the other 85% is stored.</p>
+          <p class="conceptual-body"><strong>Lunar Rocks</strong> builds a fiction about that 15% of samples stored in an "unknown" place that now has an exact location on the map: the Kennedy neighborhood, in southern Bogotá, at the Kennedy Space Station.</p>
+          <div class="conceptual-quote">An exercise in conversion: taking a terrestrial rock and turning it into a lunar rock.</div>
+        </div>
+
+        <div class="sec-label">About the work · Sobre la obra</div>
+        <p style="font-size:15px;color:#444;line-height:1.95;margin-bottom:14px">
+          <strong>Lunar Rocks Simulation</strong> is the result of a research project that uses NASA's photographic archive to create three-dimensional replicas of lunar rocks. Through a pipeline combining <strong>generative artificial intelligence (cGAN Pix2PixHD), photogrammetry, 3D modeling and additive printing</strong>, the project takes real terrestrial rocks and transforms them into objects that simulate being lunar.
+        </p>
+        <p style="font-size:14px;color:#555;line-height:1.9;margin-bottom:14px">
+          The work was developed within the <strong>"Toronto Geometry - Artist in Residence Program Summer 2022"</strong> at the DGP lab (Dynamic Graphics Project) at the University of Toronto. Using images from the Apollo missions archive, a conditional generative adversarial neural network was trained to extract lunar textures, which were then applied to 3D objects obtained by photogrammetry of terrestrial rocks. The result: six physical 3D-printed specimens.
+        </p>
+        <p style="font-size:13px;color:#666;line-height:1.8;margin-bottom:14px;font-style:italic">
+          A digital version of the work is part of the <strong>Harddisk Museum</strong> project.
+        </p>
+
+        <!-- Enlaces destacados EN -->
+        <div class="links-block">
+          <div class="links-label">Links · Enlaces</div>
+          <div class="links-grid">
+            <a href="https://bit.ly/technical_report_rocks" target="_blank" rel="noopener">
+              ↗ Full technical report<br><span class="link-sub">ES · Universidad de Buenos Aires</span>
+            </a>
+            <a href="https://www.youtube.com/watch?v=x3tnrYXZFIs" target="_blank" rel="noopener">
+              ↗ Process video<br><span class="link-sub">YouTube · Audiovisual record</span>
+            </a>
+            <a href="https://harddiskmuseum.com/portfolio/ana-guzma" target="_blank" rel="noopener">
+              ↗ Harddisk Museum<br><span class="link-sub">Digital version of the work</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Proceso técnico con grillas de fotos -->
+    <div class="sec sec-white">
+      <div class="sec-label">
+        <span class="lang-es-inline">Documentación del proceso</span>
+        <span class="lang-en">Process documentation</span>
+        <span class="sec-label-sub"><span class="lang-es-inline">dataset · fotogrametría · textura · displacement · impresión 3d · estructura final</span><span class="lang-en">dataset · photogrammetry · texture · displacement · 3d printing · final structure</span></span>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <!-- PASO 1: Dataset + Canny + Pix2PixHD — Grilla 1×2 -->
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <div class="proceso-item">
+        <div class="proceso-title">
+          <span class="step-num">1</span>
+          Dataset + Canny + Pix2PixHD
+          <span class="pi-tag tag-tecnica">cGAN</span>
+          <span class="pi-tag tag-herramienta">PyTorch</span>
+          <span class="pi-tag tag-herramienta">Titan RTX</span>
+        </div>
+        <p class="proceso-body" style="margin-bottom:10px"><span class="lang-es-inline">Imágenes del archivo NASA Apollo → eliminación de fondo → algoritmo de Canny → imagen condicional. Dataset: <strong>1801 pares</strong>. Entrenamiento: 59 epochs.</span><span class="lang-en">Images from NASA Apollo archive → background removal → Canny algorithm → conditional image. Dataset: <strong>1801 pairs</strong>. Training: 59 epochs.</span></p>
+        <div class="grid-1x2">
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-01a.jpg" alt="NASA Apollo lunar rock sample"></div>
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-01b.jpg" alt="Canny edge detection"></div>
+        </div>
+        <p class="grid-caption">
+          <span class="lang-es-inline">Fig. 1–2 · Muestra NASA Apollo · Detección de bordes Canny</span>
+          <span class="lang-en">Fig. 1–2 · NASA Apollo sample · Canny edge detection</span>
+        </p>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <!-- PASO 2: Fotogrametría — Grilla 1×2 -->
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <div class="proceso-item">
+        <div class="proceso-title">
+          <span class="step-num">2</span>
+          <span class="lang-es-inline">Fotogrametría</span><span class="lang-en">Photogrammetry</span>
+          <span class="pi-tag tag-tecnica">Metashape</span>
+          <span class="pi-tag tag-herramienta">Canon EOS</span>
+        </div>
+        <p class="proceso-body" style="margin-bottom:10px"><span class="lang-es-inline"><strong>70+ fotografías por roca</strong> en ambiente controlado. Nube de puntos → limpieza de ruido → sólido .obj.</span><span class="lang-en"><strong>70+ photographs per rock</strong> in controlled environment. Point cloud → noise cleaning → .obj solid.</span></p>
+        <div class="grid-1x2">
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-02a.jpg" alt="Photogrammetry session"></div>
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-02b.jpg" alt="Dense point cloud"></div>
+        </div>
+        <p class="grid-caption">
+          <span class="lang-es-inline">Fig. 3–4 · Sesión de fotogrametría · Nube de puntos densa</span>
+          <span class="lang-en">Fig. 3–4 · Photogrammetry session · Dense point cloud</span>
+        </p>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <!-- PASO 3: Textura + UV Map — Grilla 1×2 -->
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <div class="proceso-item">
+        <div class="proceso-title">
+          <span class="step-num">3</span>
+          <span class="lang-es-inline">Textura + UV Map</span><span class="lang-en">Texture + UV Map</span>
+          <span class="pi-tag tag-tecnica">Blender</span>
+          <span class="pi-tag tag-herramienta">Smart UV Project</span>
+        </div>
+        <p class="proceso-body" style="margin-bottom:10px"><span class="lang-es-inline">Inferencias del modelo cGAN sobre bordes de las fotos de cada roca. Composición de textura mediante <strong>UV map y Smart UV Project</strong>.</span><span class="lang-en">cGAN model inferences on edges of each rock's photos. Texture composition via <strong>UV map and Smart UV Project</strong>.</span></p>
+        <div class="grid-1x2">
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-03a.jpg" alt="UV map visualization"></div>
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-03b.jpg" alt="Displacement map in Blender"></div>
+        </div>
+        <p class="grid-caption">
+          <span class="lang-es-inline">Fig. 5–6 · UV Map · Displacement map en Blender</span>
+          <span class="lang-en">Fig. 5–6 · UV Map · Displacement map in Blender</span>
+        </p>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <!-- PASO 4: Displacement Map — 1 main + grilla 2×3 -->
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <div class="proceso-item">
+        <div class="proceso-title">
+          <span class="step-num">4</span>
+          Displacement Map
+          <span class="pi-tag tag-tecnica">Blender</span>
+          <span class="pi-tag tag-herramienta">Displace Modifier</span>
+        </div>
+        <p class="proceso-body" style="margin-bottom:10px"><span class="lang-es-inline">Superficie aplanada → <strong>55.000 caras</strong> → modificador Displace con textura IA. Esculpido píxel a píxel.</span><span class="lang-en">Flattened surface → <strong>55,000 faces</strong> → Displace modifier with AI texture. Pixel-by-pixel sculpting.</span></p>
+        <div class="grid-main">
+          <img src="../img/obras/eek-004-proceso-04main.jpg" alt="3D render with displacement map">
+        </div>
+        <p class="grid-caption" style="margin-bottom:4px">
+          <span class="lang-es-inline">Fig. 7 · Render 3D con displacement map aplicado</span>
+          <span class="lang-en">Fig. 7 · 3D render with displacement map applied</span>
+        </p>
+
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <!-- PASO 5: Impresión 3D — Grilla 2×3 -->
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <div class="proceso-item">
+        <div class="proceso-title">
+          <span class="step-num">5</span>
+          <span class="lang-es-inline">Impresión 3D</span><span class="lang-en">3D Printing</span>
+          <span class="pi-tag tag-tecnica">Stratasys F170</span>
+          <span class="pi-tag tag-herramienta">ABS</span>
+        </div>
+        <p class="proceso-body" style="margin-bottom:10px"><span class="lang-es-inline"><strong>Stratasys F170</strong> · Capa 0,2 mm · Malla intermedia · ABS blanco. Post-procesado: disolución de soporte QSR.</span><span class="lang-en"><strong>Stratasys F170</strong> · 0.2 mm layer · Intermediate mesh · White ABS. Post-processing: QSR support dissolution.</span></p>
+        <div class="grid-2x3">
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-05a.jpg" alt="3D printer in action"></div>
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-05b.jpg" alt="Printed specimens"></div>
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-05c.jpg" alt="Piezas en bandeja de impresora"></div>
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-05d.jpg" alt="Extracción del soporte soluble"></div>
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-05e.jpg" alt="Enjuague final"></div>
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-05f.jpg" alt="Ejemplares terminados"></div>
+        </div>
+        <p class="grid-caption">
+          <span class="lang-es-inline">Fig. 14–19 · Impresión 3D · Piezas · Post-procesado · Resultado final</span>
+          <span class="lang-en">Fig. 14–19 · 3D Printing · Pieces · Post-processing · Final result</span>
+        </p>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <!-- PASO 6: Estructura final — Grilla 3×3 + vertical -->
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <div class="proceso-item" style="border-bottom:none">
+        <div class="proceso-title">
+          <span class="step-num">6</span>
+          <span class="lang-es-inline">Estructura final</span><span class="lang-en">Final Structure</span>
+          <span class="pi-tag tag-tecnica">Exhibición</span>
+          <span class="pi-tag tag-herramienta">DGP Lab</span>
+        </div>
+        <p class="proceso-body" style="margin-bottom:10px"><span class="lang-es-inline">Seis ejemplares dispuestos en estructura de exhibición. <strong>Residencia Artist in Residence · DGP Lab · UofT.</strong></span><span class="lang-en">Six specimens arranged in exhibition structure. <strong>Artist in Residence · DGP Lab · UofT.</strong></span></p>
+        <div class="grid-3x3">
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-06a.jpg" alt="All six specimens"></div>
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-06b.jpg" alt="3D render"></div>
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-06c.jpg" alt="3D printing process"></div>
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-06d.jpg" alt="Photogrammetry"></div>
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-06e.jpg" alt="NASA source"></div>
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-06f.jpg" alt="Edge detection"></div>
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-06g.jpg" alt="UV mapping"></div>
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-06h.jpg" alt="Displacement"></div>
+          <div class="grid-cell"><img src="../img/obras/eek-004-proceso-06i.jpg" alt="Exhibition"></div>
+        </div>
+        <p class="grid-caption">
+          <span class="lang-es-inline">Fig. 20–28 · Estructura final · 9 vistas del proceso completo</span>
+          <span class="lang-en">Fig. 20–28 · Final structure · 9 views of the complete process</span>
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- GALERÍA 2×3 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="sec sec-cream gallery-section">
+      <div class="gallery-title">
+        <span class="lang-es-inline">Galería</span><span class="lang-en">Gallery</span>
+      </div>
+      <div class="grid-2x3">
+        <div class="grid-cell"><img src="../img/obras/eek-004-proceso-07a.jpg" alt="Lunar Rocks Simulation main"></div>
+        <div class="grid-cell"><img src="../img/obras/eek-004-proceso-07b.jpg" alt="3D render"></div>
+        <div class="grid-cell"><img src="../img/obras/eek-004-proceso-07c.jpg" alt="Six specimens"></div>
+        <div class="grid-cell"><img src="../img/obras/eek-004-proceso-07d.jpg" alt="3D printer"></div>
+        <div class="grid-cell"><img src="../img/obras/eek-004-proceso-07e.jpg" alt="Exhibition"></div>
+        <div class="grid-cell"><img src="../img/obras/eek-004-proceso-07f.jpg" alt="Photogrammetry"></div>
+      </div>
+      <p class="grid-caption">
+        <span class="lang-es-inline">Galería · 6 vistas seleccionadas del proceso EEK-004</span>
+        <span class="lang-en">Gallery · 6 selected views from EEK-004 process</span>
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ── Sidebar ────────────────────────────────────────── -->
+  <aside class="obra-aside">
+
+    <div class="data-panel">
+      <div class="data-panel-head"><span class="dp-title"><span class="lang-es-inline">Ficha técnica</span><span class="lang-en">Technical sheet</span></span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Código</span><span class="lang-en">Code</span></span><span class="dp-val">EEK-004</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Título</span><span class="lang-en">Title</span></span><span class="dp-val"><span class="lang-es-inline">Simulación Rocas Lunares</span><span class="lang-en">Lunar Rocks Simulation</span></span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Tipo</span><span class="lang-en">Type</span></span><span class="dp-val"><span class="lang-es-inline">Simulación · Objeto 3D</span><span class="lang-en">Simulation · 3D Object</span></span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Técnica</span><span class="lang-en">Technique</span></span><span class="dp-val">cGAN · Pix2PixHD · <span class="lang-es-inline">Fotogrametría</span><span class="lang-en">Photogrammetry</span> · 3D</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Año</span><span class="lang-en">Year</span></span><span class="dp-val">2022</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Lugar</span><span class="lang-en">Place</span></span><span class="dp-val">Toronto · Canada</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Residencia</span><span class="lang-en">Residency</span></span><span class="dp-val dp-val-blue">Artist in Residence · DGP Lab · UofT</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Dataset</span><span class="lang-en">Dataset</span></span><span class="dp-val">1801 <span class="lang-es-inline">imágenes NASA Apollo</span><span class="lang-en">NASA Apollo images</span></span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Entrenamiento</span><span class="lang-en">Training</span></span><span class="dp-val">59 epochs · Titan RTX 24GB</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Impresora 3D</span><span class="lang-en">3D Printer</span></span><span class="dp-val">Stratasys F170 · ABS</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Ejemplares</span><span class="lang-en">Specimens</span></span><span class="dp-val">6 <span class="lang-es-inline">piezas impresas</span><span class="lang-en">printed pieces</span></span></div>
+    </div>
+
+    <div class="data-panel">
+      <div class="data-panel-head"><span class="dp-title"><span class="lang-es-inline">Sistema</span><span class="lang-en">System</span></span></div>
+      <div class="dp-row"><span class="dp-key">Pix2PixHD</span><span class="dp-val">cGAN · <span class="lang-es-inline">Texturas lunares</span><span class="lang-en">Lunar textures</span></span></div>
+      <div class="dp-row"><span class="dp-key">Metashape</span><span class="dp-val"><span class="lang-es-inline">Fotogrametría · Nube de puntos</span><span class="lang-en">Photogrammetry · Point cloud</span></span></div>
+      <div class="dp-row"><span class="dp-key">Blender</span><span class="dp-val">UV Map · Displacement</span></div>
+      <div class="dp-row"><span class="dp-key">Stratasys F170</span><span class="dp-val">3D Print · ABS</span></div>
+    </div>
+
+    <div class="links-block">
+      <div class="data-panel-head"><span class="dp-title"><span class="lang-es-inline">Vínculos</span><span class="lang-en">Links</span></span></div>
+      <a class="link-item" href="https://bit.ly/technical_report_rocks" target="_blank" rel="noopener">
+        <span class="link-item-type">PDF</span>
+        <span class="link-item-label"><span class="lang-es-inline">Reporte técnico completo</span><span class="lang-en">Full technical report</span></span>
+        <span class="link-item-arrow">↗</span>
+      </a>
+      <a class="link-item" href="https://www.youtube.com/watch?v=x3tnrYXZFIs" target="_blank" rel="noopener">
+        <span class="link-item-type">YOUTUBE</span>
+        <span class="link-item-label"><span class="lang-es-inline">Video del proceso</span><span class="lang-en">Process video</span></span>
+        <span class="link-item-arrow">↗</span>
+      </a>
+      <a class="link-item" href="https://harddiskmuseum.com/portfolio/ana-guzma" target="_blank" rel="noopener">
+        <span class="link-item-type">WEB</span>
+        <span class="link-item-label">Harddisk Museum</span>
+        <span class="link-item-arrow">↗</span>
+      </a>
+    </div>
+
+    <div class="data-panel">
+      <div class="data-panel-head"><span class="dp-title"><span class="lang-es-inline">En esta serie · EEK 2020–2025</span><span class="lang-en">In this series · EEK 2020–2025</span></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-008</span><span class="dp-val"><a href="eek-008.html" style="color:var(--azul);text-decoration:none"><span class="lang-es-inline">Un problema de escala</span><span class="lang-en">A Problem of Scale</span></a></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-007</span><span class="dp-val"><a href="eek-007.html" style="color:var(--azul);text-decoration:none"><span class="lang-es-inline">En la Tierra, silencio</span><span class="lang-en">On Earth, Silence</span></a></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-006</span><span class="dp-val"><a href="eek-006.html" style="color:var(--azul);text-decoration:none"><span class="lang-es-inline">Los años que no vimos...</span><span class="lang-en">The Years We Didn't See...</span></a></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-004</span><span class="dp-val dp-val-blue"><span class="lang-es-inline">Simulación Rocas Lunares ←</span><span class="lang-en">Lunar Rocks Simulation ←</span></span></div>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- ── Footer ───────────────────────────────────────────── -->
+<footer class="footer">
+  <span class="footer-l">EEK · Estación Espacial Kennedy · Bogotá, Colombia · 2020–</span>
+  <div class="footer-socials">
+    <a href="https://www.youtube.com/@estacionespacialkennedy" target="_blank" rel="noopener">YOUTUBE</a>
+    <a href="https://www.instagram.com/estacion_kennedy/" target="_blank" rel="noopener">INSTAGRAM</a>
+    <a href="https://www.maquinasestadosinfinitos.net/" target="_blank" rel="noopener">MÁQUINAS ESTADOS INFINITOS</a>
+    <span class="footer-email">estacionespacialkennedy@gmail.com</span>
+  </div>
+</footer>
+
+<script>
+  // ── Toggle ES / EN ──
+  function toggleLang() {
+    const body = document.body;
+    const isEs = body.classList.contains('lang-es');
+    if (isEs) {
+      body.classList.remove('lang-es');
+      body.classList.add('lang-en');
+      localStorage.setItem('eek-lang', 'en');
+    } else {
+      body.classList.remove('lang-en');
+      body.classList.add('lang-es');
+      localStorage.setItem('eek-lang', 'es');
+    }
+    updateLangLabels();
+  }
+  function updateLangLabels() {
+    const isEs = document.body.classList.contains('lang-es');
+    const esLabel = document.querySelector('.lang-es-label');
+    const enLabel = document.querySelector('.lang-en-label');
+    if (esLabel) esLabel.classList.toggle('lang-active', isEs);
+    if (enLabel) enLabel.classList.toggle('lang-active', !isEs);
+  }
+  const savedLang = localStorage.getItem('eek-lang') || 'es';
+  document.body.classList.add('lang-' + savedLang);
+  updateLangLabels();
+</script>
+
+</body>
+</html>
