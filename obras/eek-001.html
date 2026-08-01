@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EEK-001 · Eclipse penumbral lunar · Estación Espacial Kennedy</title>
-  <meta name="description" content="Transmisión en vivo de la simulación del eclipse lunar penumbral — 5 de junio de 2020. Kennedy, Bogotá.">
+  <title>EEK-001 · Eclipse Lunar Penumbral · Estación Espacial Kennedy</title>
+  <meta name="description" content="Eclipse Lunar Penumbral — Transmisión en vivo · Animación · Diseño Sonoro · YouTube · Kennedy Bogotá · 2020 · EEK">
   <link rel="stylesheet" href="../css/eek.css">
   <style>
     .obra-layout { display: grid; grid-template-columns: 1fr 264px; }
@@ -28,10 +28,10 @@
       writing-mode: vertical-rl;
       transform: rotate(180deg);
       font-family: var(--mono);
-      font-size: 7px;
+      font-size: 9px;
       letter-spacing: 0.3em;
       text-transform: uppercase;
-      color: var(--beige-pale);
+      color: var(--gris);
       padding-top: 4px;
     }
     .obra-num {
@@ -49,16 +49,17 @@
       line-height: 0.9;
       text-transform: uppercase;
       margin-bottom: 4px;
+      color: var(--negro);
     }
     .obra-title-en {
-      font-size: 10px;
-      color: var(--gris-light);
+      font-size: 13px;
+      color: #888;
       font-style: italic;
       letter-spacing: 0.06em;
     }
     .img-main-wrap {
       width: 100%;
-      aspect-ratio: 16/9;
+      aspect-ratio: 2/1;
       background: #0a0a12;
       overflow: hidden;
       margin-bottom: 6px;
@@ -74,10 +75,11 @@
       margin-bottom: 6px;
     }
     .img-thumb {
-      aspect-ratio: 4/3;
-      background: #111;
+      aspect-ratio: 2/1;
+      background: var(--beige);
       overflow: hidden;
       cursor: pointer;
+      border: 1px solid var(--beige-dark);
     }
     .img-thumb img {
       width: 100%; height: 100%;
@@ -85,99 +87,184 @@
       transition: opacity 0.15s;
     }
     .img-thumb:hover img { opacity: 0.85; }
-    .uvb-block {
-      background: #111;
-      padding: 10px 12px;
-      margin-top: 10px;
-      border: 1px solid #222;
-    }
-    .uvb-label {
+
+    /* ES-EN Toggle */
+    .nav-lang {
       font-family: var(--mono);
-      font-size: 7px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #444;
-      margin-bottom: 8px;
+      font-size: 10px;
+      color: var(--azul);
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
     }
-    .uvb-wave { display: flex; align-items: center; gap: 3px; height: 20px; }
-    .uvb-bar {
-      width: 2px;
-      background: #333;
-      border-radius: 1px;
-      animation: wave 1.4s infinite ease-in-out;
+    .nav-lang .lang-sep { color: var(--gris-light); font-weight: 400; margin: 0 2px; }
+    .nav-lang .lang-active { border-bottom: 1px solid var(--azul); }
+    body.lang-es .lang-en,
+    body.lang-es .lang-en-block { display: none !important; }
+    body.lang-en .lang-es-inline,
+    body.lang-en .lang-es-block { display: none !important; }
+
+    .breadcrumb { color: var(--gris) !important; }
+    .breadcrumb a { color: var(--azul) !important; }
+    .topbar-l, .topbar-r { color: var(--blanco) !important; }
+    .topbar-dot { background: var(--blanco) !important; }
+    .footer { background: var(--azul); }
+    .footer-l { color: var(--blanco); }
+    .lang-en { color: #888 !important; }
+    .ficha-key { font-size: 8px !important; color: var(--gris) !important; }
+    .ficha-val { font-size: 11px !important; }
+
+    /* Photo grids */
+    .grid-1x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; margin: 10px 0; }
+    .grid-2x3 { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 4px; margin: 10px 0; }
+    .grid-3x3 { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 4px; margin: 10px 0; }
+    /* Bloque animación: 3x2 con separación conceptual */
+    .grid-anim-3x2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 10px 0;
     }
-    @keyframes wave { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
-    .uvb-freq {
+    .grid-anim-col {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(3, 1fr);
+      gap: 4px;
+    }
+    .grid-anim-divider {
       font-family: var(--mono);
       font-size: 8px;
-      color: #333;
-      margin-top: 6px;
-      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gris);
+      text-align: center;
+      padding: 4px 0;
+      border-bottom: 1px solid var(--beige-dark);
+      margin-bottom: 4px;
     }
+    /* Imagen tabla de datos del eclipse (horizontal) */
+    .img-tabla {
+      width: 100%;
+      margin: 10px 0;
+      display: block;
+      background: var(--blanco);
+      overflow: hidden;
+      border: 1px solid var(--beige-dark);
+    }
+    .img-tabla img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .grid-main { width: 100%; aspect-ratio: 2/1; background: #0a0a12; overflow: hidden; margin: 10px 0 4px; }
+    .grid-main img { width: 100%; height: 100%; object-fit: cover; }
+    .grid-cell { aspect-ratio: 2/1; background: var(--beige); overflow: hidden; border: 1px solid var(--beige-dark); }
+    .grid-cell img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.15s; }
+    .grid-cell:hover img { opacity: 0.85; }
+    .grid-caption { font-family: var(--mono); font-size: 8px; color: var(--gris-pale); letter-spacing: 0.05em; margin-bottom: 14px; }
+
+    /* Gallery */
+    .gallery-section { margin-top: 20px; padding-top: 20px; border-top: 2px solid var(--negro); }
+    .gallery-title { font-family: var(--cond); font-size: 20px; font-weight: 900; text-transform: uppercase; margin-bottom: 12px; color: var(--negro); }
+
+    /* Process */
+    .proceso-item { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--beige-dark); }
+    .proceso-item:last-child { border-bottom: none; }
+    .pi-tag { font-family: var(--mono); font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 6px; margin-left: 6px; }
+    .tag-tecnica { background: var(--azul); color: var(--blanco); }
+    .tag-herramienta { background: var(--beige-dark); color: var(--gris); }
+    .step-num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; background: var(--negro); color: var(--blanco); font-family: var(--mono); font-size: 10px; font-weight: 700; margin-right: 8px; }
+    .proceso-link { font-family: var(--mono); font-size: 10px; color: var(--azul); text-decoration: none; display: inline-block; margin-top: 8px; padding: 6px 0; }
+    .proceso-link:hover { text-decoration: underline; }
+
+    /* Conceptual */
+    .conceptual-block { background: var(--blanco); border: 2px solid var(--negro); padding: 28px 24px; margin: 16px 0; position: relative; }
+    .conceptual-label { font-family: var(--mono); font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--rojo); font-weight: 700; margin-bottom: 16px; }
+    .conceptual-title { font-family: var(--cond); font-size: 28px; font-weight: 900; text-transform: uppercase; line-height: 1.1; margin-bottom: 16px; color: var(--negro); }
+    .conceptual-body { font-size: 14px; color: #555; line-height: 1.95; margin-bottom: 12px; }
+    .conceptual-quote { font-size: 16px; color: var(--negro); font-style: italic; border-left: 3px solid var(--azul); padding-left: 16px; margin: 18px 0; line-height: 1.6; }
+
+    /* Links */
+    .links-block { background: var(--negro); padding: 20px 24px; margin: 16px 0; }
+    .links-label { font-family: var(--cond); font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blanco); margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--gris); }
+    .links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; }
+    .links-grid a { display: block; font-family: var(--mono); font-size: 10px; color: var(--blanco); text-decoration: none; padding: 10px 12px; background: rgba(255,255,255,0.06); border: 1px solid var(--gris); transition: all 0.15s; line-height: 1.5; }
+    .links-grid a:hover { background: rgba(255,255,255,0.12); border-color: var(--blanco); }
+    .links-grid a .link-sub { font-size: 8px; color: var(--gris-light); letter-spacing: 0.05em; }
+
+    /* Audio player */
+    .audio-block { background: var(--beige-mid); border: 1px solid var(--beige-dark); padding: 16px 20px; margin: 16px 0; }
+    .audio-label { font-family: var(--cond); font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--azul); margin-bottom: 10px; }
+    audio { width: 100%; height: 32px; }
+
+    /* Sidebar styles from eek.css */
+    .dp-val-blue { color: var(--azul) !important; font-weight: 700; }
+
     @media (max-width: 700px) {
       .obra-layout { grid-template-columns: 1fr; }
       .obra-aside { border-top: 1px solid var(--beige-pale); }
       .obra-header { grid-template-columns: 1fr; }
       .obra-id-vert { display: none; }
+      .links-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
 <div class="topbar">
-  <span class="topbar-l">EEK · Archivo de obras · Registro EEK-001</span>
+  <span class="topbar-l">EEK · <span class="lang-es-inline">Archivo de obras · Registro EEK-001</span><span class="lang-en">Works archive · Record EEK-001</span></span>
   <span class="topbar-r">
     <span class="topbar-dot"></span>
-    Estación Espacial Kennedy · Bogotá
+    <span class="lang-es-inline">Estación Espacial Kennedy · Bogotá</span><span class="lang-en">Kennedy Space Station · Bogotá</span>
   </span>
 </div>
 
 <nav class="nav">
   <a class="nav-logo" href="../index.html">
-    <span class="nav-logo-eek">EEK</span>
-    <div class="nav-logo-sep"></div>
-    <div class="nav-logo-name">
-      <div>Estación Espacial Kennedy</div>
-      <em>Kennedy Space Station</em>
-    </div>
+    <img class="nav-logo-img" src="../img/logo-eek.png" alt="EEK · Estación Espacial Kennedy" style="height:44px;width:auto;display:block;">
   </a>
   <div class="nav-links">
-    <a href="index.html" class="active">Obras</a>
-    <a href="../manifiesto.html">Manifiesto</a>
-    <a href="../prensa.html">Prensa</a>
-    <a href="../contacto.html">Contacto</a>
-    <span class="nav-lang">ES · EN</span>
+    <a href="index.html" class="active"><span class="lang-es-inline">Obras</span><span class="lang-en">Works</span></a>
+    <a href="../manifiesto.html"><span class="lang-es-inline">Manifiesto</span><span class="lang-en">Manifesto</span></a>
+    <a href="../prensa.html"><span class="lang-es-inline">Prensa</span><span class="lang-en">Press</span></a>
+    <a href="../contacto.html"><span class="lang-es-inline">Contacto</span><span class="lang-en">Contact</span></a>
+    <span class="nav-lang" id="lang-toggle" onclick="toggleLang()">
+      <span class="lang-es-label lang-active">ES</span>
+      <span class="lang-sep">·</span>
+      <span class="lang-en-label">EN</span>
+    </span>
   </div>
 </nav>
 
 <div class="breadcrumb">
-  <a href="../index.html">Inicio</a>
+  <a href="../index.html"><span class="lang-es-inline">Inicio</span><span class="lang-en">Home</span></a>
   <span class="breadcrumb-sep">·</span>
-  <a href="index.html">Archivo de obras</a>
+  <a href="index.html"><span class="lang-es-inline">Archivo de obras</span><span class="lang-en">Works archive</span></a>
   <span class="breadcrumb-sep">·</span>
-  EEK-001 · Eclipse penumbral lunar
+  EEK-001 · Eclipse Lunar Penumbral
 </div>
 
 <!-- ── Header de la obra ────────────────────────────────── -->
 <div class="obra-header">
-  <div class="obra-id-vert">Registro de obra · EEK</div>
+  <div class="obra-id-vert"><span class="lang-es-inline">Registro de obra · EEK</span><span class="lang-en">Work record · EEK</span></div>
   <div>
-    <div class="obra-num">EEK-001 · Registro audiovisual y documental · Primera transmisión</div>
-    <h1 class="obra-title">Eclipse<br>penumbral<br>lunar</h1>
-    <div class="obra-title-en">Penumbral Lunar Eclipse</div>
+    <div class="obra-num">EEK-001 · <span class="lang-es-inline">Transmisión · Animación · Diseño Sonoro · YouTube · Kennedy · 2020</span><span class="lang-en">Streaming · Animation · Sound Design · YouTube · Kennedy · 2020</span></div>
+    <h1 class="obra-title">Eclipse Lunar Penumbral</h1>
+    <div class="obra-title-en lang-en">Penumbral Lunar Eclipse</div>
     <div class="ficha-strip">
-      <div class="ficha-cell"><div class="ficha-key">Año</div><div class="ficha-val ficha-val-blue">2020</div></div>
-      <div class="ficha-cell"><div class="ficha-key">Fecha</div><div class="ficha-val">5 jun. 2020</div></div>
-      <div class="ficha-cell"><div class="ficha-key">Hora Bogotá</div><div class="ficha-val">12:45–16:04</div></div>
-      <div class="ficha-cell"><div class="ficha-key">Barrio</div><div class="ficha-val">Kennedy, Bogotá</div></div>
-      <div class="ficha-cell"><div class="ficha-key">Medio</div><div class="ficha-val">YouTube Live</div></div>
-      <div class="ficha-cell"><div class="ficha-key">Visibilidad real</div><div class="ficha-val ficha-val-red">0% · No visible</div></div>
-      <div class="ficha-cell"><div class="ficha-key">Animación</div><div class="ficha-val">Illustrator · AE</div></div>
-      <div class="ficha-cell"><div class="ficha-key">Fuente visual</div><div class="ficha-val">timeanddate.com</div></div>
-      <div class="ficha-cell"><div class="ficha-key">Diseño sonoro</div><div class="ficha-val">EEK</div></div>
-      <div class="ficha-cell"><div class="ficha-key">Fuente sonora</div><div class="ficha-val">UVB-76 · WhatsApp</div></div>
-      <div class="ficha-cell"><div class="ficha-key">Contexto</div><div class="ficha-val">Covid-19 · Cuarentena</div></div>
-      <div class="ficha-cell"><div class="ficha-key">Transmisión EEK</div><div class="ficha-val ficha-val-blue">100% · En vivo</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Año</span><span class="lang-en">Year</span></div><div class="ficha-val ficha-val-blue">2020</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Fecha</span><span class="lang-en">Date</span></div><div class="ficha-val dp-val-blue">5 junio 2020 · 12:45 – 16:04 UTC-5</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Lugar</span><span class="lang-en">Place</span></div><div class="ficha-val">Kennedy · Bogotá · Colombia</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Plataforma</span><span class="lang-en">Platform</span></div><div class="ficha-val">YouTube · Transmisión en vivo</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Tipo</span><span class="lang-en">Type</span></div><div class="ficha-val"><span class="lang-es-inline">Transmisión · Animación</span><span class="lang-en">Streaming · Animation</span></div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Técnica</span><span class="lang-en">Technique</span></div><div class="ficha-val">Illustrator · After Effects · UVB-76</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Animación</span><span class="lang-en">Animation</span></div><div class="ficha-val"><span class="lang-es-inline">Patrón de oscurecimiento del eclipse real</span><span class="lang-en">Darkening pattern of the real eclipse</span></div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Sonido</span><span class="lang-en">Sound</span></div><div class="ficha-val"><span class="lang-es-inline">90% UVB-76 radio + audios WhatsApp</span><span class="lang-en">90% UVB-76 radio + WhatsApp audio</span></div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Eclipse real</span><span class="lang-en">Real eclipse</span></div><div class="ficha-val">Penumbral · No visible en Colombia</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Registro</span><span class="lang-en">Record</span></div><div class="ficha-val">EEK-001</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Serie</span><span class="lang-en">Series</span></div><div class="ficha-val">2020–2025</div></div>
     </div>
   </div>
 </div>
@@ -188,199 +275,269 @@
 
     <!-- Imagen principal -->
     <div class="sec sec-white">
-      <div class="sec-label">Documentación visual</div>
+      <div class="sec-label"><span class="lang-es-inline">Documentación visual</span><span class="lang-en">Visual documentation</span></div>
       <div class="img-main-wrap">
-        <!-- Reemplazar src con imagen real -->
-        <img src="../img/obras/eek-001-main.jpg" alt="Eclipse penumbral lunar — EEK 2020">
+        <img src="../img/obras/eek-001.png" alt="Eclipse Lunar Penumbral · Transmisión EEK · 5 junio 2020">
       </div>
       <p style="font-family:var(--mono);font-size:8px;color:var(--gris-pale);letter-spacing:.06em;margin-bottom:14px">
-        Fig. 01 · Simulación del eclipse en transmisión · Canal YouTube EEK · 5 jun. 2020 · 12:45–16:04 Bogotá
+        <span class="lang-es-inline">Fig. 01 · Eclipse Lunar Penumbral · Transmisión EEK · 5 junio 2020</span>
+        <span class="lang-en">Fig. 01 · Penumbral Lunar Eclipse · EEK Streaming · June 5 2020</span>
       </p>
-      <div class="img-thumbs">
-        <div class="img-thumb"><img src="../img/obras/eek-001-b.jpg" alt="Fig. 02"></div>
-        <div class="img-thumb"><img src="../img/obras/eek-001-c.jpg" alt="Fig. 03"></div>
-        <div class="img-thumb"><img src="../img/obras/eek-001-d.jpg" alt="Fig. 04"></div>
-      </div>
-      <p style="font-family:var(--mono);font-size:7px;color:var(--gris-pale);letter-spacing:.05em">
-        Fig. 02–04 · Progresión de la animación: inicio · pico · fin del eclipse
-      </p>
+
     </div>
 
-    <!-- Descripción -->
+    <!-- Bloque conceptual + Descripción -->
     <div class="sec sec-cream">
-      <div class="sec-label">Descripción</div>
-      <p style="font-size:12px;color:#444;line-height:1.9;margin-bottom:12px">
-        Transmisión en vivo de la simulación del eclipse lunar penumbral en tiempo real en el canal de YouTube de Estación Espacial Kennedy. El eclipse ocurrió el 5 de junio de 2020, durante el confinamiento de la localidad de Kennedy por Covid-19. Desde Colombia, por su ubicación geográfica, el eclipse era invisible. La EEK lo transmitió de todas formas.
-      </p>
-      <p style="font-size:10px;color:var(--gris-pale);line-height:1.8;font-style:italic;border-top:.5px solid var(--beige-dark);padding-top:12px">
-        Live broadcast of the penumbral lunar eclipse simulation in real time on the Kennedy Space Station YouTube channel. The eclipse occurred on June 5, 2020, during the Covid-19 lockdown of the Kennedy neighborhood. From Colombia, due to its geographic location, the eclipse was invisible. The Kennedy Space Station broadcast it anyway.
-      </p>
+
+      <!-- Bloque ES -->
+      <div class="lang-es-block">
+        <div class="conceptual-block">
+          <div class="conceptual-label">Concepto · Concept</div>
+          <div class="conceptual-title">Un eclipse que no pudimos ver</div>
+          <p class="conceptual-body">En 2020, durante la cuarentena, el barrio Kennedy estaba aislado. El perímetro era custodiado por soldados y policías. Era imposible salir. En ese contexto, ocurrió un eclipse lunar penumbral, pero debido a la ubicación geográfica de Colombia <strong>no fue visible desde el territorio nacional</strong>.</p>
+          <p class="conceptual-body"><strong>Estación Espacial Kennedy</strong> fue creada como respuesta: una herramienta de apropiación espacial y tecnológica a través de instrumentos de ficción. Se transmitió una simulación del eclipse en YouTube para las personas encerradas en Kennedy, al mismo tiempo que ocurría el fenómeno real.</p>
+          <div class="conceptual-quote">Una declaración política y artística sobre el confinamiento, la visibilidad astronómica y la tecnología como medio de empoderamiento comunitario.</div>
+        </div>
+
+        <div class="sec-label">Sobre la obra · About the work</div>
+        <p style="font-size:15px;color:#444;line-height:1.95;margin-bottom:14px">
+          <strong>Eclipse Lunar Penumbral</strong> es una transmisión en vivo que simuló el eclipse ocurrido el 5 de junio de 2020. La animación fue diseñada siguiendo el <strong>patrón de oscurecimiento real</strong> del eclipse, creada en Illustrator y animada en After Effects.
+        </p>
+        <p style="font-size:14px;color:#555;line-height:1.9;margin-bottom:14px">
+          El diseño sonoro fue construido en un <strong>90% con audios de la radio UVB-76</strong>, una estación rusa que transmite una frecuencia monótona de 4635 KHz desde hace más de 40 años. Los audios fueron curados seleccionando grabaciones de diferentes 5 de junio de diferentes años, mezclados con <strong>audios de WhatsApp enviados en 2020</strong> sobre la situación del barrio Kennedy durante el confinamiento.
+        </p>
+
+        <!-- Enlace destacado ES -->
+        <div class="links-block">
+          <div class="links-label">Enlaces · Links</div>
+          <div class="links-grid">
+            <a href="https://www.timeanddate.com/eclipse/lunar/2020-june-5" target="_blank" rel="noopener">
+              ↗ Datos del eclipse<br><span class="link-sub">Time and Date · 5 junio 2020</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bloque EN -->
+      <div class="lang-en-block">
+        <div class="conceptual-block">
+          <div class="conceptual-label">Concept · Concepto</div>
+          <div class="conceptual-title">An eclipse we could not see</div>
+          <p class="conceptual-body">In 2020, during the quarantine, the Kennedy neighborhood was isolated. The perimeter was guarded by soldiers and police. It was impossible to leave. In this context, a penumbral lunar eclipse occurred, but due to Colombia's geographic location <strong>it was not visible from the national territory</strong>.</p>
+          <p class="conceptual-body"><strong>Kennedy Space Station</strong> was created as a response: a tool for spatial and technological appropriation through fictional instruments. A simulation of the eclipse was streamed on YouTube for the people locked up in Kennedy, at the same time the real phenomenon occurred.</p>
+          <div class="conceptual-quote">A political and artistic statement about confinement, astronomical visibility and technology as a means of community empowerment.</div>
+        </div>
+
+        <div class="sec-label">About the work · Sobre la obra</div>
+        <p style="font-size:15px;color:#444;line-height:1.95;margin-bottom:14px">
+          <strong>Penumbral Lunar Eclipse</strong> is a live stream that simulated the eclipse that occurred on June 5, 2020. The animation was designed following the <strong>real darkening pattern</strong> of the eclipse, created in Illustrator and animated in After Effects.
+        </p>
+        <p style="font-size:14px;color:#555;line-height:1.9;margin-bottom:14px">
+          The sound design was built with <strong>90% audio from UVB-76 radio</strong>, a Russian station that transmits a monotonous frequency of 4635 KHz for more than 40 years. The audio was curated by selecting recordings from different June 5ths from different years, mixed with <strong>WhatsApp audios sent in 2020</strong> about the situation of the Kennedy neighborhood during the lockdown.
+        </p>
+
+        <!-- Enlace destacado EN -->
+        <div class="links-block">
+          <div class="links-label">Links · Enlaces</div>
+          <div class="links-grid">
+            <a href="https://www.timeanddate.com/eclipse/lunar/2020-june-5" target="_blank" rel="noopener">
+              ↗ Eclipse data<br><span class="link-sub">Time and Date · June 5 2020</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- Datos astronómicos -->
+    <!-- Proceso técnico -->
     <div class="sec sec-white">
       <div class="sec-label">
-        Datos del evento astronómico
-        <span class="sec-label-sub">fuente: timeanddate.com</span>
+        <span class="lang-es-inline">Documentación del proceso</span>
+        <span class="lang-en">Process documentation</span>
+        <span class="sec-label-sub"><span class="lang-es-inline">animación · sound design · transmisión</span><span class="lang-en">animation · sound design · streaming</span></span>
       </div>
-      <table class="tabla">
-        <thead>
-          <tr>
-            <th>Evento</th>
-            <th>Hora UTC</th>
-            <th>Hora Bogotá (UTC-5)</th>
-            <th>Visible en Bogotá</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Inicio eclipse penumbral</td>
-            <td>5 jun. 17:45:51</td>
-            <td>5 jun. 12:45:51</td>
-            <td class="tabla-red">No · bajo el horizonte</td>
-          </tr>
-          <tr>
-            <td>Pico del eclipse</td>
-            <td>5 jun. 19:24:55</td>
-            <td>5 jun. 14:24:55</td>
-            <td class="tabla-red">No · bajo el horizonte</td>
-          </tr>
-          <tr>
-            <td>Fin eclipse penumbral</td>
-            <td>5 jun. 21:04:03</td>
-            <td>5 jun. 16:04:03</td>
-            <td class="tabla-red">No · bajo el horizonte</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
 
-    <!-- Proceso -->
-    <div class="sec sec-cream">
-      <div class="sec-label">Documentación del proceso</div>
-
+      <!-- PASO 1: Animación — Imagen cuadro + bloque 3×2 -->
       <div class="proceso-item">
         <div class="proceso-title">
-          Animación
-          <span class="pi-tag tag-herramienta">Adobe Illustrator</span>
+          <span class="step-num">1</span>
+          <span class="lang-es-inline">Animación</span><span class="lang-en">Animation</span>
+          <span class="pi-tag tag-tecnica">Illustrator</span>
           <span class="pi-tag tag-herramienta">After Effects</span>
         </div>
-        <p class="proceso-body">
-          La animación fue construida siguiendo el patrón de oscurecimiento real del eclipse penumbral. Se tomó como referencia la simulación oficial de timeanddate.com para reproducir la progresión exacta de luz y sombra. Diseñada en Illustrator y animada en After Effects, la pieza reprodujo en tiempo real lo que estaba ocurriendo en el cielo — invisible desde Kennedy.
+        <p class="proceso-body" style="margin-bottom:10px"><span class="lang-es-inline">La animación fue diseñada siguiendo el <strong>patrón de oscurecimiento real</strong> del eclipse. La forma de la sombra penumbral fue dibujada en Illustrator y animada en After Effects, sincronizando cada fase con los tiempos exactos del fenómeno astronómico.</span><span class="lang-en">The animation was designed following the <strong>real darkening pattern</strong> of the eclipse. The penumbral shadow shape was drawn in Illustrator and animated in After Effects, synchronizing each phase with the exact times of the astronomical phenomenon.</span></p>
+
+        <!-- Tabla de datos del eclipse -->
+        <div class="img-tabla">
+          <img src="../img/obras/eek-001-anim-cuadro.png" alt="Datos del eclipse lunar penumbral 5 junio 2020">
+        </div>
+        <p class="grid-caption">
+          <span class="lang-es-inline">Fig. 1 · Datos del eclipse lunar penumbral · 5 junio 2020 · timeanddate.com</span>
+          <span class="lang-en">Fig. 1 · Penumbral lunar eclipse data · June 5 2020 · timeanddate.com</span>
         </p>
-        <a class="proceso-link" href="https://www.timeanddate.com/eclipse/lunar/2020-june-5" target="_blank" rel="noopener">
-          ↗ Referencia: timeanddate.com/eclipse/lunar/2020-june-5
+
+        <!-- Bloque 3×2: izq trayectoria / der animación -->
+        <div class="grid-anim-divider"><span class="lang-es-inline">Izquierda: Trayectoria del eclipse · Derecha: Animación</span><span class="lang-en">Left: Eclipse trajectory · Right: Animation</span></div>
+        <div class="grid-anim-3x2">
+          <div class="grid-anim-col">
+            <div class="grid-cell"><img src="../img/obras/eek-001-tray-a.png" alt="Trayectoria del eclipse 1"></div>
+            <div class="grid-cell"><img src="../img/obras/eek-001-tray-b.png" alt="Trayectoria del eclipse 2"></div>
+            <div class="grid-cell"><img src="../img/obras/eek-001-tray-c.png" alt="Trayectoria del eclipse 3"></div>
+          </div>
+          <div class="grid-anim-col">
+            <div class="grid-cell"><img src="../img/obras/eek-001-anim-a.png" alt="Frame de animación 1"></div>
+            <div class="grid-cell"><img src="../img/obras/eek-001-anim-b.png" alt="Frame de animación 2"></div>
+            <div class="grid-cell"><img src="../img/obras/eek-001-anim-c.png" alt="Frame de animación 3"></div>
+          </div>
+        </div>
+        <p class="grid-caption">
+          <span class="lang-es-inline">Fig. 2–7 · 3 momentos de la trayectoria real y su versión animada</span>
+          <span class="lang-en">Fig. 2–7 · 3 moments from the real trajectory and their animated version</span>
+        </p>
+      </div>
+
+      <!-- PASO 2: Sound Design — Audio player + UVB-76 link -->
+      <div class="proceso-item">
+        <div class="proceso-title">
+          <span class="step-num">2</span>
+          <span class="lang-es-inline">Diseño Sonoro</span><span class="lang-en">Sound Design</span>
+          <span class="pi-tag tag-tecnica">UVB-76</span>
+          <span class="pi-tag tag-herramienta">4635 KHz</span>
+        </div>
+        <p class="proceso-body" style="margin-bottom:10px"><span class="lang-es-inline">El sonido fue construido en un <strong>90% con audios de la radio UVB-76</strong>, una estación rusa que transmite una frecuencia monótona de 4635 KHz desde hace más de 40 años. Los audios fueron curados seleccionando grabaciones de diferentes <strong>5 de junio de diferentes años</strong>, y mezclados con audios de WhatsApp enviados en 2020 sobre la situación del barrio Kennedy durante el confinamiento.</span><span class="lang-en">The sound was built with <strong>90% audio from UVB-76 radio</strong>, a Russian station that transmits a monotonous frequency of 4635 KHz for more than 40 years. The audio was curated by selecting recordings from different <strong>June 5ths from different years</strong>, mixed with WhatsApp audios sent in 2020 about the situation of the Kennedy neighborhood during the lockdown.</span></p>
+
+        <!-- Audio player -->
+        <div class="audio-block">
+          <div class="audio-label"><span class="lang-es-inline">Audio · Diseño Sonoro · Eclipse Lunar Penumbral</span><span class="lang-en">Audio · Sound Design · Penumbral Lunar Eclipse</span></div>
+          <audio controls preload="metadata">
+            <source src="../audio/eek-001-sound.mp3" type="audio/mpeg">
+            <span class="lang-es-inline">Tu navegador no soporta el reproductor de audio.</span>
+            <span class="lang-en">Your browser does not support the audio player.</span>
+          </audio>
+        </div>
+
+        <!-- Link UVB-76 -->
+        <a class="proceso-link" href="http://uvb-76.net/" target="_blank" rel="noopener">
+          ↗ <span class="lang-es-inline">Radio UVB-76 · 4635 KHz · http://uvb-76.net/</span><span class="lang-en">UVB-76 Radio · 4635 KHz · http://uvb-76.net/</span>
         </a>
       </div>
 
-      <div class="proceso-item">
+      <!-- PASO 3: Transmisión — Solo imagen main -->
+      <div class="proceso-item" style="border-bottom:none">
         <div class="proceso-title">
-          Diseño sonoro
-          <span class="pi-tag tag-fuente">UVB-76 · Radio rusa · 4635 kHz</span>
-          <span class="pi-tag tag-fuente">WhatsApp · Kennedy 2020</span>
+          <span class="step-num">3</span>
+          <span class="lang-es-inline">Transmisión</span><span class="lang-en">Streaming</span>
+          <span class="pi-tag tag-tecnica">YouTube</span>
+          <span class="pi-tag tag-herramienta">En vivo</span>
         </div>
-        <p class="proceso-body">
-          El 90% del sonido fue diseñado con audios del archivo de UVB-76, una radio rusa que lleva más de 40 años transmitiendo ininterrumpidamente en la frecuencia de 4635 kHz. De su vasto archivo se seleccionaron grabaciones tomadas específicamente en días 5 de junio de diferentes años. Estas fueron mezcladas con audios de WhatsApp enviados en 2020 sobre la situación del barrio Kennedy durante el confinamiento.
+        <p class="proceso-body" style="margin-bottom:10px"><span class="lang-es-inline">La transmisión se realizó en <strong>YouTube en vivo el 5 de junio de 2020 desde las 12:45 hasta las 16:04 UTC-5</strong>, exactamente al mismo tiempo que ocurría el eclipse real. Fue un acto político y artístico: llevar un fenómeno celeste invisible al territorio de quienes estaban encerrados.</span><span class="lang-en">The stream was broadcast on <strong>YouTube Live on June 5, 2020 from 12:45 to 16:04 UTC-5</strong>, exactly at the same time as the real eclipse. It was a political and artistic act: bringing an invisible celestial phenomenon to the territory of those who were locked up.</span></p>
+        <p class="proceso-body" style="margin-bottom:10px;font-style:italic;color:var(--gris)">
+          <span class="lang-es-inline">La transmisión completa está disponible en YouTube:</span>
+          <span class="lang-en">The complete stream is available on YouTube:</span>
         </p>
-        <a class="proceso-link" href="http://uvb-76.net/" target="_blank" rel="noopener">↗ Archivo UVB-76: uvb-76.net</a>
-        <div class="uvb-block">
-          <div class="uvb-label">UVB-76 · 4635 kHz · Transmisión continua desde 1982</div>
-          <div class="uvb-wave" id="uvb-wave"></div>
-          <div class="uvb-freq">Frecuencia: 4635 kHz · Origen: Rusia · +40 años de transmisión ininterrumpida</div>
-        </div>
+        <a href="https://www.youtube.com/watch?v=GSQcelgj1ZM" target="_blank" rel="noopener" style="display:block;text-decoration:none;margin:10px 0;">
+          <div class="grid-main" style="position:relative;cursor:pointer;">
+            <img src="../img/obras/eek-001-proceso-03main.png" alt="Eclipse Lunar Penumbral - Transmisión EEK" style="width:100%;height:100%;object-fit:cover;opacity:0.85;">
+            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:40px;background:rgba(0,0,0,0.75);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+              <div style="width:0;height:0;border-top:10px solid transparent;border-bottom:10px solid transparent;border-left:18px solid white;margin-left:4px;"></div>
+            </div>
+          </div>
+        </a>
+        <p class="grid-caption">
+          <span class="lang-es-inline">Transmisión en vivo · 5 junio 2020 · YouTube</span>
+          <span class="lang-en">Live stream · June 5 2020 · YouTube</span>
+        </p>
       </div>
 
-      <div class="proceso-item">
-        <div class="proceso-title">
-          Transmisión en vivo
-          <span class="pi-tag tag-tecnica">YouTube Live</span>
-          <span class="pi-tag tag-tecnica">Tiempo real · 3h 18m</span>
-        </div>
-        <p class="proceso-body">
-          La transmisión se realizó en tiempo real sincronizada con el eclipse — de 12:45 a 16:04 hora Bogotá. El canal de YouTube de la Estación Espacial Kennedy transmitió simultáneamente lo que ocurría en el cielo y lo que no podía verse desde Colombia. La simultaneidad como gesto político: el eclipse existía, aunque fuera invisible.
-        </p>
-      </div>
     </div>
+
+
 
   </div>
 
-  <!-- ── Aside ──────────────────────────────────────────── -->
-  <div class="obra-aside">
+  <!-- ── Sidebar ────────────────────────────────────────── -->
+  <aside class="obra-aside">
+
     <div class="data-panel">
-      <div class="data-panel-head"><span class="dp-title">Ficha técnica</span></div>
-      <div class="dp-row"><span class="dp-key">Tipo</span><span class="dp-val">Transmisión en vivo</span></div>
-      <div class="dp-row"><span class="dp-key">Soporte</span><span class="dp-val">Video monocanal</span></div>
-      <div class="dp-row"><span class="dp-key">Plataforma</span><span class="dp-val dp-val-blue">YouTube Live</span></div>
-      <div class="dp-row"><span class="dp-key">Duración</span><span class="dp-val">3h 18m 12s</span></div>
-      <div class="dp-row"><span class="dp-key">Animación</span><span class="dp-val">Illustrator · AE</span></div>
-      <div class="dp-row"><span class="dp-key">Sonido</span><span class="dp-val">UVB-76 · WhatsApp</span></div>
-      <div class="dp-row"><span class="dp-key">Vis. real Bogotá</span><span class="dp-val dp-val-red">0% · No visible</span></div>
-      <div class="dp-row"><span class="dp-key">Vis. EEK</span><span class="dp-val dp-val-blue">100% · Transmitida</span></div>
+      <div class="data-panel-head"><span class="dp-title"><span class="lang-es-inline">Ficha técnica</span><span class="lang-en">Technical sheet</span></span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Código</span><span class="lang-en">Code</span></span><span class="dp-val">EEK-001</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Título</span><span class="lang-en">Title</span></span><span class="dp-val"><span class="lang-es-inline">Eclipse Lunar Penumbral</span><span class="lang-en">Penumbral Lunar Eclipse</span></span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Tipo</span><span class="lang-en">Type</span></span><span class="dp-val"><span class="lang-es-inline">Transmisión · Animación</span><span class="lang-en">Streaming · Animation</span></span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Técnica</span><span class="lang-en">Technique</span></span><span class="dp-val">Illustrator · After Effects · UVB-76</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Fecha</span><span class="lang-en">Date</span></span><span class="dp-val dp-val-blue">5 junio 2020 · 12:45 – 16:04 UTC-5</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Lugar</span><span class="lang-en">Place</span></span><span class="dp-val">Kennedy · Bogotá · Colombia</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Plataforma</span><span class="lang-en">Platform</span></span><span class="dp-val">YouTube · Transmisión en vivo</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Eclipse real</span><span class="lang-en">Real eclipse</span></span><span class="dp-val">Penumbral · No visible en Colombia</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Sonido</span><span class="lang-en">Sound</span></span><span class="dp-val">90% UVB-76 + WhatsApp</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Registro</span><span class="lang-en">Record</span></span><span class="dp-val">EEK-001</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Serie</span><span class="lang-en">Series</span></span><span class="dp-val">2020–2025</span></div>
     </div>
 
     <div class="data-panel">
-      <div class="data-panel-head"><span class="dp-title">Contexto · Kennedy 2020</span></div>
-      <div class="dp-row"><span class="dp-key">Situación</span><span class="dp-val">Cuarentena Covid-19</span></div>
-      <div class="dp-row"><span class="dp-key">Perímetro</span><span class="dp-val dp-val-red">Militar + Policía</span></div>
-      <div class="dp-row"><span class="dp-key">Población</span><span class="dp-val">+1.000.000 hab.</span></div>
-      <div class="dp-row"><span class="dp-key">Movilidad</span><span class="dp-val dp-val-red">Restringida</span></div>
-      <div class="dp-row"><span class="dp-key">Eclipse real</span><span class="dp-val dp-val-red">Invisible</span></div>
-      <div class="dp-row"><span class="dp-key">Transmisión EEK</span><span class="dp-val dp-val-blue">En vivo</span></div>
+      <div class="data-panel-head"><span class="dp-title"><span class="lang-es-inline">Sistema</span><span class="lang-en">System</span></span></div>
+      <div class="dp-row"><span class="dp-key">Illustrator</span><span class="dp-val"><span class="lang-es-inline">Dibujo de la sombra penumbral</span><span class="lang-en">Penumbral shadow drawing</span></span></div>
+      <div class="dp-row"><span class="dp-key">After Effects</span><span class="dp-val"><span class="lang-es-inline">Animación sincronizada</span><span class="lang-en">Synchronized animation</span></span></div>
+      <div class="dp-row"><span class="dp-key">UVB-76</span><span class="dp-val">4635 KHz · <span class="lang-es-inline">Radio rusa</span><span class="lang-en">Russian radio</span></span></div>
+      <div class="dp-row"><span class="dp-key">YouTube</span><span class="dp-val"><span class="lang-es-inline">Transmisión en vivo</span><span class="lang-en">Live streaming</span></span></div>
     </div>
 
     <div class="links-block">
-      <div class="data-panel-head"><span class="dp-title">Vínculos · Links</span></div>
-      <a class="link-item" href="https://www.youtube.com/watch?v=GSQcelgj1ZM" target="_blank" rel="noopener">
-        <span class="link-item-type">VIDEO</span>
-        <span class="link-item-label">Transmisión YouTube</span>
+      <div class="data-panel-head"><span class="dp-title"><span class="lang-es-inline">Vínculos</span><span class="lang-en">Links</span></span></div>
+      <a class="link-item" href="https://www.timeanddate.com/eclipse/lunar/2020-june-5" target="_blank" rel="noopener">
+        <span class="link-item-type">WEB</span>
+        <span class="link-item-label"><span class="lang-es-inline">Datos del eclipse</span><span class="lang-en">Eclipse data</span></span>
         <span class="link-item-arrow">↗</span>
       </a>
       <a class="link-item" href="http://uvb-76.net/" target="_blank" rel="noopener">
-        <span class="link-item-type">ARCHIVO</span>
-        <span class="link-item-label">UVB-76 Radio</span>
-        <span class="link-item-arrow">↗</span>
-      </a>
-      <a class="link-item" href="https://www.timeanddate.com/eclipse/lunar/2020-june-5" target="_blank" rel="noopener">
-        <span class="link-item-type">REFERENCIA</span>
-        <span class="link-item-label">Datos del eclipse</span>
+        <span class="link-item-type">WEB</span>
+        <span class="link-item-label">UVB-76 · 4635 KHz</span>
         <span class="link-item-arrow">↗</span>
       </a>
     </div>
 
     <div class="data-panel">
-      <div class="data-panel-head"><span class="dp-title">En esta serie · EEK 2020</span></div>
-      <div class="dp-row"><span class="dp-key">EEK-001</span><span class="dp-val dp-val-blue">Eclipse penumbral ←</span></div>
-      <div class="dp-row"><span class="dp-key">EEK-002</span><span class="dp-val"><a href="eek-002.html" style="color:var(--azul);text-decoration:none">Cinco veces...</a></span></div>
-      <div class="dp-row"><span class="dp-key">EEK-003</span><span class="dp-val"><a href="eek-003.html" style="color:var(--azul);text-decoration:none">Fanzine</a></span></div>
+      <div class="data-panel-head"><span class="dp-title"><span class="lang-es-inline">En esta serie · EEK 2020–2025</span><span class="lang-en">In this series · EEK 2020–2025</span></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-001</span><span class="dp-val dp-val-blue"><span class="lang-es-inline">Eclipse Lunar Penumbral ←</span><span class="lang-en">Penumbral Lunar Eclipse ←</span></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-004</span><span class="dp-val"><a href="eek-004.html" style="color:var(--azul);text-decoration:none"><span class="lang-es-inline">Simulación Rocas Lunares</span><span class="lang-en">Lunar Rocks Simulation</span></a></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-006</span><span class="dp-val"><a href="eek-006.html" style="color:var(--azul);text-decoration:none"><span class="lang-es-inline">Los años que no vimos...</span><span class="lang-en">The Years We Didn't See...</span></a></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-007</span><span class="dp-val"><a href="eek-007.html" style="color:var(--azul);text-decoration:none"><span class="lang-es-inline">En la Tierra, silencio</span><span class="lang-en">On Earth, Silence</span></a></span></div>
     </div>
-  </div>
+
+  </aside>
+
 </div>
 
-<!-- ── Nav prev/next ────────────────────────────────────── -->
-<div class="nav-obras">
-  <div class="nav-obras-prev">← <a href="index.html">Archivo de obras</a></div>
-  <div class="nav-obras-center">001 / 007</div>
-  <div class="nav-obras-next"><a href="eek-002.html">EEK-002 · Cinco veces la misma piedra</a> →</div>
-</div>
-
+<!-- ── Footer ───────────────────────────────────────────── -->
 <footer class="footer">
-  <span class="footer-l">EEK · Estación Espacial Kennedy · 2020–</span>
-  <span class="footer-r">4°37'44"N · 74°8'49"W · Kennedy, Bogotá, Colombia</span>
+  <span class="footer-l">EEK · <span class="lang-es-inline">Estación Espacial Kennedy · Bogotá, Colombia · 2020–</span><span class="lang-en">Kennedy Space Station · Bogotá, Colombia · 2020–</span></span>
 </footer>
 
-<script src="../js/eek.js"></script>
 <script>
-  // Generar barras UVB-76 animadas
-  const wave = document.getElementById('uvb-wave');
-  if (wave) {
-    const heights = [50,80,40,95,65,30,85,55,70,45,90,35,75,60,50,88,42,78,33,92];
-    heights.forEach((h, i) => {
-      const bar = document.createElement('div');
-      bar.className = 'uvb-bar';
-      bar.style.cssText = `height:${h}%;animation-delay:${i * 0.07}s`;
-      wave.appendChild(bar);
-    });
+  function toggleLang() {
+    const body = document.body;
+    const isEs = body.classList.contains('lang-es');
+    if (isEs) {
+      body.classList.remove('lang-es');
+      body.classList.add('lang-en');
+      localStorage.setItem('eek-lang', 'en');
+    } else {
+      body.classList.remove('lang-en');
+      body.classList.add('lang-es');
+      localStorage.setItem('eek-lang', 'es');
+    }
+    updateLangLabels();
   }
+  function updateLangLabels() {
+    const isEs = document.body.classList.contains('lang-es');
+    const esLabel = document.querySelector('.lang-es-label');
+    const enLabel = document.querySelector('.lang-en-label');
+    if (esLabel) esLabel.classList.toggle('lang-active', isEs);
+    if (enLabel) enLabel.classList.toggle('lang-active', !isEs);
+  }
+  const savedLang = localStorage.getItem('eek-lang') || 'es';
+  document.body.classList.add('lang-' + savedLang);
+  updateLangLabels();
 </script>
+
 </body>
 </html>
