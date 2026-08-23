@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EEK-002 · Cinco veces la misma piedra · Estación Espacial Kennedy</title>
+  <meta name="description" content="Cinco veces la misma piedra — Apropiación de imágenes espaciales · Photoshop · NASA · Marte · Kennedy Bogotá · 2020 · EEK">
+  <link rel="stylesheet" href="../css/eek.css">
+  <style>
+    .obra-layout { display: grid; grid-template-columns: 1fr 264px; }
+    .obra-main { border-right: 1px solid var(--beige-pale); }
+    .obra-aside {
+      padding: 16px;
+      background: var(--beige);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .obra-header {
+      background: var(--beige-mid);
+      border-bottom: 1px solid var(--beige-pale);
+      padding: 24px 24px 0;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 20px;
+    }
+    .obra-id-vert {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gris);
+      padding-top: 4px;
+    }
+    .obra-num {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      color: var(--azul);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .obra-title {
+      font-family: var(--cond);
+      font-size: 46px;
+      font-weight: 900;
+      line-height: 0.9;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      color: var(--negro);
+    }
+    .obra-title-en {
+      font-size: 13px;
+      color: #888;
+      font-style: italic;
+      letter-spacing: 0.06em;
+    }
+    .img-main-wrap {
+      width: 100%;
+      aspect-ratio: 2/1;
+      background: #0a0a12;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .img-main-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .img-thumbs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+    .img-thumb {
+      aspect-ratio: 2/1;
+      background: var(--beige);
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid var(--beige-dark);
+    }
+    .img-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: opacity 0.15s;
+    }
+    .img-thumb:hover img { opacity: 0.85; }
+
+    /* ES-EN Toggle */
+    .nav-lang {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--azul);
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+    .nav-lang .lang-sep { color: var(--gris-light); font-weight: 400; margin: 0 2px; }
+    .nav-lang .lang-active { border-bottom: 1px solid var(--azul); }
+    body.lang-es .lang-en,
+    body.lang-es .lang-en-block { display: none !important; }
+    body.lang-en .lang-es-inline,
+    body.lang-en .lang-es-block { display: none !important; }
+
+    .breadcrumb { color: var(--gris) !important; }
+    .breadcrumb a { color: var(--azul) !important; }
+    .topbar-l, .topbar-r { color: var(--blanco) !important; }
+    .topbar-dot { background: var(--blanco) !important; }
+    .footer { background: var(--azul); }
+    .footer-l { color: var(--blanco); }
+    .lang-en { color: #888 !important; }
+    .ficha-key { font-size: 8px !important; color: var(--gris) !important; }
+    .ficha-val { font-size: 11px !important; }
+
+    /* Photo grids */
+    .grid-1x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; margin: 10px 0; }
+    .grid-1x5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin: 10px 0; }
+    .grid-main { width: 100%; aspect-ratio: 2/1; background: #0a0a12; overflow: hidden; margin: 10px 0 4px; }
+    .grid-main img { width: 100%; height: 100%; object-fit: cover; }
+    .grid-cell { aspect-ratio: 1/1; background: var(--beige); overflow: hidden; border: 1px solid var(--beige-dark); cursor: pointer; }
+    .grid-cell img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.15s; }
+    .grid-cell:hover img { opacity: 0.85; }
+    .grid-caption { font-family: var(--mono); font-size: 8px; color: var(--gris-pale); letter-spacing: 0.05em; margin-bottom: 14px; }
+
+    /* Telescopios grid: 1 vertical + 1 horizontal */
+    .grid-telescopios {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 4px;
+      margin: 10px 0;
+    }
+    .grid-telescopios .cell-vert { aspect-ratio: 3/4; background: var(--beige); overflow: hidden; border: 1px solid var(--beige-dark); cursor: pointer; }
+    .grid-telescopios .cell-horiz { aspect-ratio: 4/3; background: var(--beige); overflow: hidden; border: 1px solid var(--beige-dark); cursor: pointer; }
+    .grid-telescopios .cell-vert img,
+    .grid-telescopios .cell-horiz img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.15s; }
+    .grid-telescopios .cell-vert:hover img,
+    .grid-telescopios .cell-horiz:hover img { opacity: 0.85; }
+
+    /* Gallery */
+    .gallery-section { margin-top: 20px; padding-top: 20px; border-top: 2px solid var(--negro); }
+    .gallery-title { font-family: var(--cond); font-size: 20px; font-weight: 900; text-transform: uppercase; margin-bottom: 12px; color: var(--negro); }
+
+    /* Process */
+    .proceso-item { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--beige-dark); }
+    .proceso-item:last-child { border-bottom: none; }
+    .pi-tag { font-family: var(--mono); font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 6px; margin-left: 6px; }
+    .tag-tecnica { background: var(--azul); color: var(--blanco); }
+    .tag-herramienta { background: var(--beige-dark); color: var(--gris); }
+    .step-num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; background: var(--negro); color: var(--blanco); font-family: var(--mono); font-size: 10px; font-weight: 700; margin-right: 8px; }
+    .proceso-link { font-family: var(--mono); font-size: 10px; color: var(--azul); text-decoration: none; display: inline-block; margin-top: 8px; padding: 6px 0; }
+    .proceso-link:hover { text-decoration: underline; }
+
+    /* Conceptual */
+    .conceptual-block { background: var(--blanco); border: 2px solid var(--negro); padding: 28px 24px; margin: 16px 0; position: relative; }
+    .conceptual-label { font-family: var(--mono); font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--rojo); font-weight: 700; margin-bottom: 16px; }
+    .conceptual-title { font-family: var(--cond); font-size: 28px; font-weight: 900; text-transform: uppercase; line-height: 1.1; margin-bottom: 16px; color: var(--negro); }
+    .conceptual-body { font-size: 14px; color: #555; line-height: 1.95; margin-bottom: 12px; }
+    .conceptual-quote { font-size: 16px; color: var(--negro); font-style: italic; border-left: 3px solid var(--azul); padding-left: 16px; margin: 18px 0; line-height: 1.6; }
+
+    /* Links */
+    .links-block { background: var(--negro); padding: 20px 24px; margin: 16px 0; }
+    .links-label { font-family: var(--cond); font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blanco); margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--gris); }
+    .links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; }
+    .links-grid a { display: block; font-family: var(--mono); font-size: 10px; color: var(--blanco); text-decoration: none; padding: 10px 12px; background: rgba(255,255,255,0.06); border: 1px solid var(--gris); transition: all 0.15s; line-height: 1.5; }
+    .links-grid a:hover { background: rgba(255,255,255,0.12); border-color: var(--blanco); }
+    .links-grid a .link-sub { font-size: 8px; color: var(--gris-light); letter-spacing: 0.05em; }
+
+    /* Sidebar styles from eek.css */
+    .dp-val-blue { color: var(--azul) !important; font-weight: 700; }
+
+    /* ===== Lightbox ===== */
+    .lightbox-overlay {
+      position: fixed; inset: 0; z-index: 99999;
+      background: rgba(0,0,0,0.92);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .lightbox-overlay.active { opacity: 1; pointer-events: auto; }
+    .lightbox-img {
+      max-width: 92vw; max-height: 88vh;
+      object-fit: contain;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      transform: scale(0.96);
+      transition: transform 0.25s ease;
+    }
+    .lightbox-overlay.active .lightbox-img { transform: scale(1); }
+    .lightbox-close, .lightbox-prev, .lightbox-next {
+      position: absolute; background: none; border: none; cursor: pointer;
+      font-family: var(--mono); color: var(--blanco); font-size: 22px;
+      padding: 12px; z-index: 10; opacity: 0.7; transition: opacity 0.15s;
+    }
+    .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover { opacity: 1; }
+    .lightbox-close { top: 12px; right: 12px; font-size: 28px; }
+    .lightbox-prev { left: 12px; top: 50%; transform: translateY(-50%); }
+    .lightbox-next { right: 12px; top: 50%; transform: translateY(-50%); }
+
+    @media (max-width: 700px) {
+      .obra-layout { grid-template-columns: 1fr; }
+      .obra-aside { border-top: 1px solid var(--beige-pale); }
+      .obra-header { grid-template-columns: 1fr; }
+      .obra-id-vert { display: none; }
+      .links-grid { grid-template-columns: 1fr; }
+      .grid-1x5 { grid-template-columns: repeat(3, 1fr); }
+      .grid-telescopios { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 500px) {
+      .grid-1x5 { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-l">EEK · <span class="lang-es-inline">Archivo de obras · Registro EEK-002</span><span class="lang-en">Works archive · Record EEK-002</span></span>
+  <span class="topbar-r">
+    <span class="topbar-dot"></span>
+    <span class="lang-es-inline">Estación Espacial Kennedy · Bogotá</span><span class="lang-en">Kennedy Space Station · Bogotá</span>
+  </span>
+</div>
+
+<nav class="nav">
+  <a class="nav-logo" href="../index.html">
+    <img class="nav-logo-img" src="../img/logo-eek.png" alt="EEK · Estación Espacial Kennedy" style="height:44px;width:auto;display:block;">
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="active"><span class="lang-es-inline">Obras</span><span class="lang-en">Works</span></a>
+    <a href="../manifiesto.html"><span class="lang-es-inline">Manifiesto</span><span class="lang-en">Manifesto</span></a>
+    <a href="../prensa.html"><span class="lang-es-inline">Prensa</span><span class="lang-en">Press</span></a>
+    <a href="../contacto.html"><span class="lang-es-inline">Contacto</span><span class="lang-en">Contact</span></a>
+    <span class="nav-lang" id="lang-toggle" onclick="toggleLang()">
+      <span class="lang-es-label lang-active">ES</span>
+      <span class="lang-sep">·</span>
+      <span class="lang-en-label">EN</span>
+    </span>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="../index.html"><span class="lang-es-inline">Inicio</span><span class="lang-en">Home</span></a>
+  <span class="breadcrumb-sep">·</span>
+  <a href="index.html"><span class="lang-es-inline">Archivo de obras</span><span class="lang-en">Works archive</span></a>
+  <span class="breadcrumb-sep">·</span>
+  EEK-002 · Cinco veces la misma piedra
+</div>
+
+<!-- ── Header de la obra ────────────────────────────────── -->
+<div class="obra-header">
+  <div class="obra-id-vert"><span class="lang-es-inline">Registro de obra · EEK</span><span class="lang-en">Work record · EEK</span></div>
+  <div>
+    <div class="obra-num">EEK-002 · <span class="lang-es-inline">Apropiación · Photoshop · NASA · Marte · Kennedy · 2020</span><span class="lang-en">Appropriation · Photoshop · NASA · Mars · Kennedy · 2020</span></div>
+    <h1 class="obra-title">Cinco veces<br>la misma piedra</h1>
+    <div class="obra-title-en lang-en">Five times the same stone</div>
+    <div class="ficha-strip">
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Año</span><span class="lang-en">Year</span></div><div class="ficha-val ficha-val-blue">2020</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Técnica</span><span class="lang-en">Technique</span></div><div class="ficha-val">Photoshop · <span class="lang-es-inline">Apropiación de imágenes espaciales</span><span class="lang-en">Space imagery appropriation</span></div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Formato</span><span class="lang-en">Format</span></div><div class="ficha-val"><span class="lang-es-inline">5 imágenes digitales + 2 objetos</span><span class="lang-en">5 digital images + 2 objects</span></div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Fuente</span><span class="lang-en">Source</span></div><div class="ficha-val">NASA · <span class="lang-es-inline">Dataset de imágenes de Marte</span><span class="lang-en">Mars image dataset</span></div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Lugar</span><span class="lang-en">Place</span></div><div class="ficha-val">Kennedy · Bogotá · Colombia</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Registro</span><span class="lang-en">Record</span></div><div class="ficha-val">EEK-002</div></div>
+      <div class="ficha-cell"><div class="ficha-key"><span class="lang-es-inline">Serie</span><span class="lang-en">Series</span></div><div class="ficha-val">2020–2026</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Cuerpo ───────────────────────────────────────────── -->
+<div class="obra-layout">
+  <div class="obra-main">
+
+    <!-- Imagen principal -->
+    <div class="sec sec-white">
+      <div class="sec-label"><span class="lang-es-inline">Documentación visual</span><span class="lang-en">Visual documentation</span></div>
+      <div class="img-main-wrap">
+        <img src="../img/obras/eek-002.png" alt="Cinco veces la misma piedra · Five times the same stone">
+      </div>
+      <p style="font-family:var(--mono);font-size:8px;color:var(--gris-pale);letter-spacing:.06em;margin-bottom:14px">
+        <span class="lang-es-inline">Fig. 01 · Cinco veces la misma piedra · Kennedy · 2020</span>
+        <span class="lang-en">Fig. 01 · Five times the same stone · Kennedy · 2020</span>
+      </p>
+    </div>
+
+    <!-- Bloque conceptual + Descripción -->
+    <div class="sec sec-cream">
+
+      <!-- Bloque ES -->
+      <div class="lang-es-block">
+        <div class="conceptual-block">
+          <div class="conceptual-label">Concepto · Concept</div>
+          <div class="conceptual-title">La carrera hacia Marte</div>
+          <p class="conceptual-body">La NASA buscaba colaboradores en todo el mundo para alimentar un archivo gigante de imágenes tomadas por los rovers <em>Spirit</em> y <em>Opportunity</em> en Marte. El fin último de esta clasificación es poder hacer <strong>Machine Learning</strong>: enseñarle a los rovers qué terrenos son peligrosos y evitar que vuelvan a atascarse en terrenos donde su maquinaria es inútil. Pasar los días en la cuarentena no ha sido fácil, así que acepté trabajar gratis para entrenar máquinas.</p>
+          <p class="conceptual-body">He pensado mucho en la <strong>propiedad de esas imágenes</strong>. En la ficha técnica dice que el derecho lo tiene la NASA; yo solo pienso en la monopolización del universo, en mi imposibilidad de acceder a esas capturas yo misma: ¿cómo hago para ser "dueña" de una imagen sacada en Marte si nunca voy a ir? Tampoco es como que quiera ser dueña de nada: la idea de la propiedad privada incluso para lo que sucede fuera del planeta me asquea. Quizá por eso debería hacer real la <strong>Estación Espacial</strong> y hacerme cargo de una construcción de imágenes del universo que sean de todas y todos y, al mismo tiempo, de nadie.</p>
+          <div class="conceptual-quote">Un ejercicio de apropiación espacial desde el territorio de Kennedy: trabajar gratis para la NASA y tomar mi pago por derecha con esas capturas.</div>
+        </div>
+
+        <div class="sec-label">Sobre la obra · About the work</div>
+        <p style="font-size:15px;color:#444;line-height:1.95;margin-bottom:14px">
+          El acto de contemplar las estrellas, los planetas y todo lo que acontece más allá de nuestro mundo implica levantar la mirada hacia el cielo, incluso cuando se utilizan dispositivos de observación astronómica. Cuando realizamos este mismo gesto con un dispositivo que no está diseñado para observar el universo, pero que en cierta medida nos muestra eventos que acontecen fuera de nuestro mundo, se produce una <strong>translación de sentido</strong> tanto del gesto como del dispositivo de visión.
+        </p>
+        <p style="font-size:14px;color:#555;line-height:1.9;margin-bottom:14px">
+          Históricamente, la visualización de nuestras imágenes familiares ha estado mediada por dispositivos que implican el gesto de mirar hacia el cielo, hacia la luz, como los <strong>"telescopios"</strong> o los visores de fotografías. <em>"Cinco veces la misma piedra"</em> es una colección de cinco imágenes de Marte reconstruidas digitalmente para crear nuevos paisajes, utilizando la repetición como un <strong>ejercicio escultórico</strong> dentro de la imagen. La observación de esta colección solo puede llevarse a cabo mediante el gesto de observar a través de estos <strong>"telescopios"</strong>, es decir, levantando la mirada hacia el cielo.
+        </p>
+
+      </div>
+
+      <!-- Bloque EN -->
+      <div class="lang-en-block">
+        <div class="conceptual-block">
+          <div class="conceptual-label">Concept · Concepto</div>
+          <div class="conceptual-title">The race to Mars</div>
+          <p class="conceptual-body">NASA was looking for collaborators worldwide to feed a giant archive of images taken by the <em>Spirit</em> and <em>Opportunity</em> rovers on Mars. The ultimate goal of this classification is to enable <strong>Machine Learning</strong>: teaching rovers which terrains are dangerous and preventing them from getting stuck where their machinery is useless. Getting through the days in quarantine has not been easy, so I accepted to work for free to train machines.</p>
+          <p class="conceptual-body">I have thought a lot about the <strong>ownership of those images</strong>. The technical sheet says that NASA holds the rights; I only think about the monopolization of the universe, about my impossibility of accessing those captures myself: how do I become the "owner" of an image taken on Mars if I will never go there? Not that I want to own anything: the idea of private property even for what happens outside the planet disgusts me. Perhaps that is why I should make the <strong>Space Station</strong> real and take charge of constructing images of the universe that belong to everyone and, at the same time, to no one.</p>
+          <div class="conceptual-quote">An exercise in spatial appropriation from the territory of Kennedy: working for free for NASA and taking my payment in kind with those captures.</div>
+        </div>
+
+        <div class="sec-label">About the work · Sobre la obra</div>
+        <p style="font-size:15px;color:#444;line-height:1.95;margin-bottom:14px">
+          The act of contemplating the stars, the planets, and everything that happens beyond our world implies looking up to the sky, even when astronomical observation devices are used. When we perform this same gesture with a device that is not designed to observe the universe, but that to some extent shows us events occurring outside our world, a <strong>translation of meaning</strong> takes place for both the gesture and the viewing device.
+        </p>
+        <p style="font-size:14px;color:#555;line-height:1.9;margin-bottom:14px">
+          Historically, the visualization of our family images has been mediated by devices that involve the gesture of looking up to the sky, towards the light, such as <strong>"telescopes"</strong> or photograph viewers. <em>"Five times the same stone"</em> is a collection of five images of Mars digitally reconstructed to create new landscapes, using repetition as a <strong>sculptural exercise</strong> within the image. The observation of this collection can only be carried out through the gesture of observing through these <strong>"telescopes"</strong>, that is, looking up to the sky.
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- Proceso técnico -->
+    <div class="sec sec-white">
+      <div class="sec-label">
+        <span class="lang-es-inline">Documentación del proceso</span>
+        <span class="lang-en">Process documentation</span>
+        <span class="sec-label-sub"><span class="lang-es-inline">clasificación · apropiación · imágenes · telescopios</span><span class="lang-en">classification · appropriation · images · telescopes</span></span>
+      </div>
+
+      <!-- PASO 1: Clasificación de terrenos -->
+      <div class="proceso-item">
+        <div class="proceso-title">
+          <span class="step-num">1</span>
+          <span class="lang-es-inline">Clasificación de terrenos</span><span class="lang-en">Terrain classification</span>
+          <span class="pi-tag tag-tecnica">NASA</span>
+          <span class="pi-tag tag-herramienta">Dataset</span>
+        </div>
+        <p class="proceso-body" style="margin-bottom:10px"><span class="lang-es-inline">Dentro de las imágenes de Marte se identifican <strong>4 tipos de terrenos</strong>: arenoso, consolidado, roca lisa y rocas grandes. El último paso de esta clasificación es poder hacer <strong>Machine Learning</strong>: enseñarle a los rovers qué terrenos son peligrosos y evitar que vuelvan a atascarse. He decidido seguir el camino del blanco y negro porque es más fácil la identificación y porque hay un deleite en esas imágenes que no me sucede con las de color.</span><span class="lang-en">Within the Mars images, <strong>4 terrain types</strong> are identified: sandy, consolidated, smooth rock, and large rocks. The final step of this classification is to enable <strong>Machine Learning</strong>: teaching rovers which terrains are dangerous and preventing them from getting stuck again. I decided to follow the black and white path because identification is easier and because there is a delight in those images that I don't experience with color ones.</span></p>
+      </div>
+
+      <!-- PASO 2: Selección y apropiación -->
+      <div class="proceso-item">
+        <div class="proceso-title">
+          <span class="step-num">2</span>
+          <span class="lang-es-inline">Selección y apropiación</span><span class="lang-en">Selection and appropriation</span>
+          <span class="pi-tag tag-tecnica">Photoshop</span>
+          <span class="pi-tag tag-herramienta">Edición</span>
+        </div>
+        <p class="proceso-body" style="margin-bottom:10px"><span class="lang-es-inline">Durante el trabajo he sacado capturas de pantalla de los paisajes que más me gustan del día. Ser un satélite en tierra que trabaja con otros miles de aburridos en sus casas me hace sentir acompañada; un montón de gente aburrida trabajando gratis para la NASA; yo, por mi parte, me tomo mi pago por derecha con esas capturas. Voy a comenzar con poco: aprovechar este material que la NASA me aporta <em>(Gracias NASA)</em> y modificarlo digitalmente.</span><span class="lang-en">During the work I took screenshots of the landscapes I liked most each day. Being a satellite on earth working with thousands of other bored people in their homes makes me feel accompanied; a bunch of bored people working for free for NASA; I, for my part, take my payment in kind with those captures. I will start small: take advantage of this material that NASA provides me <em>(Thanks NASA)</em> and modify it digitally.</span></p>
+      </div>
+
+      <!-- PASO 3: Imágenes reconstruidas — Grilla 1×5 cuadrada -->
+      <div class="proceso-item">
+        <div class="proceso-title">
+          <span class="step-num">3</span>
+          <span class="lang-es-inline">Imágenes reconstruidas</span><span class="lang-en">Reconstructed images</span>
+          <span class="pi-tag tag-tecnica">Photoshop</span>
+          <span class="pi-tag tag-herramienta">Collage</span>
+        </div>
+        <p class="proceso-body" style="margin-bottom:10px"><span class="lang-es-inline">Inventar un Marte donde se repite <strong>5 veces la misma piedra</strong>, que hay unos destellos de luz en el horizonte y que el suelo es casi un patrón repetido <em>ad infinitum</em>; un Marte inventado a partir del Marte que supongo es esa, la de las imágenes. Cinco imágenes de Marte reconstruidas digitalmente para crear nuevos paisajes, utilizando la repetición como un <strong>ejercicio escultórico</strong> dentro de la imagen.</span><span class="lang-en">Inventing a Mars where the <strong>same stone is repeated 5 times</strong>, where there are flashes of light on the horizon and the ground is almost a pattern repeated <em>ad infinitum</em>; an invented Mars based on the Mars that I suppose exists, the one in the images. Five digitally reconstructed Mars images to create new landscapes, using repetition as a <strong>sculptural exercise</strong> within the image.</span></p>
+        <div class="grid-1x5">
+          <div class="grid-cell" data-lightbox="../img/obras/eek-002-marte-a.png"><img src="../img/obras/eek-002-marte-a.png" alt="Imagen de Marte 1"></div>
+          <div class="grid-cell" data-lightbox="../img/obras/eek-002-marte-b.png"><img src="../img/obras/eek-002-marte-b.png" alt="Imagen de Marte 2"></div>
+          <div class="grid-cell" data-lightbox="../img/obras/eek-002-marte-c.png"><img src="../img/obras/eek-002-marte-c.png" alt="Imagen de Marte 3"></div>
+          <div class="grid-cell" data-lightbox="../img/obras/eek-002-marte-d.png"><img src="../img/obras/eek-002-marte-d.png" alt="Imagen de Marte 4"></div>
+          <div class="grid-cell" data-lightbox="../img/obras/eek-002-marte-e.png"><img src="../img/obras/eek-002-marte-e.png" alt="Imagen de Marte 5"></div>
+        </div>
+        <p class="grid-caption">
+          <span class="lang-es-inline">Fig. 1–5 · Cinco imágenes de Marte reconstruidas digitalmente · aspect ratio 1:1</span>
+          <span class="lang-en">Fig. 1–5 · Five digitally reconstructed Mars images · 1:1 aspect ratio</span>
+        </p>
+      </div>
+
+      <!-- PASO 4: Telescopios — 1 vertical + 1 horizontal -->
+      <div class="proceso-item" style="border-bottom:none">
+        <div class="proceso-title">
+          <span class="step-num">4</span>
+          <span class="lang-es-inline">Telescopios</span><span class="lang-en">Telescopes</span>
+          <span class="pi-tag tag-tecnica">Impresión</span>
+          <span class="pi-tag tag-herramienta">Objetos</span>
+        </div>
+        <p class="proceso-body" style="margin-bottom:10px"><span class="lang-es-inline">Las imágenes fueron impresas y se construyeron <strong>"telescopios"</strong> como dispositivos de visión. El gesto de observar a través de estos objetos recrea la translación de sentido: levantar la mirada hacia el cielo para ver lo que acontece fuera de nuestro mundo. La observación de esta colección solo puede llevarse a cabo mediante el gesto de observar a través de estos <strong>"telescopios"</strong>, es decir, levantando la mirada hacia el cielo.</span><span class="lang-en">The images were printed and <strong>"telescopes"</strong> were built as viewing devices. The gesture of observing through these objects recreates the translation of meaning: looking up to the sky to see what happens outside our world. The observation of this collection can only be carried out through the gesture of observing through these <strong>"telescopes"</strong>, that is, looking up to the sky.</span></p>
+        <div class="grid-telescopios">
+          <div class="cell-vert" data-lightbox="../img/obras/eek-002-telescopio-01.jpg"><img src="../img/obras/eek-002-telescopio-01.jpg" alt="Telescopio - objeto"></div>
+          <div class="cell-horiz" data-lightbox="../img/obras/eek-002-telescopio-02.jpg"><img src="../img/obras/eek-002-telescopio-02.jpg" alt="Telescopio - vista"></div>
+        </div>
+        <p class="grid-caption">
+          <span class="lang-es-inline">Fig. 6–7 · Izquierda: telescopio objeto (3:4) · Derecha: vista a través del telescopio (4:3)</span>
+          <span class="lang-en">Fig. 6–7 · Left: telescope object (3:4) · Right: view through the telescope (4:3)</span>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Sidebar ────────────────────────────────────────── -->
+  <aside class="obra-aside">
+
+    <div class="data-panel">
+      <div class="data-panel-head"><span class="dp-title"><span class="lang-es-inline">Ficha técnica</span><span class="lang-en">Technical sheet</span></span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Código</span><span class="lang-en">Code</span></span><span class="dp-val">EEK-002</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Título</span><span class="lang-en">Title</span></span><span class="dp-val"><span class="lang-es-inline">Cinco veces la misma piedra</span><span class="lang-en">Five times the same stone</span></span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Tipo</span><span class="lang-en">Type</span></span><span class="dp-val"><span class="lang-es-inline">Apropiación · Imágenes</span><span class="lang-en">Appropriation · Images</span></span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Técnica</span><span class="lang-en">Technique</span></span><span class="dp-val">Photoshop</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Formato</span><span class="lang-en">Format</span></span><span class="dp-val"><span class="lang-es-inline">5 imágenes + 2 objetos</span><span class="lang-en">5 images + 2 objects</span></span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Fuente</span><span class="lang-en">Source</span></span><span class="dp-val">NASA · <span class="lang-es-inline">Dataset de Marte</span><span class="lang-en">Mars dataset</span></span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Fecha</span><span class="lang-en">Date</span></span><span class="dp-val dp-val-blue">2020</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Lugar</span><span class="lang-en">Place</span></span><span class="dp-val">Kennedy · Bogotá · Colombia</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Registro</span><span class="lang-en">Record</span></span><span class="dp-val">EEK-002</span></div>
+      <div class="dp-row"><span class="dp-key"><span class="lang-es-inline">Serie</span><span class="lang-en">Series</span></span><span class="dp-val">2020–2026</span></div>
+    </div>
+
+    <div class="data-panel">
+      <div class="data-panel-head"><span class="dp-title"><span class="lang-es-inline">Sistema</span><span class="lang-en">System</span></span></div>
+      <div class="dp-row"><span class="dp-key">NASA</span><span class="dp-val"><span class="lang-es-inline">Dataset de imágenes de Marte</span><span class="lang-en">Mars image dataset</span></span></div>
+      <div class="dp-row"><span class="dp-key">Photoshop</span><span class="dp-val"><span class="lang-es-inline">Reconstrucción digital</span><span class="lang-en">Digital reconstruction</span></span></div>
+      <div class="dp-row"><span class="dp-key">Impresión</span><span class="dp-val"><span class="lang-es-inline">Imágenes + objetos telescopio</span><span class="lang-en">Images + telescope objects</span></span></div>
+    </div>
+
+
+
+    <div class="data-panel">
+      <div class="data-panel-head"><span class="dp-title"><span class="lang-es-inline">En esta serie · EEK 2020–2026</span><span class="lang-en">In this series · EEK 2020–2026</span></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-001</span><span class="dp-val"><a href="eek-001.html" style="color:var(--azul);text-decoration:none"><span class="lang-es-inline">Eclipse Lunar Penumbral</span><span class="lang-en">Penumbral Lunar Eclipse</span></a></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-002</span><span class="dp-val dp-val-blue"><span class="lang-es-inline">Cinco veces la misma piedra ←</span><span class="lang-en">Five times the same stone ←</span></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-004</span><span class="dp-val"><a href="eek-004.html" style="color:var(--azul);text-decoration:none"><span class="lang-es-inline">Simulación Rocas Lunares</span><span class="lang-en">Lunar Rocks Simulation</span></a></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-006</span><span class="dp-val"><a href="eek-006.html" style="color:var(--azul);text-decoration:none"><span class="lang-es-inline">Los años que no vimos...</span><span class="lang-en">The Years We Didn't See...</span></a></span></div>
+      <div class="dp-row"><span class="dp-key">EEK-007</span><span class="dp-val"><a href="eek-007.html" style="color:var(--azul);text-decoration:none"><span class="lang-es-inline">En la Tierra, silencio</span><span class="lang-en">On Earth, Silence</span></a></span></div>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- ── Lightbox ─────────────────────────────────────────── -->
+<div class="lightbox-overlay" id="lightbox">
+  <button class="lightbox-close" id="lb-close" aria-label="Cerrar">×</button>
+  <button class="lightbox-prev" id="lb-prev" aria-label="Anterior">‹</button>
+  <button class="lightbox-next" id="lb-next" aria-label="Siguiente">›</button>
+  <img class="lightbox-img" id="lb-img" src="" alt="">
+</div>
+
+<!-- ── Footer ───────────────────────────────────────────── -->
+<footer class="footer">
+  <span class="footer-l">EEK · <span class="lang-es-inline">Estación Espacial Kennedy · Bogotá, Colombia · 2020–</span><span class="lang-en">Kennedy Space Station · Bogotá, Colombia · 2020–</span></span>
+</footer>
+
+<script>
+  function toggleLang() {
+    const body = document.body;
+    const isEs = body.classList.contains('lang-es');
+    if (isEs) {
+      body.classList.remove('lang-es');
+      body.classList.add('lang-en');
+      localStorage.setItem('eek-lang', 'en');
+    } else {
+      body.classList.remove('lang-en');
+      body.classList.add('lang-es');
+      localStorage.setItem('eek-lang', 'es');
+    }
+    updateLangLabels();
+  }
+  function updateLangLabels() {
+    const isEs = document.body.classList.contains('lang-es');
+    const esLabel = document.querySelector('.lang-es-label');
+    const enLabel = document.querySelector('.lang-en-label');
+    if (esLabel) esLabel.classList.toggle('lang-active', isEs);
+    if (enLabel) enLabel.classList.toggle('lang-active', !isEs);
+  }
+  const savedLang = localStorage.getItem('eek-lang') || 'es';
+  document.body.classList.add('lang-' + savedLang);
+  updateLangLabels();
+
+  /* ===== Lightbox ===== */
+  (function() {
+    const overlay = document.getElementById('lightbox');
+    const img = document.getElementById('lb-img');
+    const closeBtn = document.getElementById('lb-close');
+    const prevBtn = document.getElementById('lb-prev');
+    const nextBtn = document.getElementById('lb-next');
+    const cells = document.querySelectorAll('[data-lightbox]');
+    let idx = 0;
+    const srcs = Array.from(cells).map(c => c.getAttribute('data-lightbox'));
+
+    function open(i) {
+      idx = i;
+      img.src = srcs[idx];
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function close() {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => img.src = '', 200);
+    }
+    function prev() { open((idx - 1 + srcs.length) % srcs.length); }
+    function next() { open((idx + 1) % srcs.length); }
+
+    cells.forEach((c, i) => c.addEventListener('click', () => open(i)));
+    closeBtn.addEventListener('click', close);
+    prevBtn.addEventListener('click', prev);
+    nextBtn.addEventListener('click', next);
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+    document.addEventListener('keydown', e => {
+      if (!overlay.classList.contains('active')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
+    });
+  })();
+</script>
+
+</body>
+</html>
